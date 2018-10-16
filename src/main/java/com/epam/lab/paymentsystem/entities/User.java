@@ -8,7 +8,9 @@ public class User {
     private String login;
     private long role_id;
 
-    public User(){}
+    public User(){
+
+    }
 
     public User(long id, String name, String password, String login, long role_id) {
         this.id = id;
