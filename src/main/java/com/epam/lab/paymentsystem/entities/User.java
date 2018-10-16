@@ -8,7 +8,9 @@ public class User {
     private String login;
     private long role_id;
 
-    public User(){}
+    public User() {
+
+    }
 
     public User(long id, String name, String password, String login, long role_id) {
         this.id = id;
@@ -56,5 +58,27 @@ public class User {
 
     public void setRole_id(long role_id) {
         this.role_id = role_id;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + login.hashCode();
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof User)) {
+            return false;
+        }
+
+        User user = (User) obj;
+
+        return user.login.equals(login);
     }
 }
