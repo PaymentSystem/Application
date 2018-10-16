@@ -49,4 +49,30 @@ public class Account {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Long.valueOf(user_id).hashCode();
+        result = 31 * result + Double.valueOf(amount).hashCode();
+        result = 31 * result + Boolean.valueOf(isActive).hashCode();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Account)) {
+            return false;
+        }
+
+        Account account = (Account) obj;
+
+        return account.user_id == user_id &&
+                account.amount == amount &&
+                account.isActive == isActive;
+    }
 }

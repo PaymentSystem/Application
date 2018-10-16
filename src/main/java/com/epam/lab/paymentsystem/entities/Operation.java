@@ -61,4 +61,32 @@ public class Operation {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Long.valueOf(source_id).hashCode();
+        result = 31 * result + Long.valueOf(target_id).hashCode();
+        result = 31 * result + Double.valueOf(amount).hashCode();
+        result = 31 * result + date.hashCode();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Operation)) {
+            return false;
+        }
+
+        Operation operation = (Operation) obj;
+
+        return operation.source_id == source_id &&
+                operation.target_id == target_id &&
+                operation.amount == amount &&
+                operation.date.equals(date);
+    }
 }

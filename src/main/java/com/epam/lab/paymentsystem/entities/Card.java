@@ -49,4 +49,30 @@ public class Card {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Long.valueOf(user_id).hashCode();
+        result = 31 * result + Long.valueOf(account_id).hashCode();
+        result = 31 * result + Boolean.valueOf(isActive).hashCode();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Card)) {
+            return false;
+        }
+
+        Card card = (Card) obj;
+
+        return card.user_id == user_id &&
+                card.account_id == account_id &&
+                card.isActive == isActive;
+    }
 }
