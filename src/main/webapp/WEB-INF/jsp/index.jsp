@@ -4,6 +4,11 @@
     <title>Title</title>
 </head>
 <body>
+<h1>INDEX</h1>
 <h1>${msg}</h1>
+<form action="user">
+    <button type="submit">add user</button>
+</form>
+
 </body>
 </html>
