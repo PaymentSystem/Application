@@ -5,6 +5,7 @@ import com.epam.lab.paymentsystem.service.UserService;
 
 public class UserServiceImpl implements UserService {
 
+
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -20,4 +21,5 @@ public class UserServiceImpl implements UserService {
         userToAdd = userRepository.createUser(user);
         return userToAdd;
     }
+
 }

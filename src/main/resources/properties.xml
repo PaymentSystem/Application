@@ -11,5 +11,6 @@
     <bean id="main" class="com.epam.lab.paymentsystem.PaymentSystemApplication">
         <property name="controller" ref="controller"/>
     </bean>
+
 </beans>
 
