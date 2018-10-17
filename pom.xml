@@ -22,6 +22,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.2.5</version>
             <scope>runtime</scope>
         </dependency>
         <!--Use version 4.3.3.RELEASE with deprecated class MultiActionController-->

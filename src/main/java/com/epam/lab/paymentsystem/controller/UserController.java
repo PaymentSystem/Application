@@ -10,10 +10,11 @@ import java.io.IOException;
 
 public class UserController {
 
-    UserServiceImpl userService;
+    private final String USER_PAGE = "user";
+    private UserServiceImpl userService;
 
     public String getUser(HttpServletRequest req, HttpServletResponse resp) {
-        return "user";
+        return USER_PAGE;
     }
 
     public String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +28,7 @@ public class UserController {
         user.setPassword(password);
         userService.addUser(user);
 
-        return "user";
+        return USER_PAGE;
     }
 
     public void setUserService(UserServiceImpl userService) {
