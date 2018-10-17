@@ -2,10 +2,14 @@
 <html>
 <head>
     <title>addUser</title>
-    <title>Values API</title>
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/crud.js"></script>
-</head>
+    <%--<script>--%>
+        <%--$(function () {--%>
+            <%--alert('Подключена последняя версия jQuery через Google хостинг');--%>
+        <%--});--%>
+    <%--</script>--%>
+<%--</head>--%>
 <body>
 
 <form action="add" method="post">
@@ -16,7 +20,7 @@
     <label for="password">password</label>
     <input type="password" name="password" placeholder="Please, enter your password" id="password">
     <input type="submit" id="addValues" value="Add"></button>
-    <div id="createStatus"></div>
-</form>
+    <p>${msg}</p>
+    </form>
 </body>
 </html>

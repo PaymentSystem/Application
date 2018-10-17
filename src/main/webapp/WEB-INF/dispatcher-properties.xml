@@ -5,29 +5,31 @@
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean name="/" class="com.epam.lab.paymentsystem.controller.IndexController"/>
-    <bean name="/*" class="com.epam.lab.paymentsystem.controller.UserController"/>
 
-    <!--<bean name="/*" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">-->
-        <!--<property name="methodNameResolver" ref="propsResolver"/>-->
-        <!--<property name="delegate" ref="userController"/>-->
-    <!--</bean>-->
+    <bean name="/*" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+        <property name="methodNameResolver" ref="propsResolver"/>
+        <property name="delegate" ref="userController"/>
+    </bean>
 
-    <!--<bean id="propsResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">-->
-        <!--<property name="mappings">-->
-            <!--<value>-->
-                <!--/index = retrieveIndex-->
-                <!--/user = user-->
-            <!--</value>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="propsResolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <value>
+                /user = getUser
+                /add = add
+            </value>
+        </property>
+    </bean>
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean name="userController" class="com.epam.lab.paymentsystem.controller.UserController">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userService" class="com.epam.lab.paymentsystem.service.impl.UserServiceImpl"/>
+
+      <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-
-
-
 
 
 </beans>
