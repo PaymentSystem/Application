@@ -9,9 +9,11 @@ import java.util.List;
 
 public class ConnectionPool {
 
-    static List<Connection> connectionPool = new LinkedList<Connection>();
-    Connection connect = null;
+    private static List<Connection> connectionPool = new LinkedList<Connection>();
+    private Connection connect = null;
 
+    private static final int CONNECTION_POOL_SIZE = 10;
+    private static final String URL_DATABASE = "jdbc:postgresql://127.0.0.1:5432/payment_system";
 
     public static Connection getConnection() throws SQLException, NamingException {
         Connection connectReturn = null;
@@ -24,37 +26,42 @@ public class ConnectionPool {
         return connectReturn;
     }
 
-    public static void close(Connection connection) {
+    public static void connectionRelease(Connection connection) {
         if(connection != null) {
             connectionPool.add(connection);
         }
-        else connectionPool.add(new ConnectionPool().connect);
+        else{
+            ConnectionPool pool = new ConnectionPool();
+            Connection con = null;
+            try {
+                con = pool.getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
+            connectionPool.add(con);
+        }
     }
 
     private static void addConnect() {
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= CONNECTION_POOL_SIZE; i++) {
             connectionPool.add(new ConnectionPool().connect);
         }
     }
 
     private ConnectionPool() {
-
         try {
-            Class.forName("dao.UserDAO");
+            Class.forName(UserDAO.class.getName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
         System.out.println("PostgreSQL JDBC Driver Registered!");
 
-
         try {
-
-            connect = DriverManager.getConnection(
-                    "jdbc:postgresql://127.0.0.1:5432/payment_system");
-
+            connect = DriverManager.getConnection(URL_DATABASE);
         } catch (SQLException e) {
-
             System.out.println("ConnectionPool Failed!");
             e.printStackTrace();
         }
