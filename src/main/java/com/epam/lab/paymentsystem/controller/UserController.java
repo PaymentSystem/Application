@@ -1,7 +1,7 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.service.impl.UserServiceImpl;
+import com.epam.lab.paymentsystem.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class UserController {
 
-    private final String USER_PAGE = "user";
-    private UserServiceImpl userService;
+    private static final String USER_PAGE = "user";
+    private UserService userService;
 
     public String getUser(HttpServletRequest req, HttpServletResponse resp) {
         return USER_PAGE;
@@ -31,7 +31,7 @@ public class UserController {
         return USER_PAGE;
     }
 
-    public void setUserService(UserServiceImpl userService) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 }

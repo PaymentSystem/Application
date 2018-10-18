@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class IndexController extends AbstractController {
 
-    private final String INDEX_PAGE = "index";
+    private static final String INDEX_PAGE = "index";
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse resp) throws Exception {
