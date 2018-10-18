@@ -8,6 +8,7 @@
     <bean id="controller" class="com.epam.lab.paymentsystem.controller.Controller">
         <constructor-arg name="hello" value="Hello, world!"/>
     </bean>
+
     <bean id="main" class="com.epam.lab.paymentsystem.PaymentSystemApplication">
         <property name="controller" ref="controller"/>
     </bean>

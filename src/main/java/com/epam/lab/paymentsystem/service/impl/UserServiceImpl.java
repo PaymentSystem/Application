@@ -1,15 +1,15 @@
 package com.epam.lab.paymentsystem.service.impl;
 
+import com.epam.lab.paymentsystem.dao.UserDAOInterface;
 import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.dao.UserDAO;
 import com.epam.lab.paymentsystem.service.UserService;
 
 public class UserServiceImpl implements UserService {
 
 
-    private final UserDAO userDAO;
+    private final UserDAOInterface userDAO;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(UserDAOInterface userDAO) {
         this.userDAO = userDAO;
     }
 

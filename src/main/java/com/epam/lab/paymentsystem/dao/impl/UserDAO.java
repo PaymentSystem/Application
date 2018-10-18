@@ -1,13 +1,18 @@
-package com.epam.lab.paymentsystem.dao;
+package com.epam.lab.paymentsystem.dao.impl;
+
+import com.epam.lab.paymentsystem.dao.ConnectionPool;
+import com.epam.lab.paymentsystem.dao.UserDAOInterface;
+import com.epam.lab.paymentsystem.entities.User;
 
 import javax.naming.NamingException;
-import java.sql.*;
-
-import com.epam.lab.paymentsystem.entities.User;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDAO implements UserDAOInterface {
 
-    private static final String INSERT_SQL = "INSERT INTO users (login, password, user_name)" + "VALUES (?, ?, ?)";
+    private static final String INSERT_SQL = "INSERT INTO users (login, passwd, user_name)" + "VALUES (?, ?, ?)";
     private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
 
     public static User getCopy(User old) {
@@ -23,23 +28,22 @@ public class UserDAO implements UserDAOInterface {
         User userToAdd = getCopy(user);
         Connection connect = null;
         try {
-            try {
-                connect = ConnectionPool.getConnection();
-            } catch (NamingException e) {
-                e.printStackTrace();
-            }
+            connect = ConnectionPool.getConnection();
+
             PreparedStatement ps = connect.prepareStatement(INSERT_SQL);
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getName());
 
             ps.executeUpdate();
-            ResultSet rs = ps.executeQuery();
-            userToAdd.setId(rs.getInt(1));
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                userToAdd.setId(rs.getInt(1));
+            }
 
             ps.close();
             rs.close();
-        } catch (SQLException e) {
+        } catch (NamingException | SQLException e) {
             e.printStackTrace();
         } finally {
             if (connect != null) {
@@ -55,11 +59,7 @@ public class UserDAO implements UserDAOInterface {
         User userFind = null;
 
         try {
-            try {
-                connection = ConnectionPool.getConnection();
-            } catch (NamingException e) {
-                e.printStackTrace();
-            }
+            connection = ConnectionPool.getConnection();
 
             PreparedStatement ps = connection.prepareStatement(SELECT_SQL);
             ps.setString(1, user.getLogin());
@@ -73,7 +73,7 @@ public class UserDAO implements UserDAOInterface {
             }
             ps.close();
             rs.close();
-        } catch (SQLException e) {
+        } catch (NamingException | SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {

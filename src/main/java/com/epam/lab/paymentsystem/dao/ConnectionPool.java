@@ -1,5 +1,7 @@
 package com.epam.lab.paymentsystem.dao;
 
+import com.epam.lab.paymentsystem.dao.impl.UserDAO;
+
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,10 +15,13 @@ public class ConnectionPool {
     private Connection connect = null;
 
     private static final int CONNECTION_POOL_SIZE = 10;
-    private static final String URL_DATABASE = "jdbc:postgresql://127.0.0.1:5432/payment_system";
+    private static final String URL_DATABASE = "jdbc:postgresql://localhost:5432/payment_system";
+    private static final String DRIVER_DATABASE_CLASS = "org.postgresql.Driver";
+    private static final String USER_NAME = "postgres";
+    private static final String USER_PASSWORD = "postgres";
 
     public static Connection getConnection() throws SQLException, NamingException {
-        Connection connectReturn = null;
+        Connection connectReturn;
         if (connectionPool.size() < 1) {
             addConnect();
             connectReturn = connectionPool.remove(0);
@@ -31,13 +36,10 @@ public class ConnectionPool {
             connectionPool.add(connection);
         }
         else{
-            ConnectionPool pool = new ConnectionPool();
             Connection con = null;
             try {
-                con = pool.getConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (NamingException e) {
+                con = getConnection();
+            } catch (NamingException | SQLException e) {
                 e.printStackTrace();
             }
             connectionPool.add(con);
@@ -50,17 +52,18 @@ public class ConnectionPool {
         }
     }
 
-    private ConnectionPool() {
+    public ConnectionPool() {
         try {
-            Class.forName(UserDAO.class.getName());
+            Class.forName(DRIVER_DATABASE_CLASS);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
+
         System.out.println("PostgreSQL JDBC Driver Registered!");
 
         try {
-            connect = DriverManager.getConnection(URL_DATABASE);
+            connect = DriverManager.getConnection(URL_DATABASE, USER_NAME, USER_PASSWORD);
         } catch (SQLException e) {
             System.out.println("ConnectionPool Failed!");
             e.printStackTrace();
