@@ -7,7 +7,7 @@
 <h1>INDEX</h1>
 <h1>${msg}</h1>
 <form action="user">
-    <button type="submit">add user</button>
+    <button type="submit">Sign Up</button>
 </form>
 
 </body>

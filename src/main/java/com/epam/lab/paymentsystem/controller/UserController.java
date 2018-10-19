@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
 
 import javax.servlet.ServletException;
@@ -26,7 +27,12 @@ public class UserController {
         user.setName(name);
         user.setLogin(login);
         user.setPassword(password);
-        userService.addUser(user);
+        try {
+            userService.addUser(user);
+            resp.sendRedirect("/");
+        } catch (LoginAlreadyExistsException e) {
+            req.setAttribute("submit", e.getMessage());
+        }
 
         return USER_PAGE;
     }
