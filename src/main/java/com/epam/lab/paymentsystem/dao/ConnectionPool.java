@@ -1,7 +1,5 @@
 package com.epam.lab.paymentsystem.dao;
 
-import com.epam.lab.paymentsystem.dao.impl.UserDAO;
-
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +16,7 @@ public class ConnectionPool {
     private static final String URL_DATABASE = "jdbc:postgresql://localhost:5432/payment_system";
     private static final String DRIVER_DATABASE_CLASS = "org.postgresql.Driver";
     private static final String USER_NAME = "postgres";
-    private static final String USER_PASSWORD = "postgres";
+    private static final String USER_PASSWORD = "admin";
 
     public static Connection getConnection() throws SQLException, NamingException {
         Connection connectReturn;

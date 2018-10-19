@@ -67,12 +67,43 @@
             <version>5.1.1.RELEASE</version>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>apache-tomcat</server>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>tomcatserver</server>
+                    <username>admin</username>
+                    <password>admin</password>
+                    <path>/payment-system</path>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
+    <distributionManagement>
+        <repository>
+            <id>tomcatserver</id>
+            <name>MyCo Internal Repository</name>
+            <url>http://localhost:8080</url>
+        </repository>
+    </distributionManagement>
 
 </project>
