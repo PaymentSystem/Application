@@ -1,7 +1,5 @@
 package com.epam.lab.paymentsystem.dao;
 
-import com.epam.lab.paymentsystem.dao.impl.UserDAO;
-
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
