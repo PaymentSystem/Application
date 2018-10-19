@@ -2,8 +2,8 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dao.UserDAOInterface;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +18,6 @@ public class UserServiceTest {
 
     @Test
     public void testAddUserThrowsException() {
-
         user = new User();
         userDAO = mock(UserDAOInterface.class);
         when(userDAO.findByLogin(user)).thenReturn(user);
@@ -27,7 +26,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testAddUserCreateUser() {
+    public void testAddUserCreateUser() throws LoginAlreadyExistsException {
         user = new User();
         userDAO = mock(UserDAOInterface.class);
         when(userDAO.findByLogin(user)).thenReturn(null);
