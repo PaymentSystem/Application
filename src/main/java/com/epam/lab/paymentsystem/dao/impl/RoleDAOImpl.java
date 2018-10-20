@@ -16,9 +16,12 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public int getIdByRole(Roles roleStatus) {
+
         int role_id = -1;
+        Connection connection = null;
+
         try {
-            Connection connection = ConnectionPool.getConnection();
+            connection = ConnectionPool.getConnection();
 
             PreparedStatement ps = connection.prepareStatement(ROLE_SELECT_SQL);
             ps.setString(1, roleStatus.toString().toLowerCase());
@@ -27,8 +30,15 @@ public class RoleDAOImpl implements RoleDAO {
             if (rs.next()) {
                 role_id = rs.getInt(1);
             }
+
+            ps.close();
+            rs.close();
         } catch (NamingException | SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                ConnectionPool.connectionRelease(connection);
+            }
         }
         return role_id;
     }
