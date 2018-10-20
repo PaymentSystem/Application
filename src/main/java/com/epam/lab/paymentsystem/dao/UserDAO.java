@@ -2,7 +2,7 @@ package com.epam.lab.paymentsystem.dao;
 
 import com.epam.lab.paymentsystem.entities.User;
 
-public interface UserDAOInterface {
+public interface UserDAO {
 
     User createUser(User user);
 

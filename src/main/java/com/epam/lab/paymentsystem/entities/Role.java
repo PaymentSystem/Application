@@ -4,22 +4,22 @@ import com.epam.lab.paymentsystem.entities.enums.Roles;
 
 public class Role {
 
-    private long id;
+    private int id;
     private Roles roles;
 
     public Role() {
     }
 
-    public Role(long id, Roles role) {
+    public Role(int id, Roles role) {
         this.id = id;
         this.roles = role;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
