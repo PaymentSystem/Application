@@ -5,14 +5,14 @@ import com.epam.lab.paymentsystem.entities.enums.Roles;
 public class Role {
 
     private int id;
-    private Roles roles;
+    private Roles roleStatus;
 
     public Role() {
     }
 
-    public Role(int id, Roles role) {
+    public Role(int id, Roles roleStatus) {
         this.id = id;
-        this.roles = role;
+        this.roleStatus = roleStatus;
     }
 
     public int getId() {
@@ -23,18 +23,18 @@ public class Role {
         this.id = id;
     }
 
-    public Roles getRole() {
-        return roles;
+    public Roles getRoleStatus() {
+        return roleStatus;
     }
 
-    public void setRole(Roles role) {
-        this.roles = role;
+    public void setRoleStatus(Roles roleStatus) {
+        this.roleStatus = roleStatus;
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + roles.hashCode();
+        result = 31 * result + roleStatus.hashCode();
         return result;
     }
 
@@ -49,6 +49,6 @@ public class Role {
 
         Role role = (Role) obj;
 
-        return role.roles == roles;
+        return role.roleStatus == roleStatus;
     }
 }

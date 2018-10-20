@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         }
         int role_id = roleDAO.getIdByRole(Roles.USER);
         User userToCreate = UserDAOImpl.getCopy(user);
-        userToCreate.setRole_id(role_id);
+        userToCreate.setRoleId(role_id);
         userToAdd = userDAO.createUser(userToCreate);
         return userToAdd;
     }

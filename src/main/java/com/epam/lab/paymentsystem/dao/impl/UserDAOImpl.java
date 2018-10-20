@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO {
         newUser.setLogin(old.getLogin());
         newUser.setName(old.getName());
         newUser.setPassword(old.getPassword());
-        newUser.setRole_id(old.getRole_id());
+        newUser.setRoleId(old.getRoleId());
         return newUser;
     }
 
@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getName());
-            ps.setInt(4, user.getRole_id());
+            ps.setInt(4, user.getRoleId());
 
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();

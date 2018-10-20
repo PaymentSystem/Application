@@ -15,13 +15,13 @@ public class RoleDAOImpl implements RoleDAO {
     private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";
 
     @Override
-    public int getIdByRole(Roles roles) {
+    public int getIdByRole(Roles roleName) {
         int role_id = -1;
         try {
             Connection connection = ConnectionPool.getConnection();
 
             PreparedStatement ps = connection.prepareStatement(ROLE_SELECT_SQL);
-            ps.setString(1, roles.toString().toLowerCase());
+            ps.setString(1, roleName.toString().toLowerCase());
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
