@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.controller;
 
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -13,7 +14,6 @@ public class IndexController extends AbstractController {
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-        modelAndView.addObject("msg", "Hello world!");
         return modelAndView;
     }
 }
