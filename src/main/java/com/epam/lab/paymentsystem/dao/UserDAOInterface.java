@@ -7,4 +7,6 @@ public interface UserDAOInterface {
     User createUser(User user);
 
     User findByLogin(User user);
+
+    User getUserByLogin(String login);
 }

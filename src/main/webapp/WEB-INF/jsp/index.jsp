@@ -9,6 +9,9 @@
 <form action="user">
     <button type="submit">Sign Up</button>
 </form>
+<form action="logout">
+    <button type="submit">Logout</button>
+</form>
 
 </body>
 </html>

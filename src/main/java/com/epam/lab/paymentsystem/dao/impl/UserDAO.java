@@ -83,4 +83,40 @@ public class UserDAO implements UserDAOInterface {
         System.out.println("user is not exist");
         return userFind;
     }
+
+    @Override
+    public User getUserByLogin(String login) {
+        Connection connection = null;
+        User user = new User();
+
+        try {
+            connection = ConnectionPool.getConnection();
+
+            PreparedStatement ps = connection.prepareStatement(SELECT_SQL);
+            ps.setString(1, login);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user.setId(rs.getInt(1));
+                user.setLogin(login);
+                user.setPassword(rs.getString(3));
+                user.setRole_id(rs.getInt(4));
+                user.setName(rs.getString(5));
+
+                System.out.println("===USR INFO===");
+                System.out.println("login: " + user.getLogin() + "; pwd: " + user.getPassword());
+            } else {
+                return null;
+            }
+            ps.close();
+            rs.close();
+        } catch (NamingException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                ConnectionPool.connectionRelease(connection);
+            }
+        }
+        return user;
+    }
 }
