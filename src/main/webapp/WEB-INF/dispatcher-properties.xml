@@ -26,9 +26,12 @@
 
     <bean id="userService" class="com.epam.lab.paymentsystem.service.impl.UserServiceImpl">
         <constructor-arg ref="userDAO"/>
+        <constructor-arg ref="roleDAO"/>
     </bean>
 
-    <bean id="userDAO" class="com.epam.lab.paymentsystem.dao.impl.UserDAO"/>
+    <bean id="roleDAO" class="com.epam.lab.paymentsystem.dao.impl.RoleDAOImpl"/>
+
+    <bean id="userDAO" class="com.epam.lab.paymentsystem.dao.impl.UserDAOImpl"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>

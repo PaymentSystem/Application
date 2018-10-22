@@ -1,7 +1,7 @@
 package com.epam.lab.paymentsystem.dao.impl;
 
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
-import com.epam.lab.paymentsystem.dao.UserDAOInterface;
+import com.epam.lab.paymentsystem.dao.UserDAO;
 import com.epam.lab.paymentsystem.entities.User;
 
 import javax.naming.NamingException;
@@ -10,9 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDAO implements UserDAOInterface {
+public class UserDAOImpl implements UserDAO {
 
-    private static final String INSERT_SQL = "INSERT INTO users (login, passwd, user_name)" + "VALUES (?, ?, ?)";
+    private static final String INSERT_SQL = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
     private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
 
     public static User getCopy(User old) {
@@ -20,6 +20,7 @@ public class UserDAO implements UserDAOInterface {
         newUser.setLogin(old.getLogin());
         newUser.setName(old.getName());
         newUser.setPassword(old.getPassword());
+        newUser.setRoleId(old.getRoleId());
         return newUser;
     }
 
@@ -34,6 +35,7 @@ public class UserDAO implements UserDAOInterface {
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getName());
+            ps.setInt(4, user.getRoleId());
 
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
