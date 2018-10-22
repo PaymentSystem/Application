@@ -1,6 +1,6 @@
 package com.epam.lab.paymentsystem.service.impl;
 
-import com.epam.lab.paymentsystem.dao.UserDAOInterface;
+import com.epam.lab.paymentsystem.dao.UserDAO;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.MyUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserDAOInterface userDAO;
+    private final UserDAO userDAO;
 
-    public UserDetailsServiceImpl(UserDAOInterface userDAO) {
+    public UserDetailsServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 

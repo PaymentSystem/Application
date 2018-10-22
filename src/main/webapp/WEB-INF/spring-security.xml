@@ -8,9 +8,9 @@
 
     <http auto-config="true">
         <intercept-url pattern="/add" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <intercept-url pattern="/user" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/registration" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/**" access="ROLE_USER" />
-        <form-login authentication-failure-url="/user" />
+        <form-login authentication-failure-url="/registration" />
         <logout logout-url="/logout" />
     </http>
 
@@ -22,6 +22,6 @@
         <beans:constructor-arg ref="userDAO"/>
     </beans:bean>
 
-    <beans:bean id="userDAO" class="com.epam.lab.paymentsystem.dao.impl.UserDAO"/>
+    <beans:bean id="userDAO" class="com.epam.lab.paymentsystem.dao.impl.UserDAOImpl"/>
 
 </beans:beans>

@@ -11,11 +11,11 @@ import java.io.IOException;
 
 public class UserController {
 
-    private static final String USER_PAGE = "user";
+    private static final String REGISTRATION_PAGE = "registration";
     private UserService userService;
 
-    public String getUser(HttpServletRequest req, HttpServletResponse resp) {
-        return USER_PAGE;
+    public String getRegistration(HttpServletRequest req, HttpServletResponse resp) {
+        return REGISTRATION_PAGE;
     }
 
     public String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,14 +27,14 @@ public class UserController {
         user.setName(name);
         user.setLogin(login);
         user.setPassword(password);
+
         try {
             userService.addUser(user);
-            resp.sendRedirect("/");
+            resp.sendRedirect(req.getContextPath() + "/");
         } catch (LoginAlreadyExistsException e) {
             req.setAttribute("submit", e.getMessage());
         }
-
-        return USER_PAGE;
+        return REGISTRATION_PAGE;
     }
 
     public void setUserService(UserService userService) {
