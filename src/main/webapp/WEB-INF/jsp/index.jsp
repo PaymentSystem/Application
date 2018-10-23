@@ -25,6 +25,7 @@
 <div id="centerLayer">
     <h1>Welcome to main page!</h1>
     <a href="registration" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Join</a>
+    <a href="logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Logout</a>
 </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

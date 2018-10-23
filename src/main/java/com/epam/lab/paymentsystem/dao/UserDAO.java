@@ -7,4 +7,6 @@ public interface UserDAO {
     User createUser(User user);
 
     User findByLogin(User user);
+
+    User getUserByLogin(String login);
 }

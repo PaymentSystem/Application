@@ -30,7 +30,7 @@ public class UserController {
 
         try {
             userService.addUser(user);
-            resp.sendRedirect("/");
+            resp.sendRedirect(req.getContextPath() + "/");
         } catch (LoginAlreadyExistsException e) {
             req.setAttribute("submit", e.getMessage());
         }

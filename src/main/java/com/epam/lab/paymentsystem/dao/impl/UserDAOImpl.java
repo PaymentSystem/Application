@@ -56,22 +56,29 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public User findByLogin(User user) {
+        return getUserByLogin(user.getLogin());
+    }
 
+    @Override
+    public User getUserByLogin(String login) {
         Connection connection = null;
-        User userFind = null;
+        User user = new User();
 
         try {
             connection = ConnectionPool.getConnection();
 
             PreparedStatement ps = connection.prepareStatement(SELECT_SQL);
-            ps.setString(1, user.getLogin());
+            ps.setString(1, login);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                userFind = getCopy(user);
-                userFind.setId(rs.getInt(1));
-                System.out.println("it user exist");
-                return userFind;
+                user.setId(rs.getInt(1));
+                user.setLogin(login);
+                user.setPassword(rs.getString(3));
+                user.setRoleId(rs.getInt(4));
+                user.setName(rs.getString(5));
+            } else {
+                return null;
             }
             ps.close();
             rs.close();
@@ -82,7 +89,6 @@ public class UserDAOImpl implements UserDAO {
                 ConnectionPool.connectionRelease(connection);
             }
         }
-        System.out.println("user is not exist");
-        return userFind;
+        return user;
     }
 }
