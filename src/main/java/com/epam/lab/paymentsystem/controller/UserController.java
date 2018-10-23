@@ -3,41 +3,39 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
+@Controller
 public class UserController {
-
     private static final String REGISTRATION_PAGE = "registration";
+
+    @Autowired
     private UserService userService;
 
-    public String getRegistration(HttpServletRequest req, HttpServletResponse resp) {
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String getRegistrationPage(){
         return REGISTRATION_PAGE;
     }
 
-    public String add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public String addUser(@RequestParam(name = "name") String userName,
+                          @RequestParam(name = "login") String userLogin,
+                          @RequestParam(name = "password") String userPassword){
 
         User user = new User();
-        user.setName(name);
-        user.setLogin(login);
-        user.setPassword(password);
+        user.setName(userName);
+        user.setLogin(userLogin);
+        user.setPassword(userPassword);
 
         try {
             userService.addUser(user);
-            resp.sendRedirect(req.getContextPath() + "/");
         } catch (LoginAlreadyExistsException e) {
-            req.setAttribute("submit", e.getMessage());
+            return "redirect:/";
         }
         return REGISTRATION_PAGE;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 }

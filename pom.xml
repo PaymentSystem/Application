@@ -25,11 +25,11 @@
             <version>42.2.5</version>
             <scope>runtime</scope>
         </dependency>
-        <!--Use version 4.3.3.RELEASE with deprecated class MultiActionController-->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.3.3.RELEASE</version>
+            <version>5.1.1.RELEASE</version>
         </dependency>
         <!-- Spring Security -->
         <dependency>
