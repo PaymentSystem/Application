@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserController {
     private static final String REGISTRATION_PAGE = "registration";
+    private static final String ROOT = "redirect:/";
+
 
     @Autowired
     private UserService userService;
@@ -34,7 +36,7 @@ public class UserController {
         try {
             userService.addUser(user);
         } catch (LoginAlreadyExistsException e) {
-            return "redirect:/";
+            return ROOT;
         }
         return REGISTRATION_PAGE;
     }
