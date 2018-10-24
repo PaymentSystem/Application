@@ -3,13 +3,14 @@ package com.epam.lab.paymentsystem.dao.impl;
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
 import com.epam.lab.paymentsystem.dao.UserDAO;
 import com.epam.lab.paymentsystem.entities.User;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+@Repository
 public class UserDAOImpl implements UserDAO {
 
     private static final String INSERT_SQL = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";

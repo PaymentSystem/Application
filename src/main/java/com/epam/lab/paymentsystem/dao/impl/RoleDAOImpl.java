@@ -3,13 +3,14 @@ package com.epam.lab.paymentsystem.dao.impl;
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
 import com.epam.lab.paymentsystem.dao.RoleDAO;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+@Repository
 public class RoleDAOImpl implements RoleDAO {
 
     private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";

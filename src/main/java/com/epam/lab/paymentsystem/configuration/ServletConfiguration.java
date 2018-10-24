@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan("com.epam.lab.paymentsystem.controller")
+@ComponentScan("com.epam.lab.paymentsystem")
 public class ServletConfiguration {
     private static final String PREFIX = "/WEB-INF/jsp/";
     private static final String SUFFIX = ".jsp";

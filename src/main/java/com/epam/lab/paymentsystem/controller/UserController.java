@@ -5,25 +5,22 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
     private static final String REGISTRATION_PAGE = "registration";
     private static final String ROOT = "redirect:/";
 
-
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    @GetMapping(value = "/registration")
     public String getRegistrationPage(){
         return REGISTRATION_PAGE;
     }
 
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @PostMapping(value = "/addUser")
     public String addUser(@RequestParam(name = "name") String userName,
                           @RequestParam(name = "login") String userLogin,
                           @RequestParam(name = "password") String userPassword){
