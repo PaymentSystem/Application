@@ -23,7 +23,7 @@
 
 </head>
 
-<form id="registrationLayer" action="add" method="post">
+<form id="registrationLayer" action="addUser" method="post">
     <h1>Register</h1>
     <p>Please fill in this form to create an account.</p>
     <hr>

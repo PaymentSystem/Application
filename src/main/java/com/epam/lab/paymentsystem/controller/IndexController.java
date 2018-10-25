@@ -1,19 +1,16 @@
 package com.epam.lab.paymentsystem.controller;
 
 
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class IndexController extends AbstractController {
-
+@Controller
+public class IndexController{
     private static final String INDEX_PAGE = "index";
 
-    @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-        return modelAndView;
+    @GetMapping(value = "/")
+    public String getIndexPage(){
+        return INDEX_PAGE;
     }
+
 }
