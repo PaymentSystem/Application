@@ -1,9 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -22,32 +23,36 @@
     </style>
 
 </head>
-
+<body>
+<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
 <form id="registrationLayer" action="addUser" method="post">
-    <h1>Register</h1>
-    <p>Please fill in this form to create an account.</p>
+    <h1><spring:message code="user.registration"/></h1>
+    <p><spring:message code="user.fillForm"/> </p>
     <hr>
 
     <table style="with: 50%">
         <tr>
-            <td><label for="login"><b>Login</b></label></td>
+            <spring:message code="user.placeholder.login" var="login"/>
+            <td><label for="login"><b><spring:message code="user.login"/> </b></label></td>
             <td><input type="text" name="login" class="form-control input-lg"
-                       placeholder="Please, enter your login" id="login" required></td>
+                       placeholder="${login}" id="login" required></td>
         </tr>
         <tr>
-            <td><label for="name"><b>Name</b></label></td>
+            <spring:message code="user.placeholder.name" var="name"/>
+            <td><label for="name"><b><spring:message code="user.name"/> </b></label></td>
             <td><input type="text" name="name" class="form-control input-lg"
-                       placeholder="Please, enter your name" id="name" required></td>
+                       placeholder="${name}" id="name" required></td>
         </tr>
         <tr>
-            <td><label for="password"><b>Password</b></label></td>
+            <spring:message code="user.placeholder.password" var="password"/>
+            <td><label for="password"><b><spring:message code="user.password"/> </b></label></td>
             <td><input type="password" name="password" class="form-control input-lg"
-                       placeholder="PLease, enter yout password" id="password" required>
+                       placeholder="${password}" id="password" required>
             </td>
         </tr>
     </table>
     <hr>
-    <button type="submit" class="btn btn-success">Register</button>
+    <button type="submit" class="btn btn-success"><spring:message code="user.register"/> </button>
         <%--<button type="submit" class="registerbtn">Register</button>--%>
     <p>${submit}</p>
 </form>

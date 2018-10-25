@@ -1,8 +1,10 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -22,10 +24,15 @@
 </head>
 
 <body>
+<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
 <div id="centerLayer">
-    <h1>Welcome to main page!</h1>
-    <a href="registration" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Join</a>
-    <a href="logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Logout</a>
+    <h1><spring:message code="user.welcome"/></h1>
+    <a href="registration" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+        <spring:message code="user.join"/>
+    </a>
+    <a href="logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+        <spring:message code="user.logout"/>
+    </a>
 </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
