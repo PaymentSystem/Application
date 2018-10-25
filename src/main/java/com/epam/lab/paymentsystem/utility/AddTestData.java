@@ -2,18 +2,20 @@
 package com.epam.lab.paymentsystem.utility;
 
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
+
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 class AddTestData {
 
-    public static Connection connection;
-
+    private static Connection connection;
     private final static List<String> USERS = new LinkedList<>();
     private final static List<String> ACCOUNT = new LinkedList<>();
     private final static List<Boolean> CARDS = new LinkedList<>();
@@ -23,39 +25,48 @@ class AddTestData {
     private final static String SQL_ID_USER = "SELECT * FROM USERS WHERE login = ?";
     private final static String SQL_ID_ACCOUNT = "SELECT * FROM ACCOUNTS WHERE id_user = ?";
     private final static String SQL_ID_ROLE_USER = "SELECT * FROM USERS WHERE id_role = ?";
-
-    private static final int DATA_COUNT = 5;
+    private final static int DATA_COUNT = 5;
 
     private static void createData() {
-        USERS.add("zorita,1234,1,Zoy");
-        USERS.add("chaim,qwer,2,Chester");
-        USERS.add("lee,4321,2,Lee");
-        USERS.add("amir,poiu,2,Amir");
-        USERS.add("habib,12ha,2,Habib");
 
-        ACCOUNT.add("4125,true");
-        ACCOUNT.add("7436,true");
-        ACCOUNT.add("3462,true");
-        ACCOUNT.add("9874,true");
-        ACCOUNT.add("5679,false");
+        USERS.addAll(
+                Arrays.asList(
+                        "zorita,1234,1,Zoy",
+                        "chaim,qwer,2,Chester",
+                        "lee,4321,2,Lee",
+                        "amir,poiu,2,Amir",
+                        "habib,12ha,3,Habib"
+                ));
 
-        CARDS.add(true);
-        CARDS.add(true);
-        CARDS.add(false);
-        CARDS.add(true);
-        CARDS.add(true);
+        ACCOUNT.addAll(
+                Arrays.asList(
+                        "4125,true",
+                        "7436,true",
+                        "3462,true",
+                        "9874,true",
+                        "5679,false"
+                ));
+
+        CARDS.addAll(
+                Arrays.asList(
+                        true,
+                        true,
+                        false,
+                        true,
+                        true
+                ));
+
     }
 
     private static void generationData() throws SQLException, NamingException {
         connection = ConnectionPool.getConnection();
-        int rand = (int) (Math.random() * USERS.size()) + 0;
+        int rand = (int) (Math.random() * USERS.size());
 
-        String[] userArray;
-        userArray = (USERS.remove(rand)).split(",");
+        String[] userArray = (USERS.remove(rand)).split(",");
         String loginUser = userArray[0];
         String passwordUser = userArray[1];
-        int idRoleUser = Integer.parseInt(userArray[3]);
-        String nameUser = userArray[4];
+        int idRoleUser = Integer.parseInt(userArray[2]);
+        String nameUser = userArray[3];
 
         PreparedStatement psUsers = connection.prepareStatement(SQL_USERS);
         psUsers.setString(1, loginUser);
@@ -64,8 +75,7 @@ class AddTestData {
         psUsers.setString(4, nameUser);
         psUsers.executeUpdate();
 
-        String[] accountArray;
-        accountArray = ACCOUNT.remove(rand).split(",");
+        String[] accountArray = ACCOUNT.remove(rand).split(",");
         PreparedStatement psIdUser = connection.prepareStatement(SQL_ID_USER);
         psIdUser.setString(1, loginUser);
 
@@ -100,7 +110,7 @@ class AddTestData {
         ConnectionPool.connectionRelease(connection);
     }
 
-    private static boolean checkedRoleAdmin() throws SQLException, NamingException {
+    private static boolean checkRoleAdmin() throws SQLException, NamingException {
         connection = ConnectionPool.getConnection();
         int idRoleAdmin = 1;
 
@@ -119,11 +129,12 @@ class AddTestData {
     public static boolean addTestData() {
         try {
             try {
-                if(checkedRoleAdmin()){
+                if (checkRoleAdmin()) {
                     return true;
                 }
-
+                createData();
                 for (int i = 0; i < DATA_COUNT; i++) {
+                    generationData();
                 }
                 System.out.println("Generation is over");
             } catch (SQLException e) {
