@@ -1,4 +1,3 @@
-
 package com.epam.lab.paymentsystem.utility;
 
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
@@ -9,23 +8,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 class AddTestData {
 
-    private static Connection connection;
     private final static List<String> USERS = new LinkedList<>();
     private final static List<String> ACCOUNT = new LinkedList<>();
     private final static List<Boolean> CARDS = new LinkedList<>();
-    private final static String SQL_USERS = "INSERT INTO users (login, passwd, id_role, user_name)" + " VALUES (?,?,?,?)";
-    private final static String SQL_ACCOUNTS = "INSERT INTO accounts (id_user, amount, is_active)" + " VALUES (?,?,?)";
-    private final static String SQL_CARDS = "INSERT INTO cards (id_user, id_account, is_active)" + " VALUES (?,?,?)";
+    private final static String SQL_USERS
+            = "INSERT INTO users (login, passwd, id_role, user_name)" + " VALUES (?,?,?,?)";
+    private final static String SQL_ACCOUNTS
+            = "INSERT INTO accounts (id_user, amount, is_active)" + " VALUES (?,?,?)";
+    private final static String SQL_CARDS
+            = "INSERT INTO cards (id_user, id_account, is_active)" + " VALUES (?,?,?)";
     private final static String SQL_ID_USER = "SELECT * FROM USERS WHERE login = ?";
     private final static String SQL_ID_ACCOUNT = "SELECT * FROM ACCOUNTS WHERE id_user = ?";
     private final static String SQL_ID_ROLE_USER = "SELECT * FROM USERS WHERE id_role = ?";
     private final static int DATA_COUNT = 5;
+    private static Connection connection;
 
     private static void createData() {
 

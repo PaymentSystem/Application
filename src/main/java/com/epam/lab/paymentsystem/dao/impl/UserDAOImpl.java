@@ -10,10 +10,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 @Repository
 public class UserDAOImpl implements UserDAO {
 
-    private static final String INSERT_SQL = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
+    private static final String INSERT_SQL
+            = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
     private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
 
     public static User getCopy(User old) {
