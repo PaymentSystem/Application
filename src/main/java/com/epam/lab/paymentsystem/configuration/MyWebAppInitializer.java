@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.configuration;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -9,14 +10,17 @@ import javax.servlet.ServletRegistration;
 
 public class MyWebAppInitializer implements WebApplicationInitializer {
 
+    private static final Logger LOGGER = Logger.getLogger(MyWebAppInitializer.class);
+
     @Override
     public void onStartup(ServletContext container) {
-        // Create the dispatcher servlet's Spring application context
+
+        LOGGER.info("Create the dispatcher servlet's Spring application context");
         AnnotationConfigWebApplicationContext dispatcherContext =
                 new AnnotationConfigWebApplicationContext();
         dispatcherContext.register(ServletConfiguration.class);
 
-        // Register and map the dispatcher servlet
+        LOGGER.info("Register and map the dispatcher servlet");
         ServletRegistration.Dynamic dispatcher =
                 container.addServlet("dispatcher", new DispatcherServlet(dispatcherContext));
         dispatcher.setLoadOnStartup(1);

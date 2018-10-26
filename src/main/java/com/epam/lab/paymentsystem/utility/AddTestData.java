@@ -2,6 +2,7 @@
 package com.epam.lab.paymentsystem.utility;
 
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -9,12 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 class AddTestData {
-
+    private static final Logger LOGGER = Logger.getLogger(AddTestData.class);
     private static Connection connection;
     private final static List<String> USERS = new LinkedList<>();
     private final static List<String> ACCOUNT = new LinkedList<>();
@@ -128,19 +128,17 @@ class AddTestData {
 
     public static boolean addTestData() {
         try {
-            try {
-                if (checkRoleAdmin()) {
-                    return true;
-                }
-                createData();
-                for (int i = 0; i < DATA_COUNT; i++) {
-                    generationData();
-                }
-                System.out.println("Generation is over");
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (checkRoleAdmin()) {
+                LOGGER.info("User admin already exists");
+                return true;
             }
-        } catch (NamingException e) {
+            createData();
+            for (int i = 0; i < DATA_COUNT; i++) {
+                generationData();
+            }
+            LOGGER.info("Generation test data in the database is over");
+        } catch (SQLException | NamingException e) {
+            LOGGER.error("Exception in addTestData" + e);
             e.printStackTrace();
         }
         return false;

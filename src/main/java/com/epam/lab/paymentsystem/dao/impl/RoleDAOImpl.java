@@ -3,6 +3,7 @@ package com.epam.lab.paymentsystem.dao.impl;
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
 import com.epam.lab.paymentsystem.dao.RoleDAO;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
@@ -10,9 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 @Repository
 public class RoleDAOImpl implements RoleDAO {
-
+    private static final Logger LOGGER = Logger.getLogger(RoleDAOImpl.class);
     private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";
 
     @Override
@@ -35,6 +37,7 @@ public class RoleDAOImpl implements RoleDAO {
             ps.close();
             rs.close();
         } catch (NamingException | SQLException e) {
+            LOGGER.error("Exception in RoleDAOImpl in getIdByRole method" + e);
             e.printStackTrace();
         } finally {
             if (connection != null) {

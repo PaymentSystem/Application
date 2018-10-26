@@ -1,5 +1,7 @@
 package com.epam.lab.paymentsystem.dao;
 
+import org.apache.log4j.Logger;
+
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ConnectionPool {
-
+    private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
     private static List<Connection> connectionPool = new LinkedList<Connection>();
     private Connection connect = null;
 
@@ -41,6 +43,7 @@ public class ConnectionPool {
                 e.printStackTrace();
             }
             connectionPool.add(con);
+            LOGGER.info("Connection returned back to the database");
         }
     }
 
@@ -48,29 +51,22 @@ public class ConnectionPool {
         for (int i = 1; i <= CONNECTION_POOL_SIZE; i++) {
             connectionPool.add(new ConnectionPool().connect);
         }
+        LOGGER.info("Connection pool created, amount connections: " + connectionPool.size());
     }
 
     public ConnectionPool() {
         try {
             Class.forName(DRIVER_DATABASE_CLASS);
         } catch (ClassNotFoundException e) {
+            LOGGER.error("Exception, PostgreSQL JDBC Driver is not registered" + e);
             e.printStackTrace();
             System.exit(1);
         }
-
-        System.out.println("PostgreSQL JDBC Driver Registered!");
-
         try {
             connect = DriverManager.getConnection(URL_DATABASE, USER_NAME, USER_PASSWORD);
         } catch (SQLException e) {
-            System.out.println("ConnectionPool Failed!");
+            LOGGER.error("Connection failed!" + e);
             e.printStackTrace();
-        }
-
-        if (connect != null) {
-            System.out.println("ConnectionPool was set with DB ");
-        } else {
-            System.out.println("Failed to make connection!");
         }
     }
 }

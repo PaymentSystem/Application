@@ -3,16 +3,20 @@ package com.epam.lab.paymentsystem.dao.impl;
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
 import com.epam.lab.paymentsystem.dao.UserDAO;
 import com.epam.lab.paymentsystem.entities.User;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
+
 
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 @Repository
 public class UserDAOImpl implements UserDAO {
 
+    private static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
     private static final String INSERT_SQL = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
     private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
 
@@ -26,6 +30,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public User createUser(User user) {
+        LOGGER.info("Create user in the data base");
 
         User userToAdd = getCopy(user);
         Connection connect = null;
@@ -48,6 +53,7 @@ public class UserDAOImpl implements UserDAO {
             rs.close();
         } catch (NamingException | SQLException e) {
             e.printStackTrace();
+            LOGGER.error("Exception in UserDAOImpl in createUser method");
         } finally {
             if (connect != null) {
                 ConnectionPool.connectionRelease(connect);
@@ -62,6 +68,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserByLogin(String login) {
+        LOGGER.info("Find user in the data base");
         Connection connection = null;
         User user = new User();
 
@@ -85,6 +92,7 @@ public class UserDAOImpl implements UserDAO {
             rs.close();
         } catch (NamingException | SQLException e) {
             e.printStackTrace();
+            LOGGER.error("Exception in UserDAOImpl in findByLogin method");
         } finally {
             if (connection != null) {
                 ConnectionPool.connectionRelease(connection);
