@@ -17,6 +17,9 @@ public class ConnectionPool {
   private static List<Connection> connectionPool = new LinkedList<Connection>();
   private Connection connect = null;
 
+  /**
+   * Create connection pool.
+   */
   public ConnectionPool() {
     try {
       Class.forName(DRIVER_DATABASE_CLASS);
@@ -41,6 +44,12 @@ public class ConnectionPool {
     }
   }
 
+  /**
+   * Give connection from connection pool.
+   * @return connection
+   * @throws SQLException if wrong SQL request
+   * @throws NamingException ?
+   */
   public static Connection getConnection() throws SQLException, NamingException {
     Connection connectReturn;
     if (connectionPool.size() < 1) {
@@ -52,6 +61,10 @@ public class ConnectionPool {
     return connectReturn;
   }
 
+  /**
+   * Return connection to the connection pool.
+   * @param connection connection
+   */
   public static void connectionRelease(Connection connection) {
     if (connection != null) {
       connectionPool.add(connection);

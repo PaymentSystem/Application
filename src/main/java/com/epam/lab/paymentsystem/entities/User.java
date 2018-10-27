@@ -12,6 +12,15 @@ public class User {
 
   }
 
+  /**
+   * Constructor of User.
+   *
+   * @param id user id
+   * @param name user name
+   * @param password user password
+   * @param login user login
+   * @param roleId id of user role
+   */
   public User(long id, String name, String password, String login, int roleId) {
     this.id = id;
     this.name = name;

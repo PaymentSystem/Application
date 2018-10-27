@@ -17,6 +17,12 @@ public class UserDaoImpl implements UserDao {
       = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
   private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
 
+  /**
+   * Copy user from service layer.
+   *
+   * @param old user from service
+   * @return new user
+   */
   public static User getCopy(User old) {
     User newUser = new User();
     newUser.setLogin(old.getLogin());
@@ -26,6 +32,12 @@ public class UserDaoImpl implements UserDao {
     return newUser;
   }
 
+  /**
+   * Insert new user into database.
+   *
+   * @param user user entity
+   * @return user
+   */
   public User createUser(User user) {
 
     User userToAdd = getCopy(user);

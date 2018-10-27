@@ -11,6 +11,14 @@ public class Card {
 
   }
 
+  /**
+   * Constructor for card.
+   *
+   * @param id id of card
+   * @param accountId id of account
+   * @param userId userId of card
+   * @param isActive boolean flag
+   */
   public Card(long id, long accountId, long userId, boolean isActive) {
     this.id = id;
     this.accountId = accountId;

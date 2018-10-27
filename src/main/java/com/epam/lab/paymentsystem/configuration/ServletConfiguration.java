@@ -12,6 +12,11 @@ public class ServletConfiguration {
   private static final String PREFIX = "/WEB-INF/jsp/";
   private static final String SUFFIX = ".jsp";
 
+  /**
+   * Bean defenition for viewResolver.
+   *
+   * @return ViewResolver
+   */
   @Bean
   public ViewResolver internalResourceViewResolver() {
     InternalResourceViewResolver bean = new InternalResourceViewResolver();

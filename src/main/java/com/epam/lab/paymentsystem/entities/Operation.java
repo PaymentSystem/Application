@@ -14,6 +14,15 @@ public class Operation {
 
   }
 
+  /**
+   * Constructor for operation.
+   *
+   * @param id id of operation
+   * @param sourceId id of source card
+   * @param targetId id of target card
+   * @param amount amount of operation
+   * @param date date of operation
+   */
   public Operation(long id, long sourceId, long targetId, double amount, LocalDateTime date) {
     this.id = id;
     this.sourceId = sourceId;

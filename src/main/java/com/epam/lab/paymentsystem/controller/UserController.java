@@ -23,6 +23,14 @@ public class UserController {
     return REGISTRATION_PAGE;
   }
 
+  /**
+   * AddUser controller method.
+   *
+   * @param userName name of user from view form
+   * @param userLogin login of user from view form
+   * @param userPassword password of user from view form
+   * @return JSP view
+   */
   @PostMapping(value = "/addUser")
   public String addUser(@RequestParam(name = "name") String userName,
                         @RequestParam(name = "login") String userLogin,

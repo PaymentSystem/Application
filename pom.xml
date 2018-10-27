@@ -138,13 +138,14 @@
                 </dependencies>
                 <configuration>
                     <linkXRef>false</linkXRef>
-                    <configLocation>google_checks.xml</configLocation>
                 </configuration>
                 <executions>
                     <execution>
                         <id>validate</id>
                         <phase>validate</phase>
                         <configuration>
+                            <configLocation>google_checks.xml</configLocation>
+                            <violationSeverity>warning</violationSeverity>
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>true</failsOnError>

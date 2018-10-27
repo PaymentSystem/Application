@@ -17,6 +17,12 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @ComponentScan("com.epam.lab.paymentsystem")
 @EnableWebMvc
 public class ApplicationConfiguration implements WebMvcConfigurer {
+
+  /**
+   * Bean defenition for messageSource.
+   *
+   * @return messageSource
+   */
   @Bean("messageSource")
   public MessageSource messageSource() {
     ReloadableResourceBundleMessageSource messageSource
@@ -26,6 +32,11 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     return messageSource;
   }
 
+  /**
+   * Bean defenition for localeResolver.
+   *
+   * @return localeResolver
+   */
   @Bean
   public LocaleResolver localeResolver() {
     CookieLocaleResolver localeResolver = new CookieLocaleResolver();
