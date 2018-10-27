@@ -1,5 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,7 +27,7 @@
 <a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
 <form id="registrationLayer" action="addUser" method="post">
     <h1><spring:message code="user.registration"/></h1>
-    <p><spring:message code="user.fillForm"/> </p>
+    <p><spring:message code="user.fillForm"/></p>
     <hr>
 
     <table style="with: 50%">
@@ -52,8 +52,8 @@
         </tr>
     </table>
     <hr>
-    <button type="submit" class="btn btn-success"><spring:message code="user.register"/> </button>
-        <%--<button type="submit" class="registerbtn">Register</button>--%>
+    <button type="submit" class="btn btn-success"><spring:message code="user.register"/></button>
+    <%--<button type="submit" class="registerbtn">Register</button>--%>
     <p>${submit}</p>
 </form>
 </body>
