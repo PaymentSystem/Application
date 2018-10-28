@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.dao;
 
 import com.epam.lab.paymentsystem.entities.User;
+
 @Deprecated
 public interface UserDao {
 
