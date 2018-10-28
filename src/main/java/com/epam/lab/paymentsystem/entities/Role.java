@@ -2,10 +2,18 @@ package com.epam.lab.paymentsystem.entities;
 
 import com.epam.lab.paymentsystem.entities.enums.Roles;
 
-public class Role {
+import javax.persistence.*;
 
-  private int id;
-  private Roles roleStatus;
+@Entity
+@Table(name = "roles")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id_role")
+    private int id;
+    @Column(name = "role_name")
+    @Enumerated(EnumType.STRING)
+    private Roles roleStatus;
 
   public Role() {
   }

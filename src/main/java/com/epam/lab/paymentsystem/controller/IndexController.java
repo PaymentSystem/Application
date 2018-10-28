@@ -12,3 +12,4 @@ public class IndexController {
     return INDEX_PAGE;
   }
 }
+
