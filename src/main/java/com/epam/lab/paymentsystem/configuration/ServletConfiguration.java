@@ -13,7 +13,7 @@ public class ServletConfiguration {
   private static final String SUFFIX = ".jsp";
 
   /**
-   * Bean defenition for viewResolver.
+   * Bean definition for viewResolver.
    *
    * @return ViewResolver
    */

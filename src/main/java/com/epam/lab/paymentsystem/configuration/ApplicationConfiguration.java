@@ -19,7 +19,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 public class ApplicationConfiguration implements WebMvcConfigurer {
 
   /**
-   * Bean defenition for messageSource.
+   * Bean definition for messageSource.
    *
    * @return messageSource
    */
@@ -33,7 +33,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
   }
 
   /**
-   * Bean defenition for localeResolver.
+   * Bean definition for localeResolver.
    *
    * @return localeResolver
    */
