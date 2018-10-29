@@ -13,23 +13,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+  @Autowired
+  private RoleRepository roleRepository;
 
-    @Override
-    public User addUser(User user) throws LoginAlreadyExistsException {
-        User userToAdd = userRepository.findByLogin(user.getLogin());
-        if (userToAdd != null) {
-            throw new LoginAlreadyExistsException("Login already exists");
-        }
-        Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
-//        System.out.println(role.getId());
-        userToAdd = Convector.convertUser(user);
-        userToAdd.setRoleId(role.getId());
-        userToAdd = userRepository.save(userToAdd);
-        return userToAdd;
+  @Override
+  public User addUser(User user) throws LoginAlreadyExistsException {
+    User userToAdd = userRepository.findByLogin(user.getLogin());
+    if (userToAdd != null) {
+      throw new LoginAlreadyExistsException("Login already exists");
     }
+    Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
+    userToAdd = Convector.convertUser(user);
+    userToAdd.setRoleId(role.getId());
+    userToAdd = userRepository.save(userToAdd);
+    return userToAdd;
+  }
 }

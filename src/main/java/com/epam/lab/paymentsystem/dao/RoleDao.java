@@ -4,5 +4,5 @@ import com.epam.lab.paymentsystem.entities.enums.Roles;
 
 @Deprecated
 public interface RoleDao {
-    int getIdByRole(Roles roles);
+  int getIdByRole(Roles roles);
 }

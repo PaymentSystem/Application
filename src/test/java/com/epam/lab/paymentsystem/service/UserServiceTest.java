@@ -19,37 +19,38 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
-    @Mock
-    RoleRepository roleRepository;
-    private User user;
-    @Mock
-    private UserRepository userRepository;
-    @InjectMocks
-    private UserServiceImpl userService;
+  @Mock
+  private RoleRepository roleRepository;
+  private User user;
 
-    @BeforeEach
-    public void testSetUp() {
-        user = new User();
-        user.setLogin("test");
+  @Mock
+  private UserRepository userRepository;
 
-    }
+  @InjectMocks
+  private UserServiceImpl userService;
 
-    @Test
-    public void testAddUserThrowsException() {
-        when(userRepository.findByLogin(user.getLogin())).thenReturn(user);
-        assertThrows(LoginAlreadyExistsException.class,
-                () -> userService.addUser(user),
-                "Login already exists");
-    }
+  @BeforeEach
+  void testSetUp() {
+    user = new User();
+    user.setLogin("test");
+  }
 
-    @Test
-    public void testAddUserCreateUser() throws LoginAlreadyExistsException {
-        when(roleRepository.getRoleByRoleStatus(Roles.USER)).thenReturn(new Role());
-        when(userRepository.findByLogin(user.getLogin())).thenReturn(null);
-        when(userRepository.save(user)).thenReturn(user);
-        assertEquals(user, userService.addUser(user));
-    }
+  @Test
+  void testAddUserThrowsException() {
+    when(userRepository.findByLogin(user.getLogin())).thenReturn(user);
+    assertThrows(LoginAlreadyExistsException.class,
+        () -> userService.addUser(user),
+        "Login already exists");
+  }
+
+  @Test
+  void testAddUserCreateUser() throws LoginAlreadyExistsException {
+    when(roleRepository.getRoleByRoleStatus(Roles.USER)).thenReturn(new Role());
+    when(userRepository.findByLogin(user.getLogin())).thenReturn(null);
+    when(userRepository.save(user)).thenReturn(user);
+    assertEquals(user, userService.addUser(user));
+  }
 }
 

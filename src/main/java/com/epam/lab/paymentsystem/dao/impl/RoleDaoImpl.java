@@ -13,34 +13,34 @@ import java.sql.SQLException;
 @Deprecated
 public class RoleDaoImpl implements RoleDao {
 
-    private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";
+  private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";
 
-    @Override
-    public int getIdByRole(Roles roleStatus) {
+  @Override
+  public int getIdByRole(Roles roleStatus) {
 
-        int roleId = -1;
-        Connection connection = null;
+    int roleId = -1;
+    Connection connection = null;
 
-        try {
-            connection = ConnectionPool.getConnection();
+    try {
+      connection = ConnectionPool.getConnection();
 
-            PreparedStatement ps = connection.prepareStatement(ROLE_SELECT_SQL);
-            ps.setString(1, roleStatus.toString().toLowerCase());
-            ResultSet rs = ps.executeQuery();
+      PreparedStatement ps = connection.prepareStatement(ROLE_SELECT_SQL);
+      ps.setString(1, roleStatus.toString().toLowerCase());
+      ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                roleId = rs.getInt(1);
-            }
+      if (rs.next()) {
+        roleId = rs.getInt(1);
+      }
 
-            ps.close();
-            rs.close();
-        } catch (NamingException | SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                ConnectionPool.connectionRelease(connection);
-            }
-        }
-        return roleId;
+      ps.close();
+      rs.close();
+    } catch (NamingException | SQLException e) {
+      e.printStackTrace();
+    } finally {
+      if (connection != null) {
+        ConnectionPool.connectionRelease(connection);
+      }
     }
+    return roleId;
+  }
 }

@@ -5,9 +5,9 @@ import com.epam.lab.paymentsystem.entities.User;
 @Deprecated
 public interface UserDao {
 
-    User createUser(User user);
+  User createUser(User user);
 
-    User findByLogin(User user);
+  User findByLogin(User user);
 
-    User getUserByLogin(String login);
+  User getUserByLogin(String login);
 }
