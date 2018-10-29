@@ -7,6 +7,7 @@ import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
         int role_id = roleDAO.getIdByRole(Roles.USER);
         User userToCreate = UserDAOImpl.getCopy(user);
         userToCreate.setRoleId(role_id);
+        userToCreate.setPassword(new BCryptPasswordEncoder().encode(userToCreate.getPassword()));
         userToAdd = userDAO.createUser(userToCreate);
         return userToAdd;
     }

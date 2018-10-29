@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.configuration;
 
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -15,6 +16,7 @@ public class MyWebAppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext dispatcherContext =
                 new AnnotationConfigWebApplicationContext();
         dispatcherContext.register(ServletConfiguration.class);
+        container.addListener(new ContextLoaderListener(dispatcherContext));
 
         // Register and map the dispatcher servlet
         ServletRegistration.Dynamic dispatcher =
