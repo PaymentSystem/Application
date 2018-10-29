@@ -8,12 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
-  private static final Logger LOGGER = Logger.getLogger(RoleDaoImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(RoleDaoImpl.class);
   private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";
 
   @Override

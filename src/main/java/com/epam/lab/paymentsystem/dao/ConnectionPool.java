@@ -6,10 +6,11 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.naming.NamingException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnectionPool {
-  private static final Logger LOGGER = Logger.getLogger(ConnectionPool.class);
+  private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
   private static final int CONNECTION_POOL_SIZE = 10;
   private static final String URL_DATABASE = "jdbc:postgresql://localhost:5432/payment_system";
   private static final String DRIVER_DATABASE_CLASS = "org.postgresql.Driver";

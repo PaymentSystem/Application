@@ -8,12 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-  private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
   private static final String INSERT_SQL
       = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
   private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
