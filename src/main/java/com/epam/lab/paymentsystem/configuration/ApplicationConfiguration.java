@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.configuration;
 
 import java.util.Locale;
+import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 @ComponentScan("com.epam.lab.paymentsystem")
 @EnableWebMvc
 public class ApplicationConfiguration implements WebMvcConfigurer {
+  private static final Logger LOGGER = Logger.getLogger(ApplicationConfiguration.class);
 
   /**
    * Bean defenition for messageSource.
@@ -25,6 +27,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
    */
   @Bean("messageSource")
   public MessageSource messageSource() {
+    LOGGER.info("Message source");
     ReloadableResourceBundleMessageSource messageSource
         = new ReloadableResourceBundleMessageSource();
     messageSource.setBasename("classpath:messages");
@@ -39,6 +42,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
    */
   @Bean
   public LocaleResolver localeResolver() {
+    LOGGER.info("Local resolver");
     CookieLocaleResolver localeResolver = new CookieLocaleResolver();
     localeResolver.setDefaultLocale(new Locale("en"));
     localeResolver.setCookieName("myLocaleName");
@@ -46,8 +50,10 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     return localeResolver;
   }
 
+
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
+    LOGGER.info("Add interceptors");
     LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
     localeChangeInterceptor.setParamName("lang");
     registry.addInterceptor(localeChangeInterceptor);

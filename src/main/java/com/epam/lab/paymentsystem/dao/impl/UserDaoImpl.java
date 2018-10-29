@@ -8,11 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
+  private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
   private static final String INSERT_SQL
       = "INSERT INTO users (login, passwd, user_name, id_role)" + "VALUES (?, ?, ?, ?)";
   private static final String SELECT_SQL = "SELECT * FROM USERS WHERE login = ?";
@@ -39,7 +40,7 @@ public class UserDaoImpl implements UserDao {
    * @return user
    */
   public User createUser(User user) {
-
+    LOGGER.info("Create user in the data base");
     User userToAdd = getCopy(user);
     Connection connect = null;
     try {
@@ -60,7 +61,7 @@ public class UserDaoImpl implements UserDao {
       ps.close();
       rs.close();
     } catch (NamingException | SQLException e) {
-      e.printStackTrace();
+      LOGGER.error("Exception in UserDAOImpl in createUser method", e);
     } finally {
       if (connect != null) {
         ConnectionPool.connectionRelease(connect);
@@ -75,9 +76,9 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public User getUserByLogin(String login) {
+    LOGGER.info("Find user in the data base");
     Connection connection = null;
     User user = new User();
-
     try {
       connection = ConnectionPool.getConnection();
 
@@ -98,6 +99,7 @@ public class UserDaoImpl implements UserDao {
       rs.close();
     } catch (NamingException | SQLException e) {
       e.printStackTrace();
+      LOGGER.error("Exception in UserDAOImpl in findByLogin method", e);
     } finally {
       if (connection != null) {
         ConnectionPool.connectionRelease(connection);
