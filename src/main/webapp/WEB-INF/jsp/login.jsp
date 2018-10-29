@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -23,21 +24,25 @@
 
 </head>
 
+<body>
+<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
 <form id="loginLayer" action="login" method="post">
-    <h1>Login</h1>
-    <p>Please fill in this form to login.</p>
+    <h1><spring:message code="user.login"/></h1>
+    <p><spring:message code="user.fillLogin"/></p>
     <hr>
 
     <table style="with: 50%">
         <tr>
-            <td><label for="login"><b>Login</b></label></td>
+            <spring:message code="user.placeholder.login" var="login"/>
+            <td><label for="login"><b><spring:message code="user.login"/> </b></label></td>
             <td><input type="text" name="username" class="form-control input-lg"
-                       placeholder="Please, enter your login" id="login" required></td>
+                       placeholder="${login}" id="login" required></td>
         </tr>
         <tr>
-            <td><label for="password"><b>Password</b></label></td>
+            <spring:message code="user.placeholder.password" var="password"/>
+            <td><label for="password"><b><spring:message code="user.password"/> </b></label></td>
             <td><input type="password" name="password" class="form-control input-lg"
-                       placeholder="Please, enter your password" id="password" required>
+                       placeholder="${password}" id="password" required>
             </td>
         </tr>
     </table>

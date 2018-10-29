@@ -1,8 +1,8 @@
 package com.epam.lab.paymentsystem.service.impl;
 
-import com.epam.lab.paymentsystem.dao.RoleDAO;
-import com.epam.lab.paymentsystem.dao.UserDAO;
-import com.epam.lab.paymentsystem.dao.impl.UserDAOImpl;
+import com.epam.lab.paymentsystem.dao.RoleDao;
+import com.epam.lab.paymentsystem.dao.UserDao;
+import com.epam.lab.paymentsystem.dao.impl.UserDaoImpl;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
@@ -13,26 +13,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserDAO userDAO;
-    private RoleDAO roleDAO;
+  private UserDao userDao;
+  private RoleDao roleDao;
 
-    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO) {
-        this.userDAO = userDAO;
-        this.roleDAO = roleDAO;
+  public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
+    this.userDao = userDao;
+    this.roleDao = roleDao;
+  }
+
+  @Override
+  public User addUser(User user) throws LoginAlreadyExistsException {
+    User userToAdd = userDao.findByLogin(user);
+    if (userToAdd != null) {
+      throw new LoginAlreadyExistsException("Login already exists");
     }
-
-    @Override
-    public User addUser(User user) throws LoginAlreadyExistsException {
-        User userToAdd = userDAO.findByLogin(user);
-        if (userToAdd != null) {
-            throw new LoginAlreadyExistsException("Login already exists");
-        }
-        int role_id = roleDAO.getIdByRole(Roles.USER);
-        User userToCreate = UserDAOImpl.getCopy(user);
-        userToCreate.setRoleId(role_id);
-        userToCreate.setPassword(new BCryptPasswordEncoder().encode(userToCreate.getPassword()));
-        userToAdd = userDAO.createUser(userToCreate);
-        return userToAdd;
-    }
-
+    int roleId = roleDao.getIdByRole(Roles.USER);
+    User userToCreate = UserDaoImpl.getCopy(user);
+    userToCreate.setRoleId(roleId);
+    userToCreate.setPassword(new BCryptPasswordEncoder().encode(userToCreate.getPassword()));
+    userToAdd = userDao.createUser(userToCreate);
+    return userToAdd;
+  }
 }

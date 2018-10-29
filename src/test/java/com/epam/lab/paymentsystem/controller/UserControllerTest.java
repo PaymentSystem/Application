@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 public class UserControllerTest {
 
-    @Test
-    public void testAddUser() {
-    }
+  @Test
+  public void testAddUser() {
+  }
 }

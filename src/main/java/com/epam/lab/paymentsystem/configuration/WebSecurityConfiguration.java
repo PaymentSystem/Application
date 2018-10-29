@@ -13,41 +13,43 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+  private final UserDetailsServiceImpl userDetailsService;
 
-    public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+  public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService) {
+    this.userDetailsService = userDetailsService;
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        DaoAuthenticationProvider authProvider
-                = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-        auth.authenticationProvider(authProvider);
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+    auth.authenticationProvider(authProvider);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.requiresChannel()
-                .anyRequest()
-                .requiresSecure()
-                .and()
-            .authorizeRequests()
-                .antMatchers("/registration", "/addUser").permitAll()
-                .antMatchers("/login").anonymous()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .failureUrl("/registration")
-                .and()
-            .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .and()
-            .csrf()
-                .disable();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.requiresChannel()
+          .anyRequest()
+          .requiresSecure()
+          .and()
+        .authorizeRequests()
+          .antMatchers("/registration", "/addUser")
+          .permitAll()
+          .antMatchers("/login")
+          .anonymous()
+          .anyRequest()
+          .authenticated()
+          .and()
+        .formLogin()
+          .loginPage("/login")
+          .failureUrl("/registration")
+          .and()
+        .logout()
+          .logoutUrl("/logout")
+          .logoutSuccessUrl("/login")
+          .and()
+        .csrf()
+          .disable();
+  }
 }
