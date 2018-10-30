@@ -74,34 +74,35 @@ public class UserDaoImpl implements UserDao {
 
   @Override
   public User getUserByLogin(String login) {
-    Connection connection = null;
-    User user = new User();
-
-    try {
-      connection = ConnectionPool.getConnection();
-
-      PreparedStatement ps = connection.prepareStatement(SELECT_SQL);
-      ps.setString(1, login);
-      ResultSet rs = ps.executeQuery();
-
-      if (rs.next()) {
-        user.setId(rs.getInt(1));
-        user.setLogin(login);
-        user.setPassword(rs.getString(3));
-        user.setRoleId(rs.getInt(4));
-        user.setName(rs.getString(5));
-      } else {
-        return null;
-      }
-      ps.close();
-      rs.close();
-    } catch (NamingException | SQLException e) {
-      e.printStackTrace();
-    } finally {
-      if (connection != null) {
-        ConnectionPool.connectionRelease(connection);
-      }
-    }
-    return user;
+    throw new UnsupportedOperationException("this method is not supported");
+//    Connection connection = null;
+//    User user = new User();
+//
+//    try {
+//      connection = ConnectionPool.getConnection();
+//
+//      PreparedStatement ps = connection.prepareStatement(SELECT_SQL);
+//      ps.setString(1, login);
+//      ResultSet rs = ps.executeQuery();
+//
+//      if (rs.next()) {
+//        user.setId(rs.getInt(1));
+//        user.setLogin(login);
+//        user.setPassword(rs.getString(3));
+//        user.setRole(rs.getInt(4));
+//        user.setName(rs.getString(5));
+//      } else {
+//        return null;
+//      }
+//      ps.close();
+//      rs.close();
+//    } catch (NamingException | SQLException e) {
+//      e.printStackTrace();
+//    } finally {
+//      if (connection != null) {
+//        ConnectionPool.connectionRelease(connection);
+//      }
+//    }
+//    return user;
   }
 }
