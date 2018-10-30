@@ -3,12 +3,11 @@ package com.epam.lab.paymentsystem.dao.impl;
 import com.epam.lab.paymentsystem.dao.ConnectionPool;
 import com.epam.lab.paymentsystem.dao.UserDao;
 import com.epam.lab.paymentsystem.entities.User;
-
-import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 
 @Deprecated
 public class UserDaoImpl implements UserDao {
@@ -28,7 +27,7 @@ public class UserDaoImpl implements UserDao {
     newUser.setLogin(old.getLogin());
     newUser.setName(old.getName());
     newUser.setPassword(old.getPassword());
-    newUser.setRoleId(old.getRoleId());
+    newUser.setRole(old.getRole());
     return newUser;
   }
 
@@ -49,7 +48,7 @@ public class UserDaoImpl implements UserDao {
       ps.setString(1, user.getLogin());
       ps.setString(2, user.getPassword());
       ps.setString(3, user.getName());
-      ps.setInt(4, user.getRoleId());
+      ps.setInt(4, user.getRole().getId());
 
       ps.executeUpdate();
       ResultSet rs = ps.getGeneratedKeys();

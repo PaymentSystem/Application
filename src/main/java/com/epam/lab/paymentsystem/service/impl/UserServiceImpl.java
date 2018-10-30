@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     userToAdd = Transformer.convertUser(user);
-    userToAdd.setRoleId(role.getId());
+    userToAdd.setRole(role);
     userToAdd = userRepository.save(userToAdd);
     return userToAdd;
   }
