@@ -24,6 +24,7 @@ public class UserServiceTest {
   public void testSetUp() {
     user = new User();
     user.setLogin("test");
+    user.setPassword("testPassword");
     userDAO = mock(UserDao.class);
     RoleDao roleDAO = new RoleDaoImpl();
     userService = new UserServiceImpl(userDAO, roleDAO);

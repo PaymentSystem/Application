@@ -9,6 +9,7 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,8 +33,8 @@ public class UserServiceImpl implements UserService {
     int roleId = roleDao.getIdByRole(Roles.USER);
     User userToCreate = UserDaoImpl.getCopy(user);
     userToCreate.setRoleId(roleId);
+    userToCreate.setPassword(new BCryptPasswordEncoder().encode(userToCreate.getPassword()));
     userToAdd = userDao.createUser(userToCreate);
     return userToAdd;
   }
-
 }

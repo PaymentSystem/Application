@@ -18,8 +18,7 @@ public class UserController {
   private static final String REDIRECT_TO = "redirect:";
   private static final String ROOT = "/";
 
-  @Autowired
-  private UserService userService;
+  @Autowired private UserService userService;
 
   @GetMapping(value = "/registration")
   public String getRegistrationPage() {
@@ -35,9 +34,10 @@ public class UserController {
    * @return JSP view
    */
   @PostMapping(value = "/addUser")
-  public String addUser(@RequestParam(name = "name") String userName,
-                        @RequestParam(name = "login") String userLogin,
-                        @RequestParam(name = "password") String userPassword) {
+  public String addUser(
+      @RequestParam(name = "name") String userName,
+      @RequestParam(name = "login") String userLogin,
+      @RequestParam(name = "password") String userPassword) {
 
     User user = new User();
     user.setName(userName);
