@@ -147,7 +147,6 @@ class AddTestData {
       LOGGER.info("Generation test data in the database is over");
     } catch (SQLException | NamingException e) {
       LOGGER.error("Exception in addTestData", e);
-      e.printStackTrace();
     }
     return false;
   }

@@ -47,7 +47,7 @@ public class UserController {
     try {
       userService.addUser(user);
     } catch (LoginAlreadyExistsException e) {
-      LOGGER.error("Exception in addUser in UserController" + e);
+      LOGGER.error("Exception in addUser in UserController", e);
       return REDIRECT_TO + ROOT;
     }
     return REGISTRATION_PAGE;
