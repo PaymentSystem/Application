@@ -34,6 +34,14 @@ public class User {
 
   }
 
+  /**
+   * Instantiates a new User.
+   *
+   * @param name     the name
+   * @param password the password
+   * @param login    the login
+   * @param role     the role
+   */
   public User(String name, String password, String login, Role role) {
     this.name = name;
     this.password = password;

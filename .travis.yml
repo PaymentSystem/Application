@@ -1,12 +1,12 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 services:
-  - postgresql
+- postgresql
 addons:
   postgresql: "10.5"
 before_script:
-  - bash install-postgres-10.sh
-  - psql -c 'create database payment_system;' -U postgres
+- bash install-postgres-10.sh
+- psql -c 'create database payment_system;' -U postgres
 script:
-  - mvn clean package
+- mvn clean package

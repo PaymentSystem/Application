@@ -1,11 +1,11 @@
 package com.epam.lab.paymentsystem.dao;
 
-import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.naming.NamingException;
 
 @Deprecated
 public class ConnectionPool {
