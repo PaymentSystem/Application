@@ -7,12 +7,14 @@ import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+  private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   private UserDao userDao;
   private RoleDao roleDao;
 
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
   public User addUser(User user) throws LoginAlreadyExistsException {
     User userToAdd = userDao.findByLogin(user);
     if (userToAdd != null) {
+      LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
       throw new LoginAlreadyExistsException("Login already exists");
     }
     int roleId = roleDao.getIdByRole(Roles.USER);

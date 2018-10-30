@@ -3,6 +3,8 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
+  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
   private static final String REGISTRATION_PAGE = "registration";
   private static final String REDIRECT_TO = "redirect:";
   private static final String ROOT = "/";
@@ -44,6 +47,7 @@ public class UserController {
     try {
       userService.addUser(user);
     } catch (LoginAlreadyExistsException e) {
+      LOGGER.error("Exception in addUser in UserController", e);
       return REDIRECT_TO + ROOT;
     }
     return REGISTRATION_PAGE;

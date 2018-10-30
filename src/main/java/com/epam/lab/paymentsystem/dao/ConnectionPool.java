@@ -6,9 +6,11 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.naming.NamingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnectionPool {
-
+  private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
   private static final int CONNECTION_POOL_SIZE = 10;
   private static final String URL_DATABASE = "jdbc:postgresql://localhost:5432/payment_system";
   private static final String DRIVER_DATABASE_CLASS = "org.postgresql.Driver";
@@ -24,30 +26,22 @@ public class ConnectionPool {
     try {
       Class.forName(DRIVER_DATABASE_CLASS);
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+      LOGGER.error("Exception, PostgreSQL JDBC Driver is not registered", e);
       System.exit(1);
     }
-
-    System.out.println("PostgreSQL JDBC Driver Registered!");
 
     try {
       connect = DriverManager.getConnection(URL_DATABASE, USER_NAME, USER_PASSWORD);
     } catch (SQLException e) {
-      System.out.println("ConnectionPool Failed!");
-      e.printStackTrace();
-    }
-
-    if (connect != null) {
-      System.out.println("ConnectionPool was set with DB ");
-    } else {
-      System.out.println("Failed to make connection!");
+      LOGGER.error("Connection failed", e);
     }
   }
 
   /**
    * Give connection from connection pool.
+   *
    * @return connection
-   * @throws SQLException if wrong SQL request
+   * @throws SQLException    if wrong SQL request
    * @throws NamingException ?
    */
   public static Connection getConnection() throws SQLException, NamingException {
@@ -63,6 +57,7 @@ public class ConnectionPool {
 
   /**
    * Return connection to the connection pool.
+   *
    * @param connection connection
    */
   public static void connectionRelease(Connection connection) {
@@ -73,9 +68,11 @@ public class ConnectionPool {
       try {
         con = getConnection();
       } catch (NamingException | SQLException e) {
-        e.printStackTrace();
+        LOGGER.error("Connection release failed", e);
+
       }
       connectionPool.add(con);
+      LOGGER.info("Connection returned back to the database");
     }
   }
 
@@ -83,5 +80,6 @@ public class ConnectionPool {
     for (int i = 1; i <= CONNECTION_POOL_SIZE; i++) {
       connectionPool.add(new ConnectionPool().connect);
     }
+    LOGGER.info("Connection pool created, amount connections: " + connectionPool.size());
   }
 }

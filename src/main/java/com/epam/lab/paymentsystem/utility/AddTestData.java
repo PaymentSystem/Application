@@ -9,9 +9,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.naming.NamingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
+
+@Component
 class AddTestData {
-
+  private static final Logger LOGGER = LogManager.getLogger(AddTestData.class);
   private static final List<String> USERS = new LinkedList<>();
   private static final List<String> ACCOUNT = new LinkedList<>();
   private static final List<Boolean> CARDS = new LinkedList<>();
@@ -126,23 +133,27 @@ class AddTestData {
     return false;
   }
 
+
   public static boolean addTestData() {
     try {
-      try {
-        if (checkRoleAdmin()) {
-          return true;
-        }
-        createData();
-        for (int i = 0; i < DATA_COUNT; i++) {
-          generationData();
-        }
-        System.out.println("Generation is over");
-      } catch (SQLException e) {
-        e.printStackTrace();
+      if (checkRoleAdmin()) {
+        LOGGER.info("User admin already exists");
+        return true;
       }
-    } catch (NamingException e) {
-      e.printStackTrace();
+      createData();
+      for (int i = 0; i < DATA_COUNT; i++) {
+        generationData();
+      }
+      LOGGER.info("Generation test data in the database is over");
+    } catch (SQLException | NamingException e) {
+      LOGGER.error("Exception in addTestData", e);
     }
     return false;
   }
+
+  @EventListener(ContextRefreshedEvent.class)
+  public void contextRefreshedEvent() {
+    addTestData();
+  }
+
 }

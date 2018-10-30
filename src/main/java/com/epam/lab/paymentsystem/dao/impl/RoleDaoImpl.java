@@ -8,11 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
-
+  private static final Logger LOGGER = LogManager.getLogger(RoleDaoImpl.class);
   private static final String ROLE_SELECT_SQL = "SELECT * FROM roles WHERE role_name = ?";
 
   @Override
@@ -35,7 +37,7 @@ public class RoleDaoImpl implements RoleDao {
       ps.close();
       rs.close();
     } catch (NamingException | SQLException e) {
-      e.printStackTrace();
+      LOGGER.error("Exception in RoleDAOImpl in getIdByRole method", e);
     } finally {
       if (connection != null) {
         ConnectionPool.connectionRelease(connection);
