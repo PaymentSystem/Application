@@ -11,7 +11,12 @@ import java.util.List;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
+
+@Component
 class AddTestData {
   private static final Logger LOGGER = LogManager.getLogger(AddTestData.class);
   private static final List<String> USERS = new LinkedList<>();
@@ -128,6 +133,7 @@ class AddTestData {
     return false;
   }
 
+
   public static boolean addTestData() {
     try {
       if (checkRoleAdmin()) {
@@ -145,4 +151,10 @@ class AddTestData {
     }
     return false;
   }
+
+  @EventListener(ContextRefreshedEvent.class)
+  public void contextRefreshedEvent() {
+    addTestData();
+  }
+
 }
