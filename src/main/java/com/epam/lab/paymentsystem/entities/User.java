@@ -1,7 +1,16 @@
 package com.epam.lab.paymentsystem.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+/**
+ * POJO class object, class which is a role database table representation.
+ * This class implements mapping fields with the corresponding cells of the database table columns.
+ */
 @Entity
 @Table(name = "users")
 public class User {

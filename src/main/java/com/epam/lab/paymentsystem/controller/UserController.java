@@ -9,12 +9,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller for User, processes the specified URL and redirects
+ * the request to the specified page.
+ *
+ * @author unascribed
+ * @since 0.0.1
+ */
+
 @Controller
 public class UserController {
   private static final String REGISTRATION_PAGE = "registration";
   private static final String REDIRECT_TO = "redirect:";
   private static final String ROOT = "/";
 
+  /**
+   * Instance of {@code UserService} injects by Spring.
+   */
   @Autowired
   private UserService userService;
 
@@ -24,7 +35,8 @@ public class UserController {
   }
 
   /**
-   * AddUser controller method.
+   * This method takes @RequestParam() from the page forms, processes them
+   * and sends them to the service.
    *
    * @param userName     name of user from view form
    * @param userLogin    login of user from view form

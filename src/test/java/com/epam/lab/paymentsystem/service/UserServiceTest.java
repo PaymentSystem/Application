@@ -39,7 +39,7 @@ class UserServiceTest {
 
   @Test
   void testAddUserThrowsException() {
-    when(userRepository.findByLogin(user.getLogin())).thenReturn(user);
+    when(userRepository.getUserByLogin(user.getLogin())).thenReturn(user);
     assertThrows(LoginAlreadyExistsException.class,
         () -> userService.addUser(user),
         "Login already exists");
@@ -48,7 +48,7 @@ class UserServiceTest {
   @Test
   void testAddUserCreateUser() throws LoginAlreadyExistsException {
     when(roleRepository.getRoleByRoleStatus(Roles.USER)).thenReturn(new Role());
-    when(userRepository.findByLogin(user.getLogin())).thenReturn(null);
+    when(userRepository.getUserByLogin(user.getLogin())).thenReturn(null);
     when(userRepository.save(user)).thenReturn(user);
     assertEquals(user, userService.addUser(user));
   }

@@ -1,11 +1,10 @@
 package com.epam.lab.paymentsystem.entities;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public class MyUserDetails implements UserDetails {
   private static final String ROLE_USER = "ROLE_USER";
