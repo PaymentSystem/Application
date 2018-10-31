@@ -26,7 +26,6 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @author unascribed
  * @since 0.0.1
  */
-
 @Configuration
 @PropertySource("classpath:application.properties")
 @EnableJpaRepositories(basePackages = "com.epam.lab.paymentsystem.repository")

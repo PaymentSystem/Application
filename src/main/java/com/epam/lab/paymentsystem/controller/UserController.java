@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author unascribed
  * @since 0.0.1
  */
-
 @Controller
 public class UserController {
   private static final Logger LOGGER = LogManager.getLogger(UserController.class);

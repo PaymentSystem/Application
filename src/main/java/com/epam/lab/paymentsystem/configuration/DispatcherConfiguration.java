@@ -23,7 +23,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  * @author unascribed
  * @since 0.0.1
  */
-
 @Configuration
 @ComponentScan("com.epam.lab.paymentsystem")
 @EnableWebMvc

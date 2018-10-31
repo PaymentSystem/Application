@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @link org.springframework.data.repository
  * @since 0.0.1
  */
-
 public interface UserRepository extends JpaRepository<User, Long> {
   /**
    * Returns the login from repository for user.
