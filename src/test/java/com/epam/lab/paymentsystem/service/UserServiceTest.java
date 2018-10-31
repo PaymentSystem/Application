@@ -32,13 +32,14 @@ class UserServiceTest {
   private UserServiceImpl userService;
 
   @BeforeEach
-  void testSetUp() {
+  public void testSetUp() {
     user = new User();
     user.setLogin("test");
+    user.setPassword("testPassword");
   }
 
   @Test
-  void testAddUserThrowsException() {
+  public void testAddUserThrowsException() {
     when(userRepository.getUserByLogin(user.getLogin())).thenReturn(user);
     assertThrows(LoginAlreadyExistsException.class,
         () -> userService.addUser(user),
@@ -46,11 +47,10 @@ class UserServiceTest {
   }
 
   @Test
-  void testAddUserCreateUser() throws LoginAlreadyExistsException {
+ public void testAddUserCreateUser() throws LoginAlreadyExistsException {
     when(roleRepository.getRoleByRoleStatus(Roles.USER)).thenReturn(new Role());
     when(userRepository.getUserByLogin(user.getLogin())).thenReturn(null);
     when(userRepository.save(user)).thenReturn(user);
     assertEquals(user, userService.addUser(user));
   }
 }
-

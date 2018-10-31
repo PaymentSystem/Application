@@ -3,6 +3,8 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
+  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
   private static final String REGISTRATION_PAGE = "registration";
   private static final String REDIRECT_TO = "redirect:";
   private static final String ROOT = "/";
@@ -35,11 +38,11 @@ public class UserController {
   }
 
   /**
-   * This method takes @RequestParam() from the page forms, processes them
+   * This method takes {@link RequestParam} from the page forms, processes them
    * and sends them to the service.
    *
-   * @param userName     name of user from view form
-   * @param userLogin    login of user from view form
+   * @param userName name of user from view form
+   * @param userLogin login of user from view form
    * @param userPassword password of user from view form
    * @return JSP view
    */
@@ -56,6 +59,7 @@ public class UserController {
     try {
       userService.addUser(user);
     } catch (LoginAlreadyExistsException e) {
+      LOGGER.error("Exception in addUser in UserController", e);
       return REDIRECT_TO + ROOT;
     }
     return REGISTRATION_PAGE;

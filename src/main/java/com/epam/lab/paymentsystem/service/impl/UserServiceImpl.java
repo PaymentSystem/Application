@@ -8,6 +8,9 @@ import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.Transformer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,40 +21,42 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService {
-  /**
-   * Instance of {@code UserRepository} injects by Spring.
-   */
-  @Autowired
-  private UserRepository userRepository;
+    private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
+    /**
+     * Instance of {@code UserRepository} injects by Spring.
+     */
+    @Autowired
+    private UserRepository userRepository;
 
-  /**
-   * Instance of {@code RoleRepository} injects by Spring.
-   */
-  @Autowired
-  private RoleRepository roleRepository;
+    /**
+     * Instance of {@code RoleRepository} injects by Spring.
+     */
+    @Autowired
+    private RoleRepository roleRepository;
 
-  /**
-   * This method add user into repository via {@code UserRepository}, method checks login from
-   * the database and if login does not exist then adds user, method can
-   * throws LoginAlreadyExistsException if login already exist, uses method to convert user
-   * from {@code Controller} to new user object.
-   *
-   * @param user object from {@code UserController}
-   * @return user entity from repository
-   * @throws LoginAlreadyExistsException if login already exist
-   * @see com.epam.lab.paymentsystem.controller
-   * @see com.epam.lab.paymentsystem.utility.converter
-   */
-  @Override
-  public User addUser(User user) throws LoginAlreadyExistsException {
-    User userToAdd = userRepository.getUserByLogin(user.getLogin());
-    if (userToAdd != null) {
-      throw new LoginAlreadyExistsException("Login already exists");
+    /**
+     * This method add user into repository via {@code UserRepository}, method checks login from
+     * the database and if login does not exist then adds user, method can
+     * throws LoginAlreadyExistsException if login already exist, uses method to convert user
+     * from {@code Controller} to new user object.
+     *
+     * @param user object from {@code UserController}
+     * @return user entity from repository
+     * @throws LoginAlreadyExistsException if login already exist
+     * @see com.epam.lab.paymentsystem.controller
+     * @see com.epam.lab.paymentsystem.utility.converter
+     */
+    @Override
+    public User addUser(User user) throws LoginAlreadyExistsException {
+        User userToAdd = userRepository.getUserByLogin(user.getLogin());
+        if (userToAdd != null) {
+            LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
+            throw new LoginAlreadyExistsException("Login already exists");
+        }
+        Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
+        userToAdd = Transformer.convertUser(user);
+        userToAdd.setRole(role);
+        userToAdd = userRepository.save(userToAdd);
+        return userToAdd;
     }
-    Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
-    userToAdd = Transformer.convertUser(user);
-    userToAdd.setRole(role);
-    userToAdd = userRepository.save(userToAdd);
-    return userToAdd;
-  }
 }
