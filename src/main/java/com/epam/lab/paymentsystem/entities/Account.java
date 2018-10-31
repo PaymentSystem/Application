@@ -2,33 +2,21 @@ package com.epam.lab.paymentsystem.entities;
 
 public class Account extends AbstractEntity {
 
-  private long userId;
   private double amount;
   private boolean isActive;
 
   public Account() {
-
   }
 
   /**
    * Constructor for account.
    *
-   * @param userId   id of user
    * @param amount   amount of account
    * @param isActive boolean flag
    */
-  public Account(long userId, double amount, boolean isActive) {
-    this.userId = userId;
+  public Account(double amount, boolean isActive) {
     this.amount = amount;
     this.isActive = isActive;
-  }
-
-  public long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(long userId) {
-    this.userId = userId;
   }
 
   public double getAmount() {
@@ -50,7 +38,6 @@ public class Account extends AbstractEntity {
   @Override
   public int hashCode() {
     int result = 17;
-    result = 31 * result + Long.valueOf(userId).hashCode();
     result = 31 * result + Double.valueOf(amount).hashCode();
     result = 31 * result + Boolean.valueOf(isActive).hashCode();
 
@@ -68,8 +55,7 @@ public class Account extends AbstractEntity {
 
     Account account = (Account) obj;
 
-    return account.userId == userId
-        && account.amount == amount
+    return account.amount == amount
         && account.isActive == isActive;
   }
 }
