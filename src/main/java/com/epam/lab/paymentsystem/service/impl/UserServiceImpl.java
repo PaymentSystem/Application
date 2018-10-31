@@ -11,33 +11,31 @@ import com.epam.lab.paymentsystem.utility.converter.Transformer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * This class provides implementation of the <tt>UserService</tt>, provides methods
- * to manipulate the data using repositories methods. The class is designed to implement
- * business logic.
+ * This class provides implementation of the <tt>UserService</tt>, provides methods to manipulate
+ * the data using repositories methods. The class is designed to implement business logic.
  */
 @Service
 public class UserServiceImpl implements UserService {
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   /**
    * Instance of {@code UserRepository} injects by Spring.
-   */
-  @Autowired
-  private UserRepository userRepository;
+   * */
+  @Autowired private UserRepository userRepository;
 
   /**
    * Instance of {@code RoleRepository} injects by Spring.
-   */
-  @Autowired
-  private RoleRepository roleRepository;
+   * */
+  @Autowired private RoleRepository roleRepository;
 
   /**
-   * This method add user into repository via {@code UserRepository}, method checks login from
-   * the database and if login does not exist then adds user, method can
-   * throws LoginAlreadyExistsException if login already exist, uses method to convert user
-   * from {@code Controller} to new user object.
+   * This method add user into repository via {@code UserRepository}, method checks login from the
+   * database and if login does not exist then adds user, method can throws
+   * LoginAlreadyExistsException if login already exist, uses method to convert user from {@code
+   * Controller} to new user object.
    *
    * @param user object from {@code UserController}
    * @return user entity from repository
@@ -55,6 +53,7 @@ public class UserServiceImpl implements UserService {
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     userToAdd = Transformer.convertUser(user);
     userToAdd.setRole(role);
+    userToAdd.setPassword(new BCryptPasswordEncoder().encode(userToAdd.getPassword()));
     userToAdd = userRepository.save(userToAdd);
     return userToAdd;
   }

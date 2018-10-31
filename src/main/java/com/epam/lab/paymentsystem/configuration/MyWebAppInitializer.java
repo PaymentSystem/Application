@@ -37,9 +37,7 @@ public class MyWebAppInitializer implements WebApplicationInitializer {
     AnnotationConfigWebApplicationContext rootContext =
         new AnnotationConfigWebApplicationContext();
     rootContext.register(ApplicationConfiguration.class);
-
-    container.addListener(new ContextLoaderListener(rootContext));
-
+    //container.addListener(new ContextLoaderListener(rootContext)); //this line broke filterChain
     AnnotationConfigWebApplicationContext dispatcherContext =
         new AnnotationConfigWebApplicationContext();
     dispatcherContext.register(DispatcherConfiguration.class);

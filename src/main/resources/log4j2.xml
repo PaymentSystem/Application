@@ -18,7 +18,7 @@
     </Appenders>
     <Loggers>
         <Root level="debug">
-            <AppenderRef ref="Console" level="debug"/>
+            <AppenderRef ref="Console" level="error"/>
             <AppenderRef ref="RollingFile" level="error"/>
         </Root>
     </Loggers>

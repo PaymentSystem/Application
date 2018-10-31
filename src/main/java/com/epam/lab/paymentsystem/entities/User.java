@@ -17,14 +17,15 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(name = "id_user")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  @Column
+  @Column(name = "user_name")
   private String name;
-  @Column
+  @Column(name = "passwd")
   private String password;
-  @Column
+  @Column(name = "login")
   private String login;
   @ManyToOne
   @JoinColumn(name = "id_role")
