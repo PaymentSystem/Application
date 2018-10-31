@@ -2,9 +2,6 @@ package com.epam.lab.paymentsystem.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,24 +12,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
-public class User {
-  @Id
-  @Column(name = "id_user")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+public class User extends AbstractEntity {
 
-  @Column(name = "user_name")
+  @Column(name = "name")
   private String name;
-  @Column(name = "passwd")
+
+  @Column(name = "password")
   private String password;
+
   @Column(name = "login")
   private String login;
+
   @ManyToOne
   @JoinColumn(name = "id_role")
   private Role role;
 
   public User() {
-
   }
 
   /**
@@ -48,14 +43,6 @@ public class User {
     this.password = password;
     this.login = login;
     this.role = role;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public String getName() {

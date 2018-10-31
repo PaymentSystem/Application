@@ -1,8 +1,7 @@
 package com.epam.lab.paymentsystem.entities;
 
-public class Account {
+public class Account extends AbstractEntity {
 
-  private long id;
   private long userId;
   private double amount;
   private boolean isActive;
@@ -14,24 +13,14 @@ public class Account {
   /**
    * Constructor for account.
    *
-   * @param id       id of account
    * @param userId   id of user
    * @param amount   amount of account
    * @param isActive boolean flag
    */
-  public Account(long id, long userId, double amount, boolean isActive) {
-    this.id = id;
+  public Account(long userId, double amount, boolean isActive) {
     this.userId = userId;
     this.amount = amount;
     this.isActive = isActive;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public long getUserId() {

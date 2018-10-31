@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
- * This class declares three(ТУТ ПОПРАВИТЕ С УЧЕТОМ ВАШИХ БИНОВ) @Bean methods and may be processed
+ * This class declares three @Bean methods and may be processed
  * by the Spring container using @Configuration to generate bean definitions and
  * service requests for those beans at runtime. {@code DispatcherConfiguration} class
  * configures the following front-end application components: jsp pages, localization.
