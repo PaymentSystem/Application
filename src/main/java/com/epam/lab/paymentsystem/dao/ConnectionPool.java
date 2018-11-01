@@ -35,7 +35,6 @@ public class ConnectionPool {
       connect = DriverManager.getConnection(URL_DATABASE, USER_NAME, USER_PASSWORD);
     } catch (SQLException e) {
       LOGGER.error("Connection failed", e);
-
     }
     throw new UnsupportedOperationException("THIS CLASS DOES NOT WORK WITH"
         + " UPGRADES TO THE SPRING DATA!");
