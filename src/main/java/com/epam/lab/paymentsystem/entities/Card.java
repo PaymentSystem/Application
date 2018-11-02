@@ -1,6 +1,10 @@
 package com.epam.lab.paymentsystem.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "cards")
@@ -19,8 +23,7 @@ public class Card extends AbstractEntity {
   @Column(name = "is_active")
   private boolean isActive;
 
-  public Card() {
-  }
+  public Card() {}
 
   /**
    * Constructor for card.
@@ -60,9 +63,9 @@ public class Card extends AbstractEntity {
     Card card = (Card) obj;
 
     return card.user.equals(user)
-            && card.account.equals(account)
-            && label.equals(label)
-            && card.isActive == isActive;
+        && card.account.equals(account)
+        && label.equals(label)
+        && card.isActive == isActive;
   }
 
   public Account getAccount() {

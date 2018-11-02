@@ -1,7 +1,11 @@
 package com.epam.lab.paymentsystem.entities;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "operations")
@@ -21,16 +25,15 @@ public class Operation extends AbstractEntity {
   @Column(name = "date")
   private LocalDateTime date;
 
-  public Operation() {
-  }
+  public Operation() {}
 
   /**
    * Constructor for operation.
    *
    * @param sourceCard id of source card
    * @param targetCard id of target card
-   * @param amount   amount of operation
-   * @param date     date of operation
+   * @param amount amount of operation
+   * @param date date of operation
    */
   public Operation(Card sourceCard, Card targetCard, long amount, LocalDateTime date) {
     this.sourceCard = sourceCard;
