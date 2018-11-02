@@ -1,18 +1,21 @@
 package com.epam.lab.paymentsystem.configuration;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 /**
  * This class declares three @Bean methods and may be processed
@@ -27,8 +30,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("com.epam.lab.paymentsystem")
 @EnableWebMvc
 public class DispatcherConfiguration implements WebMvcConfigurer {
-  private static final String PREFIX = "/WEB-INF/jsp/";
-  private static final String SUFFIX = ".jsp";
+  private static final String PREFIX = "/WEB-INF/views/";
+  private static final String SUFFIX = ".html";
 
   /**
    * This @Bean method produces {@code ViewResolver} which allows us to set properties
@@ -38,11 +41,32 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
    * @link org.springframework.web.servlet
    */
   @Bean
-  public ViewResolver internalResourceViewResolver() {
-    InternalResourceViewResolver bean = new InternalResourceViewResolver();
-    bean.setPrefix(PREFIX);
-    bean.setSuffix(SUFFIX);
-    return bean;
+  public SpringResourceTemplateResolver templateResolver() {
+    SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+    templateResolver.setPrefix(PREFIX);
+    templateResolver.setSuffix(SUFFIX);
+    return templateResolver;
+  }
+
+  /**
+   * This @Bean method produces {@code SpringTemplateEngine} which allows to resolve templates.
+   *
+   * @return templateEngine
+   */
+  @Bean
+  public SpringTemplateEngine templateEngine() {
+    SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+    templateEngine.setTemplateResolver(templateResolver());
+    templateEngine.setEnableSpringELCompiler(true);
+    return templateEngine;
+  }
+
+  @Override
+  public void configureViewResolvers(ViewResolverRegistry registry) {
+    ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+    resolver.setTemplateEngine(templateEngine());
+    resolver.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+    registry.viewResolver(resolver);
   }
 
   /**
@@ -59,7 +83,7 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
   public ResourceBundleMessageSource messageSource() {
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
     messageSource.setBasename("messages");
-    messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
     return messageSource;
   }
 
