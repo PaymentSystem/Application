@@ -1,12 +1,24 @@
 package com.epam.lab.paymentsystem.entities;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "operations")
 public class Operation extends AbstractEntity {
 
-  private long sourceId;
-  private long targetId;
-  private double amount;
+  @ManyToOne
+  @JoinColumn(name = "src_card")
+  private Card sourceCard;
+
+  @ManyToOne
+  @JoinColumn(name = "dst_card")
+  private Card targetCard;
+
+  @Column(name = "amount")
+  private long amount;
+
+  @Column(name = "date")
   private LocalDateTime date;
 
   public Operation() {
@@ -15,39 +27,39 @@ public class Operation extends AbstractEntity {
   /**
    * Constructor for operation.
    *
-   * @param sourceId id of source card
-   * @param targetId id of target card
+   * @param sourceCard id of source card
+   * @param targetCard id of target card
    * @param amount   amount of operation
    * @param date     date of operation
    */
-  public Operation(long sourceId, long targetId, double amount, LocalDateTime date) {
-    this.sourceId = sourceId;
-    this.targetId = targetId;
+  public Operation(Card sourceCard, Card targetCard, long amount, LocalDateTime date) {
+    this.sourceCard = sourceCard;
+    this.targetCard = targetCard;
     this.amount = amount;
     this.date = date;
   }
 
-  public long getSourceId() {
-    return sourceId;
+  public Card getSourceCard() {
+    return sourceCard;
   }
 
-  public void setSourceId(long sourceId) {
-    this.sourceId = sourceId;
+  public void setSourceCard(Card sourceCard) {
+    this.sourceCard = sourceCard;
   }
 
-  public long getTargetId() {
-    return targetId;
+  public Card getTargetCard() {
+    return targetCard;
   }
 
-  public void setTargetId(long targetId) {
-    this.targetId = targetId;
+  public void setTargetCard(Card targetCard) {
+    this.targetCard = targetCard;
   }
 
-  public double getAmount() {
+  public long getAmount() {
     return amount;
   }
 
-  public void setAmount(double amount) {
+  public void setAmount(long amount) {
     this.amount = amount;
   }
 
@@ -62,9 +74,9 @@ public class Operation extends AbstractEntity {
   @Override
   public int hashCode() {
     int result = 17;
-    result = 31 * result + Long.valueOf(sourceId).hashCode();
-    result = 31 * result + Long.valueOf(targetId).hashCode();
-    result = 31 * result + Double.valueOf(amount).hashCode();
+    result = 31 * result + sourceCard.hashCode();
+    result = 31 * result + targetCard.hashCode();
+    result = 31 * result + Long.valueOf(amount).hashCode();
     result = 31 * result + date.hashCode();
 
     return result;
@@ -81,8 +93,8 @@ public class Operation extends AbstractEntity {
 
     Operation operation = (Operation) obj;
 
-    return operation.sourceId == sourceId
-        && operation.targetId == targetId
+    return operation.sourceCard.equals(sourceCard)
+        && operation.targetCard.equals(targetCard)
         && operation.amount == amount
         && operation.date.equals(date);
   }

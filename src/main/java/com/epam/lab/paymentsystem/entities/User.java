@@ -1,14 +1,11 @@
 package com.epam.lab.paymentsystem.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
- * POJO class object, class which is a role database table representation.
- * This class implements mapping fields with the corresponding cells of the database table columns.
+ * POJO class object, class which is a role database table representation. This class implements
+ * mapping fields with the corresponding cells of the database table columns.
  */
 @Entity
 @Table(name = "users")
@@ -27,16 +24,15 @@ public class User extends AbstractEntity {
   @JoinColumn(name = "id_role")
   private Role role;
 
-  public User() {
-  }
+  public User() {}
 
   /**
    * Instantiates a new User.
    *
-   * @param name     the name
+   * @param name the name
    * @param password the password
-   * @param login    the login
-   * @param role     the role
+   * @param login the login
+   * @param role the role
    */
   public User(String name, String password, String login, Role role) {
     this.name = name;
@@ -97,5 +93,4 @@ public class User extends AbstractEntity {
 
     return user.login.equals(login);
   }
-
 }
