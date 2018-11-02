@@ -2,41 +2,29 @@ package com.epam.lab.paymentsystem.entities;
 
 import java.time.LocalDateTime;
 
-public class Operation {
+public class Operation extends AbstractEntity {
 
-  private long id;
   private long sourceId;
   private long targetId;
   private double amount;
   private LocalDateTime date;
 
   public Operation() {
-
   }
 
   /**
    * Constructor for operation.
    *
-   * @param id id of operation
    * @param sourceId id of source card
    * @param targetId id of target card
-   * @param amount amount of operation
-   * @param date date of operation
+   * @param amount   amount of operation
+   * @param date     date of operation
    */
-  public Operation(long id, long sourceId, long targetId, double amount, LocalDateTime date) {
-    this.id = id;
+  public Operation(long sourceId, long targetId, double amount, LocalDateTime date) {
     this.sourceId = sourceId;
     this.targetId = targetId;
     this.amount = amount;
     this.date = date;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public long getSourceId() {

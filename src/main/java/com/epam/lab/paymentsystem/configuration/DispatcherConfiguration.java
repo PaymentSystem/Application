@@ -19,7 +19,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 /**
- * This class declares three(ТУТ ПОПРАВИТЕ С УЧЕТОМ ВАШИХ БИНОВ) @Bean methods and may be processed
+ * This class declares three @Bean methods and may be processed
  * by the Spring container using @Configuration to generate bean definitions and
  * service requests for those beans at runtime. {@code DispatcherConfiguration} class
  * configures the following front-end application components: jsp pages, localization.
