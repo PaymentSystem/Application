@@ -49,7 +49,7 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
   }
 
   /**
-   * tenplateEngine.
+   * This @Bean method produces {@code SpringTemplateEngine} which allows to resolve templates.
    *
    * @return templateEngine
    */
@@ -83,7 +83,7 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
   public ResourceBundleMessageSource messageSource() {
     ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
     messageSource.setBasename("messages");
-    messageSource.setDefaultEncoding("UTF-8");
+    messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
     return messageSource;
   }
 
