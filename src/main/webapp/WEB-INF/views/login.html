@@ -23,7 +23,10 @@
 </head>
 
 <body>
-<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
+<div class="btn-group">
+    <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+    <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+</div>
 <form id="loginLayer" action="login" method="post">
     <h1><p th:text="#{user.login}"/></h1>
     <p th:text="#{user.fillLogin}"/></p>
