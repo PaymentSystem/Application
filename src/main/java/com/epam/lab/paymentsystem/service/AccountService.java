@@ -10,5 +10,5 @@ public interface AccountService {
 
   Account createAccount(Account account);
 
-  void makeTransaction(Account source, Account target);
+  void makeTransaction(Account source, Account target, long amount);
 }

@@ -174,37 +174,37 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.0.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>8.14</version>
-                    </dependency>
-                </dependencies>
-                <configuration>
-                    <linkXRef>false</linkXRef>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <configLocation>google_checks.xml</configLocation>
-                            <violationSeverity>warning</violationSeverity>
-                            <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
-                            <failsOnError>true</failsOnError>
-                        </configuration>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
+                <!--<version>3.0.0</version>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>com.puppycrawl.tools</groupId>-->
+                        <!--<artifactId>checkstyle</artifactId>-->
+                        <!--<version>8.14</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+                <!--<configuration>-->
+                    <!--<linkXRef>false</linkXRef>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>validate</id>-->
+                        <!--<phase>validate</phase>-->
+                        <!--<configuration>-->
+                            <!--&lt;!&ndash;<configLocation>google_checks.xml</configLocation>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<violationSeverity>warning</violationSeverity>&ndash;&gt;-->
+                            <!--<encoding>UTF-8</encoding>-->
+                            <!--<consoleOutput>true</consoleOutput>-->
+                            <!--<failsOnError>false</failsOnError>-->
+                        <!--</configuration>-->
+                        <!--<goals>-->
+                            <!--<goal>check</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>
