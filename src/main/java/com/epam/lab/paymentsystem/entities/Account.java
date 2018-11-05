@@ -2,13 +2,21 @@ package com.epam.lab.paymentsystem.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "accounts")
-public class Account extends AbstractEntity {
+public class Account {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id_account")
+  private long id;
 
   @ManyToOne
   @JoinColumn(name = "id_user")
@@ -23,14 +31,15 @@ public class Account extends AbstractEntity {
   @Column(name = "is_active")
   private boolean isActive;
 
-  public Account() {}
+  public Account() {
+  }
 
   /**
    * Constructor for account.
    *
-   * @param user user
-   * @param label label
-   * @param amount amount of account
+   * @param user     user
+   * @param label    label
+   * @param amount   amount of account
    * @param isActive boolean flag
    */
   public Account(User user, String label, long amount, boolean isActive) {
@@ -38,6 +47,14 @@ public class Account extends AbstractEntity {
     this.label = label;
     this.amount = amount;
     this.isActive = isActive;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public User getUser() {
@@ -64,7 +81,7 @@ public class Account extends AbstractEntity {
     this.amount = amount;
   }
 
-  public boolean isActive() {
+  public boolean getActive() {
     return isActive;
   }
 

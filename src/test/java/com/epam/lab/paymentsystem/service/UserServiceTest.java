@@ -47,7 +47,7 @@ class UserServiceTest {
   }
 
   @Test
- public void testAddUserCreateUser() throws LoginAlreadyExistsException {
+  public void testAddUserCreateUser() throws LoginAlreadyExistsException {
     when(roleRepository.getRoleByRoleStatus(Roles.USER)).thenReturn(new Role());
     when(userRepository.getUserByLogin(user.getLogin())).thenReturn(null);
     when(userRepository.save(user)).thenReturn(user);

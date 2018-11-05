@@ -9,7 +9,7 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Index page</title>
+    <title th:text="#{homepage}"></title>
     <style type="text/css">
         #centerLayer {
             margin: 0 25% 0 25%;
@@ -22,13 +22,16 @@
 <body>
 <a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
 <div id="centerLayer">
-    <h1><p th:text = "#{user.welcome}"/></h1>
+    <h1><p th:text="#{user.welcome}"/></h1>
     <a href="registration" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
-        <p th:text = "#{user.join}" />
+        <p th:text="#{user.join}"/>
     </a>
     <a href="logout" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
-        <p th:text = "#{user.logout}" />
+        <p th:text="#{user.logout}"/>
     </a>
 </div>
+<a th:href="@{'/user'}">
+    <p th:text="#{user.page}"></p>
+</a>
 </body>
 </html>

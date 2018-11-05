@@ -2,10 +2,11 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
-
 import java.util.List;
 
 public interface CardService {
+
+  List<Card> getAllCardsByAccount(Account account);
 
   List<Card> getAllCardsByLogin(String login);
 

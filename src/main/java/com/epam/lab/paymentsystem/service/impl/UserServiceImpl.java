@@ -1,13 +1,16 @@
 package com.epam.lab.paymentsystem.service.impl;
 
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
+import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.Transformer;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +26,18 @@ public class UserServiceImpl implements UserService {
   private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
   /**
    * Instance of {@code UserRepository} injects by Spring.
-   * */
-  @Autowired private UserRepository userRepository;
+   */
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private AccountService accountService;
 
   /**
    * Instance of {@code RoleRepository} injects by Spring.
-   * */
-  @Autowired private RoleRepository roleRepository;
+   */
+  @Autowired
+  private RoleRepository roleRepository;
 
   /**
    * This method add user into repository via {@code UserRepository}, method checks login from the
@@ -56,5 +64,15 @@ public class UserServiceImpl implements UserService {
     userToAdd.setPassword(new BCryptPasswordEncoder().encode(userToAdd.getPassword()));
     userToAdd = userRepository.save(userToAdd);
     return userToAdd;
+  }
+
+  @Override
+  public List<Account> getAllAccountsByLogin(String login) {
+    return accountService.getAllAccountsByLogin(login);
+  }
+
+  @Override
+  public User getUserByLogin(String login) {
+    return userRepository.getUserByLogin(login);
   }
 }

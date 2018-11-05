@@ -10,7 +10,7 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Registration page</title>
+    <title th:text="#{user.registration}"></title>
     <style type="text/css">
         #registrationLayer {
             margin: 0 25% 0 25%;
@@ -48,5 +48,6 @@
     <hr>
     <button type="submit" class="btn btn-success"><p th:text="#{user.register}"/></button>
 </form>
+<p th:text="${messageException}"/>
 </body>
 </html>
