@@ -1,9 +1,12 @@
 package com.epam.lab.paymentsystem.service;
 
+import com.epam.lab.paymentsystem.dto.AccountDto;
+import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
+import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +21,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
 
+  private AccountDto accountDto;
+  private UserDto userDto;
   private long amount;
   private Account account;
   private Account accountTarget;
@@ -38,21 +43,24 @@ public class AccountServiceTest {
     accountTarget.setUser(user);
     accountTarget.setLabel("test");
     amount = 1000;
+    userDto = TransformerToDto.convertUser(user);
   }
 
   @Test
   public void testCreateAccountThrowsException() {
     account.setAmount(-1);
+    accountDto = TransformerToDto.convertAccount(account);
     assertThrows(UnsupportedOperationException.class,
-        () -> accountService.createAccount(account),
+        () -> accountService.createAccount(accountDto),
         "Amount should be positive");
   }
 
   @Test
   public void testCreateAccountSavesAccount() {
     account.setAmount(1);
+    accountDto = TransformerToDto.convertAccount(account);
     when(accountRepository.save(account)).thenReturn(account);
-    assertEquals(account, accountService.createAccount(account));
+    assertEquals(account, accountService.createAccount(accountDto));
   }
 
   @Test
