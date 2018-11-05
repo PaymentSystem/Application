@@ -11,6 +11,4 @@ public interface CardService {
   List<Card> getAllCardsByLogin(String login);
 
   Card createCard(Card card);
-
-  Account getAccountByCard(Card card);
 }

@@ -2,7 +2,6 @@ package com.epam.lab.paymentsystem.service.impl;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
@@ -88,11 +87,6 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public Account getAccountById(long id) {
     return accountRepository.getAccountById(id);
-  }
-
-  @Override
-  public List<Card> getAllCardsByAccount(Account account) {
-    return cardService.getAllCardsByAccount(account);
   }
 
   @Override

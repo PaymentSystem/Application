@@ -31,9 +31,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AccountController {
   private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
-  private static final String ACCOUNT_PAGE = "account";
   private static final String ADD_ACCOUNT_PAGE = "addAccount";
   private static final String REDIRECT_TO = "redirect:";
+  private static final String USER_PAGE = "user";
 
   @Autowired
   private UserService userService;
@@ -47,19 +47,16 @@ public class AccountController {
   }
 
   /**
-   * Returns account page with list of all cards linked to that account.
+   * Returns user page with list of all accounts linked to that user.
    *
-   * @param id    id of account
    * @param model model
-   * @return account page view
+   * @return user page view
    */
-  @GetMapping(value = "/user/account/{accountId}")
-  public String getAccountPage(@PathVariable(name = "accountId") long id, Model model) {
-    LOGGER.info("Access to account page");
-    Account account = accountService.getAccountById(id);
-    List<Card> cards = accountService.getAllCardsByAccount(account);
-    model.addAttribute("cardList", cards);
-    return ACCOUNT_PAGE;
+  @GetMapping(value = "/user")
+  public String getUserPage(Model model) {
+    List<Account> accounts = userService.getAllAccountsByLogin(CurrentUser.getCurrentUserLogin());
+    model.addAttribute("accountList", accounts);
+    return USER_PAGE;
   }
 
   @GetMapping(value = "/user/addAccount")

@@ -29,7 +29,6 @@ public class UserController {
   private static final String REGISTRATION_PAGE = "registration";
   private static final String LOGIN_PAGE = "login";
   private static final String REDIRECT_TO = "redirect:";
-  private static final String USER_PAGE = "user";
 
   /**
    * Instance of {@code UserService} injects by Spring.
@@ -41,19 +40,6 @@ public class UserController {
   @GetMapping(value = "/registration")
   public String getRegistrationPage() {
     return REGISTRATION_PAGE;
-  }
-
-  /**
-   * Returns user page with list of all accounts linked to that user.
-   *
-   * @param model model
-   * @return user page view
-   */
-  @GetMapping(value = "/user")
-  public String getUserPage(Model model) {
-    List<Account> accounts = userService.getAllAccountsByLogin(CurrentUser.getCurrentUserLogin());
-    model.addAttribute("accountList", accounts);
-    return USER_PAGE;
   }
 
   /**

@@ -22,9 +22,4 @@ public class CardServiceImpl implements CardService {
   public Card createCard(Card card) {
     return null;
   }
-
-  @Override
-  public Account getAccountByCard(Card card) {
-    return null;
-  }
 }
