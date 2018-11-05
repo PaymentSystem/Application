@@ -3,8 +3,8 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.OperationService;
-import com.epam.lab.paymentsystem.service.impl.OperationServiceImpl;
 import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +21,6 @@ public class OperationController {
   private static final String OPERATION_FAIL_PAGE = "operationFail";
   private static final String HISTORY_PAGE = "history";
 
-  // private static final String EXEPTION = "redirect:";
- // private static final String ROOT = "/";
   /**
    * Instance.
    */
@@ -34,24 +32,30 @@ public class OperationController {
   public String getOperationPage() {
     return OPERATION_PAGE;
   }
-
-  @GetMapping(value = "/history")
-  public String getHistoryPage() {
-    return HISTORY_PAGE;
-  }
+//
+//  @GetMapping(value = "/history")
+//  public String getHistoryPage() {
+//    return HISTORY_PAGE;
+//  }
 
   /**
-   *
-   *
    * @return view
    */
-  @PostMapping(value = "/operation")
-  public String paymentOperation(@RequestParam(name = "src") Card srcCard,
-                                 @RequestParam(name = "dst") Card dstCard,
+
+  @PostMapping(value = "/makePayment")
+  @Transactional(rollbackOn = Exception.class)
+  public String paymentOperation(@RequestParam(name = "src") Long srcId,
+                                 @RequestParam(name = "dst") Long dstId,
                                  @RequestParam(name = "amount") Long amount) {
 
     LocalDateTime date = LocalDateTime.now();
     Operation operation = new Operation();
+
+    Card srcCard = new Card();
+    srcCard.setId(srcId);
+
+    Card dstCard = new Card();
+    dstCard.setId(dstId);
 
     operation.setAmount(amount);
     operation.setSourceCard(srcCard);
