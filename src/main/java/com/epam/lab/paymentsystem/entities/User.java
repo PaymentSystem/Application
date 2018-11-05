@@ -1,40 +1,47 @@
 package com.epam.lab.paymentsystem.entities;
 
-public class User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-  private long id;
+/**
+ * POJO class object, class which is a role database table representation. This class implements
+ * mapping fields with the corresponding cells of the database table columns.
+ */
+@Entity
+@Table(name = "users")
+public class User extends AbstractEntity {
+
+  @Column(name = "name")
   private String name;
+
+  @Column(name = "password")
   private String password;
+
+  @Column(name = "login")
   private String login;
-  private int roleId;
 
-  public User() {
+  @ManyToOne
+  @JoinColumn(name = "id_role")
+  private Role role;
 
-  }
+  public User() {}
 
   /**
-   * Constructor of User.
+   * Instantiates a new User.
    *
-   * @param id user id
-   * @param name user name
-   * @param password user password
-   * @param login user login
-   * @param roleId id of user role
+   * @param name the name
+   * @param password the password
+   * @param login the login
+   * @param role the role
    */
-  public User(long id, String name, String password, String login, int roleId) {
-    this.id = id;
+  public User(String name, String password, String login, Role role) {
     this.name = name;
     this.password = password;
     this.login = login;
-    this.roleId = roleId;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
+    this.role = role;
   }
 
   public String getName() {
@@ -61,14 +68,13 @@ public class User {
     this.login = login;
   }
 
-  public int getRoleId() {
-    return roleId;
+  public Role getRole() {
+    return role;
   }
 
-  public void setRoleId(int roleId) {
-    this.roleId = roleId;
+  public void setRole(Role role) {
+    this.role = role;
   }
-
 
   @Override
   public int hashCode() {

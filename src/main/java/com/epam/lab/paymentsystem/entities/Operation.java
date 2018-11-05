@@ -1,65 +1,68 @@
 package com.epam.lab.paymentsystem.entities;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-public class Operation {
+@Entity
+@Table(name = "operations")
+public class Operation extends AbstractEntity {
 
-  private long id;
-  private long sourceId;
-  private long targetId;
-  private double amount;
+  @ManyToOne
+  @JoinColumn(name = "src_card")
+  private Card sourceCard;
+
+  @ManyToOne
+  @JoinColumn(name = "dst_card")
+  private Card targetCard;
+
+  @Column(name = "amount")
+  private long amount;
+
+  @Column(name = "date")
   private LocalDateTime date;
 
-  public Operation() {
-
-  }
+  public Operation() {}
 
   /**
    * Constructor for operation.
    *
-   * @param id id of operation
-   * @param sourceId id of source card
-   * @param targetId id of target card
+   * @param sourceCard id of source card
+   * @param targetCard id of target card
    * @param amount amount of operation
    * @param date date of operation
    */
-  public Operation(long id, long sourceId, long targetId, double amount, LocalDateTime date) {
-    this.id = id;
-    this.sourceId = sourceId;
-    this.targetId = targetId;
+  public Operation(Card sourceCard, Card targetCard, long amount, LocalDateTime date) {
+    this.sourceCard = sourceCard;
+    this.targetCard = targetCard;
     this.amount = amount;
     this.date = date;
   }
 
-  public long getId() {
-    return id;
+  public Card getSourceCard() {
+    return sourceCard;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public void setSourceCard(Card sourceCard) {
+    this.sourceCard = sourceCard;
   }
 
-  public long getSourceId() {
-    return sourceId;
+  public Card getTargetCard() {
+    return targetCard;
   }
 
-  public void setSourceId(long sourceId) {
-    this.sourceId = sourceId;
+  public void setTargetCard(Card targetCard) {
+    this.targetCard = targetCard;
   }
 
-  public long getTargetId() {
-    return targetId;
-  }
-
-  public void setTargetId(long targetId) {
-    this.targetId = targetId;
-  }
-
-  public double getAmount() {
+  public long getAmount() {
     return amount;
   }
 
-  public void setAmount(double amount) {
+  public void setAmount(long amount) {
     this.amount = amount;
   }
 
@@ -74,9 +77,9 @@ public class Operation {
   @Override
   public int hashCode() {
     int result = 17;
-    result = 31 * result + Long.valueOf(sourceId).hashCode();
-    result = 31 * result + Long.valueOf(targetId).hashCode();
-    result = 31 * result + Double.valueOf(amount).hashCode();
+    result = 31 * result + sourceCard.hashCode();
+    result = 31 * result + targetCard.hashCode();
+    result = 31 * result + Long.valueOf(amount).hashCode();
     result = 31 * result + date.hashCode();
 
     return result;
@@ -93,8 +96,8 @@ public class Operation {
 
     Operation operation = (Operation) obj;
 
-    return operation.sourceId == sourceId
-        && operation.targetId == targetId
+    return operation.sourceCard.equals(sourceCard)
+        && operation.targetCard.equals(targetCard)
         && operation.amount == amount
         && operation.date.equals(date);
   }

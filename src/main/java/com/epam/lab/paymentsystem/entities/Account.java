@@ -1,52 +1,66 @@
 package com.epam.lab.paymentsystem.entities;
 
-public class Account {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-  private long id;
-  private long userId;
-  private double amount;
+@Entity
+@Table(name = "accounts")
+public class Account extends AbstractEntity {
+
+  @ManyToOne
+  @JoinColumn(name = "id_user")
+  private User user;
+
+  @Column(name = "label")
+  private String label;
+
+  @Column(name = "amount")
+  private long amount;
+
+  @Column(name = "is_active")
   private boolean isActive;
 
-  public Account() {
-
-  }
+  public Account() {}
 
   /**
    * Constructor for account.
    *
-   * @param id id of account
-   * @param userId id of user
+   * @param user user
+   * @param label label
    * @param amount amount of account
    * @param isActive boolean flag
    */
-  public Account(long id, long userId, double amount, boolean isActive) {
-    this.id = id;
-    this.userId = userId;
+  public Account(User user, String label, long amount, boolean isActive) {
+    this.user = user;
+    this.label = label;
     this.amount = amount;
     this.isActive = isActive;
   }
 
-  public long getId() {
-    return id;
+  public User getUser() {
+    return user;
   }
 
-  public void setId(long id) {
-    this.id = id;
+  public void setUser(User user) {
+    this.user = user;
   }
 
-  public long getUserId() {
-    return userId;
+  public String getLabel() {
+    return label;
   }
 
-  public void setUserId(long userId) {
-    this.userId = userId;
+  public void setLabel(String label) {
+    this.label = label;
   }
 
-  public double getAmount() {
+  public long getAmount() {
     return amount;
   }
 
-  public void setAmount(double amount) {
+  public void setAmount(long amount) {
     this.amount = amount;
   }
 
@@ -61,8 +75,9 @@ public class Account {
   @Override
   public int hashCode() {
     int result = 17;
-    result = 31 * result + Long.valueOf(userId).hashCode();
-    result = 31 * result + Double.valueOf(amount).hashCode();
+    result = 31 * result + user.hashCode();
+    result = 31 * result + label.hashCode();
+    result = 31 * result + Long.valueOf(amount).hashCode();
     result = 31 * result + Boolean.valueOf(isActive).hashCode();
 
     return result;
@@ -79,7 +94,8 @@ public class Account {
 
     Account account = (Account) obj;
 
-    return account.userId == userId
+    return account.user.equals(user)
+        && account.label.equals(label)
         && account.amount == amount
         && account.isActive == isActive;
   }

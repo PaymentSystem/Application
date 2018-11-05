@@ -1,0 +1,40 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title th:text="#{user.page}"></title>
+    <style type="text/css">
+        #user {
+            margin: 0 25% 0 25%;
+            width: 50%; /* Ширина слоя */
+            background: #c3c3c3; /* Цвет фона */
+            padding: 10px; /* Поля вокруг текста */
+        }
+    </style>
+</head>
+<body>
+<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
+<table id="user">
+    <th:block th:each="account : ${accountList}">
+        <tr>
+            <td th:text="${account.id}"></td>
+            <td th:text="${account.label}"></td>
+            <td>
+                <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}">view</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+<a th:href="@{${#httpServletRequest.requestURI}+'/addAccount'}">
+    <p th:text="#{account.create}"></p>
+</a>
+</body>
+</html>
