@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.service.impl;
 
+import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
@@ -9,7 +10,7 @@ import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
-import com.epam.lab.paymentsystem.utility.converter.Transformer;
+import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,21 +46,21 @@ public class UserServiceImpl implements UserService {
    * LoginAlreadyExistsException if login already exist, uses method to convert user from {@code
    * Controller} to new user object.
    *
-   * @param user object from {@code UserController}
+   * @param userDto object from {@code UserController}
    * @return user entity from repository
    * @throws LoginAlreadyExistsException if login already exist
    * @see com.epam.lab.paymentsystem.controller
    * @see com.epam.lab.paymentsystem.utility.converter
    */
   @Override
-  public User addUser(User user) throws LoginAlreadyExistsException {
-    User userToAdd = userRepository.getUserByLogin(user.getLogin());
+  public User addUser(UserDto userDto) throws LoginAlreadyExistsException {
+    User userToAdd = userRepository.getUserByLogin(userDto.getLogin());
     if (userToAdd != null) {
       LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
       throw new LoginAlreadyExistsException("Login already exists");
     }
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
-    userToAdd = Transformer.convertUser(user);
+    userToAdd = TransformerToEntity.convertUser(userDto);
     userToAdd.setRole(role);
     userToAdd.setPassword(new BCryptPasswordEncoder().encode(userToAdd.getPassword()));
     userToAdd = userRepository.save(userToAdd);

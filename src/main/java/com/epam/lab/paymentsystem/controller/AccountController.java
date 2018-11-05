@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.controller;
 
+import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
@@ -71,6 +72,8 @@ public class AccountController {
    * Add account form and send it to service layer.
    *
    * @param accountAmount double amount
+   * @param accountLabel  label
+   * @param model         model
    * @return JSP view
    */
   @PostMapping(value = "/user/addAccount")
@@ -79,15 +82,15 @@ public class AccountController {
                            Model model) {
 
     User user = userService.getUserByLogin(CurrentUser.getCurrentUserLogin());
-    Account account = new Account();
-    account.setAmount(accountAmount);
-    account.setLabel(accountLabel);
-    account.setUser(user);
+    AccountDto accountDto = new AccountDto();
+    accountDto.setAmount(accountAmount);
+    accountDto.setLabel(accountLabel);
+    accountDto.setUser(user);
     LOGGER.info("Creating new account from web form");
 
     try {
       LOGGER.info("Account has been created");
-      accountService.createAccount(account);
+      accountService.createAccount(accountDto);
     } catch (UnsupportedOperationException e) {
       model.addAttribute("messageAccount", e.getMessage());
       LOGGER.error("Failed to create new account", e);

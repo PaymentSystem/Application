@@ -1,5 +1,7 @@
 package com.epam.lab.paymentsystem.utility.converter;
 
+import com.epam.lab.paymentsystem.dto.AccountDto;
+import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 
@@ -7,18 +9,18 @@ import com.epam.lab.paymentsystem.entities.User;
  * Utility class provides data transfer between Web and the business layer.
  * All object are transformed by this class before they save in the repository.
  */
-public final class Transformer {
+public final class TransformerToEntity {
 
-  private Transformer() {
+  private TransformerToEntity() {
   }
 
   /**
    * Creates a copy of the object from Web.
    *
-   * @param user from jsp page
+   * @param user from html page
    * @return new user object
    */
-  public static final User convertUser(User user) {
+  public static User convertUser(UserDto user) {
     User convertedUser = new User();
     convertedUser.setId(user.getId());
     convertedUser.setLogin(user.getLogin());
@@ -31,10 +33,10 @@ public final class Transformer {
   /**
    * Creates a copy of the object from Web.
    *
-   * @param account from jsp page
+   * @param account from html page
    * @return new account object
    */
-  public static final Account convertAccount(Account account) {
+  public static Account convertAccount(AccountDto account) {
     Account convertedAccount = new Account();
     convertedAccount.setId(account.getId());
     convertedAccount.setUser(account.getUser());

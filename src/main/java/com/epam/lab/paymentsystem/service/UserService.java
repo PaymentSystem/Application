@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.service;
 
+import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
@@ -19,7 +20,7 @@ public interface UserService {
    * @return user entity from database
    * @throws LoginAlreadyExistsException if login already exist
    */
-  User addUser(User user) throws LoginAlreadyExistsException;
+  User addUser(UserDto user) throws LoginAlreadyExistsException;
 
   List<Account> getAllAccountsByLogin(String login);
 

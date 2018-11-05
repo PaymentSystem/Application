@@ -1,7 +1,7 @@
 package com.epam.lab.paymentsystem.controller;
 
+import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.CurrentUser;
@@ -37,6 +37,7 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+
   @GetMapping(value = "/registration")
   public String getRegistrationPage() {
     return REGISTRATION_PAGE;
@@ -62,7 +63,8 @@ public class UserController {
    * @param userName     name of user from view form
    * @param userLogin    login of user from view form
    * @param userPassword password of user from view form
-   * @return JSP view
+   * @param model        model
+   * @return HTML view
    */
   @PostMapping(value = "/addUser")
   public String addUser(@RequestParam(name = "name") String userName,
@@ -70,13 +72,13 @@ public class UserController {
                         @RequestParam(name = "password") String userPassword,
                         Model model) {
 
-    User user = new User();
-    user.setName(userName);
-    user.setLogin(userLogin);
-    user.setPassword(userPassword);
+    UserDto userDto = new UserDto();
+    userDto.setName(userName);
+    userDto.setLogin(userLogin);
+    userDto.setPassword(userPassword);
 
     try {
-      userService.addUser(user);
+      userService.addUser(userDto);
     } catch (LoginAlreadyExistsException e) {
       LOGGER.error("Exception in addUser in UserController", e);
       model.addAttribute("messageException", e.getMessage());

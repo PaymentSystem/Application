@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.service.impl;
 
+import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
@@ -7,7 +8,6 @@ import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
-import com.epam.lab.paymentsystem.utility.converter.Transformer;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
@@ -37,22 +37,22 @@ public class AccountServiceImpl implements AccountService {
   /**
    * Creates new account in the database.
    *
-   * @param account account
+   * @param accountDto account
    * @return account entity
    */
   @Override
-  public Account createAccount(Account account) throws UnsupportedOperationException {
+  public Account createAccount(AccountDto accountDto) throws UnsupportedOperationException {
     LOGGER.info("Creating new account");
     Account accountToCreate = new Account();
-    if (account.getAmount() < 0) {
+    if (accountDto.getAmount() < 0) {
       LOGGER.error("Passed negative amount of account");
       throw new UnsupportedOperationException("Amount should be positive");
     }
-    accountToCreate.setAmount(account.getAmount());
-    accountToCreate.setLabel(account.getLabel());
-    accountToCreate.setUser(account.getUser());
+    accountToCreate.setAmount(accountDto.getAmount());
+    accountToCreate.setLabel(accountDto.getLabel());
+    accountToCreate.setUser(accountDto.getUser());
     accountToCreate.setActive(true);
-    LOGGER.info("Account has benn created");
+    LOGGER.info("Account has been created");
 
     return accountRepository.save(accountToCreate);
   }
@@ -78,13 +78,11 @@ public class AccountServiceImpl implements AccountService {
       LOGGER.error("Passed same accounts");
       throw new UnsupportedOperationException("Accounts should be different");
     }
-    Account sourceToUpdate = Transformer.convertAccount(source);
-    Account targetToUpdate = Transformer.convertAccount(target);
-    sourceToUpdate.setAmount(source.getAmount() - amount);
-    targetToUpdate.setAmount(target.getAmount() + amount);
+    source.setAmount(source.getAmount() - amount);
+    target.setAmount(target.getAmount() + amount);
     LOGGER.info("Transaction has been created");
-    accountRepository.save(sourceToUpdate);
-    accountRepository.save(targetToUpdate);
+    accountRepository.save(source);
+    accountRepository.save(target);
   }
 
   @Override
