@@ -1,0 +1,52 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <title th:text="#{user.page}"></title>
+</head>
+<body>
+<div class="btn-group">
+    <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+    <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-block">
+            <div class="table table-hover">
+                <table id="user" style="with: 50%">
+                    <thead>
+                    <tr>
+                        <th><p th:text="#{id}"></p></th>
+                        <th><p th:text="#{account.label}"></p></th>
+                        <th><p th:text="#{account.amount}"></p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="account : ${accountList}">
+                        <tr>
+                            <td th:text="${account.id}"></td>
+                            <td th:text="${account.label}"></td>
+                            <td th:text="${account.amount}"></td>
+                            <td>
+                                <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}">view</a>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<a th:href="@{${#httpServletRequest.requestURI}+'/addAccount'}"
+   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+    <p th:text="#{account.create}"></p>
+</a>
+</body>
+</html>

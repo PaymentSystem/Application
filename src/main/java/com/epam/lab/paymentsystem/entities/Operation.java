@@ -10,36 +10,44 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "operations")
 public class Operation extends AbstractEntity {
-
   @ManyToOne
-  @JoinColumn(name = "src_card")
+  @JoinColumn(name = "id_src_card")
   private Card sourceCard;
 
   @ManyToOne
-  @JoinColumn(name = "dst_card")
+  @JoinColumn(name = "id_dst_card")
   private Card targetCard;
 
-  @Column(name = "amount")
+  @Column(name = "transfer_amount")
   private long amount;
 
   @Column(name = "date")
   private LocalDateTime date;
 
-  public Operation() {}
+  public Operation() {
+  }
 
   /**
    * Constructor for operation.
    *
    * @param sourceCard id of source card
    * @param targetCard id of target card
-   * @param amount amount of operation
-   * @param date date of operation
+   * @param amount     amount of operation
+   * @param date       date of operation
    */
   public Operation(Card sourceCard, Card targetCard, long amount, LocalDateTime date) {
     this.sourceCard = sourceCard;
     this.targetCard = targetCard;
     this.amount = amount;
     this.date = date;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public Card getSourceCard() {

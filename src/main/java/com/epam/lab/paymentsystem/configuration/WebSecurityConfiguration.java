@@ -36,7 +36,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .requiresSecure()
         .and()
         .authorizeRequests()
-        .antMatchers("/registration", "/addUser")
+        .antMatchers("/webjars/bootstrap/4.1.3/css/**",
+            "/webjars/bootstrap/4.1.3/js/**",
+            "/webjars/jquery/3.3.1-1/**",
+            "/registration", "/addUser")
         .permitAll()
         .antMatchers("/login")
         .anonymous()

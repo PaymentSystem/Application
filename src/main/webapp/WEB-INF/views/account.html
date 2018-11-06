@@ -1,0 +1,30 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <title th:text="#{account.main}"></title>
+</head>
+<body>
+<div class="btn-group">
+    <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+    <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+</div>
+<table>
+    <th:block th:each="card  : ${cardList}">
+        <tr>
+            <td th:text="${card.id}"></td>
+            <td th:text="${card.label}"></td>
+            <td>
+                <a th:href="@{'/'+${card.id}}">view</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

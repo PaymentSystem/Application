@@ -9,6 +9,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -67,6 +68,13 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
     resolver.setTemplateEngine(templateEngine());
     resolver.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
     registry.viewResolver(resolver);
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry
+        .addResourceHandler("/webjars/**")
+        .addResourceLocations("/webjars/");
   }
 
   /**
