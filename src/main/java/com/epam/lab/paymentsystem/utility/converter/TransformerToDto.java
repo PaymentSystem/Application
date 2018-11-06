@@ -28,7 +28,7 @@ public final class TransformerToDto {
    * @param account from html page
    * @return new account object
    */
-  public static final AccountDto convertAccount(Account account) {
+  public static AccountDto convertAccount(Account account) {
     AccountDto convertedAccount = new AccountDto();
     convertedAccount.setId(account.getId());
     convertedAccount.setUser(account.getUser());

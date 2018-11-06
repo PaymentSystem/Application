@@ -42,14 +42,6 @@ public class Operation extends AbstractEntity {
     this.date = date;
   }
 
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
-  }
-
   public Card getSourceCard() {
     return sourceCard;
   }

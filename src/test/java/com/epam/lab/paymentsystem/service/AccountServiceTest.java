@@ -1,17 +1,18 @@
 package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
-import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
+import com.epam.lab.paymentsystem.utility.CurrentUser;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,11 +22,16 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
 
+  private User user;
   private AccountDto accountDto;
-  private UserDto userDto;
   private long amount;
+  private String login;
   private Account account;
   private Account accountTarget;
+  @Mock
+  private CurrentUser currentUser;
+  @Mock
+  private UserService userService;
   @Mock
   private AccountRepository accountRepository;
   @InjectMocks
@@ -33,17 +39,12 @@ public class AccountServiceTest {
 
   @BeforeEach
   public void startUp() {
-    User user = new User();
-    account = new Account();
-    account.setActive(true);
-    account.setUser(user);
-    account.setLabel("test");
-    accountTarget = new Account();
-    accountTarget.setActive(true);
-    accountTarget.setUser(user);
-    accountTarget.setLabel("test");
+    MockitoAnnotations.initMocks(this);
+    user = new User();
+    account = new Account(user, "test", 0, true);
+    accountTarget = new Account(user, "test", 0, true);
     amount = 1000;
-    userDto = TransformerToDto.convertUser(user);
+    login = "test";
   }
 
   @Test
@@ -59,6 +60,8 @@ public class AccountServiceTest {
   public void testCreateAccountSavesAccount() {
     account.setAmount(1);
     accountDto = TransformerToDto.convertAccount(account);
+    when(currentUser.getCurrentUserLogin()).thenReturn(login);
+    when(userService.getUserByLogin(login)).thenReturn(user);
     when(accountRepository.save(account)).thenReturn(account);
     assertEquals(account, accountService.createAccount(accountDto));
   }
