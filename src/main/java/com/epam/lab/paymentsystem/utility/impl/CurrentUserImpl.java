@@ -11,24 +11,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CurrentUserImpl implements CurrentUser {
-
-  private static CurrentUserImpl instance;
-
-  private CurrentUserImpl() {
-  }
-
-  /**
-   * Return singleton instance of CurrentUser class.
-   *
-   * @return CurrentUser
-   */
-  public static CurrentUserImpl getInstance() {
-    if (instance == null) {
-      instance = new CurrentUserImpl();
-    }
-    return instance;
-  }
-
   /**
    * Returns current logged user's login.
    *

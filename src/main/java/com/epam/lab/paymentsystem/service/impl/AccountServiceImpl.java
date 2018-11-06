@@ -103,7 +103,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsByLogin(String login) {
+  public List<Account> getAllAccountsOfUser() {
+    String login = currentUser.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }
