@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CardService {
 
-  List<Card> getAllCardsByAccount(Account account);
+  List<Card> getAllCardsByAccountId(long id);
 
   List<Card> getAllCardsByLogin(String login);
 

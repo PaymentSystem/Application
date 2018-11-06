@@ -5,8 +5,8 @@ import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
-import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
+import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
@@ -26,8 +26,6 @@ public class AccountServiceImpl implements AccountService {
   private AccountRepository accountRepository;
   @Autowired
   private UserService userService;
-  @Autowired
-  private CardService cardService;
 
   public AccountServiceImpl(AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
@@ -42,15 +40,11 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public Account createAccount(AccountDto accountDto) throws UnsupportedOperationException {
     LOGGER.info("Creating new account");
-    Account accountToCreate = new Account();
     if (accountDto.getAmount() < 0) {
       LOGGER.error("Passed negative amount of account");
       throw new UnsupportedOperationException("Amount should be positive");
     }
-    accountToCreate.setAmount(accountDto.getAmount());
-    accountToCreate.setLabel(accountDto.getLabel());
-    accountToCreate.setUser(accountDto.getUser());
-    accountToCreate.setActive(true);
+    Account accountToCreate = TransformerToEntity.convertAccount(accountDto);
     LOGGER.info("Account has been created");
 
     return accountRepository.save(accountToCreate);
@@ -65,21 +59,34 @@ public class AccountServiceImpl implements AccountService {
    * @throws UnsupportedOperationException if there's not enough money on source account
    */
   @Override
-  @Transactional
   public void makeTransaction(Account source, Account target, long amount)
       throws UnsupportedOperationException {
-    LOGGER.info("Creating transaction");
-    if (source.getAmount() - amount < 0) {
-      LOGGER.error("Not enough money on source account");
-      throw new UnsupportedOperationException("Not enough money");
-    }
     if (source.getId() == target.getId()) {
       LOGGER.error("Passed same accounts");
       throw new UnsupportedOperationException("Accounts should be different");
     }
+    LOGGER.info("Creating transaction");
+    moneyTransfer(source, target, amount);
+    LOGGER.info("Transaction has been created");
+  }
+
+  /**
+   * Provides money transfer.
+   *
+   * @param source  source account
+   * @param target target account
+   * @param amount amount of transfer
+   * @throws UnsupportedOperationException if not enough money
+   */
+  @Transactional
+  public void moneyTransfer(Account source, Account target, long amount)
+      throws UnsupportedOperationException {
+    if (source.getAmount() - amount < 0) {
+      LOGGER.error("Not enough money on source account");
+      throw new UnsupportedOperationException("Not enough money");
+    }
     source.setAmount(source.getAmount() - amount);
     target.setAmount(target.getAmount() + amount);
-    LOGGER.info("Transaction has been created");
     accountRepository.save(source);
     accountRepository.save(target);
   }

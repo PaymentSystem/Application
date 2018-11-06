@@ -33,8 +33,7 @@ public class CardController {
   @GetMapping(value = "/user/account/{accountId}")
   public String getAccountPage(@PathVariable(name = "accountId") long id, Model model) {
     LOGGER.info("Access to account page");
-    Account account = accountService.getAccountById(id);
-    List<Card> cards = cardService.getAllCardsByAccount(account);
+    List<Card> cards = cardService.getAllCardsByAccountId(id);
     model.addAttribute("cardList", cards);
     return ACCOUNT_PAGE;
   }

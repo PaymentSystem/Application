@@ -2,7 +2,6 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -54,7 +52,7 @@ public class AccountController {
    */
   @GetMapping(value = "/user")
   public String getUserPage(Model model) {
-    List<Account> accounts = userService.getAllAccountsByLogin(CurrentUser.getCurrentUserLogin());
+    List<Account> accounts = accountService.getAllAccountsByLogin(CurrentUser.getCurrentUserLogin());
     model.addAttribute("accountList", accounts);
     return USER_PAGE;
   }
