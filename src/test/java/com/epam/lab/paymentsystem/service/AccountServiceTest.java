@@ -76,7 +76,7 @@ public class AccountServiceTest {
   public void testMakeTransactionFailsOnSourceAccountAmount() {
     account.setAmount(100);
     assertThrows(UnsupportedOperationException.class,
-        () -> accountService.moneyTransfer(account, accountTarget, amount),
+        () -> accountService.makeTransaction(account, accountTarget, amount),
         "Not enough money");
   }
 }

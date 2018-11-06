@@ -38,6 +38,15 @@ public interface AccountService {
       throws UnsupportedOperationException;
 
   /**
+   * Interface method which provides money transfer.
+   *
+   * @param source source account
+   * @param target target account
+   * @param amount amount of transfer
+   */
+  void moneyTransfer(Account source, Account target, long amount);
+
+  /**
    * Returns account by given id.
    *
    * @param id id
