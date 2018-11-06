@@ -2,9 +2,6 @@ package com.epam.lab.paymentsystem.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,13 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
-public class User {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id_user")
-  private long id;
-
+public class User extends AbstractEntity {
   @Column(name = "name")
   private String name;
 

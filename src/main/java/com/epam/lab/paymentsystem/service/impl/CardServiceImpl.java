@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class CardServiceImpl implements CardService {
   @Autowired
   private AccountService accountService;
+
   @Override
   public List<Card> getAllCardsByAccountId(long id) {
     Account account = accountService.getAccountById(id);
