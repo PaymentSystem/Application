@@ -2,7 +2,6 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
-
 import java.util.List;
 
 /**

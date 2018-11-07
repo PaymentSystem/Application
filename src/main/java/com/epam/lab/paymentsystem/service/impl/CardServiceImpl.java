@@ -2,6 +2,7 @@ package com.epam.lab.paymentsystem.service.impl;
 
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
+import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import java.util.List;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 public class CardServiceImpl implements CardService {
   @Autowired
   private AccountService accountService;
+
+  @Autowired
+  private CardRepository cardRepository;
 
   @Override
   public List<Card> getAllCardsByAccountId(long id) {
@@ -27,5 +31,10 @@ public class CardServiceImpl implements CardService {
   @Override
   public Card createCard(Card card) {
     return null;
+  }
+
+  @Override
+  public Card getCardById(Long id) {
+    return cardRepository.getCardById(id);
   }
 }

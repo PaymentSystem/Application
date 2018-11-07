@@ -1,6 +1,5 @@
 package com.epam.lab.paymentsystem.controller;
 
-import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
@@ -15,13 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class CardController {
+  private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
+  private static final String ACCOUNT_PAGE = "account";
   @Autowired
   private CardService cardService;
   @Autowired
   private AccountService accountService;
-
-  private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
-  private static final String ACCOUNT_PAGE = "account";
 
   /**
    * Returns account page with list of all cards linked to that account.

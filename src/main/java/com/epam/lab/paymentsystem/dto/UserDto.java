@@ -7,6 +7,7 @@ public class UserDto {
   private String login;
   private String name;
   private String password;
+  private Role role;
 
   public long getId() {
     return id;
@@ -47,6 +48,4 @@ public class UserDto {
   public void setRole(Role role) {
     this.role = role;
   }
-
-  private Role role;
 }
