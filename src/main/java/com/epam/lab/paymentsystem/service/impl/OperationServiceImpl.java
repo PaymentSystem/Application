@@ -3,10 +3,13 @@ package com.epam.lab.paymentsystem.service.impl;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
+import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.repository.OperationRepository;
 import com.epam.lab.paymentsystem.service.OperationService;
+import java.util.List;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,4 +73,13 @@ public class OperationServiceImpl implements OperationService {
   public void writeHistory(Operation operation) {
     operationRepository.save(operation);
   }
+
+  @Override
+  public List<Operation> historyOperation(long cardId) {
+
+    List<Operation> history = operationRepository.getAllBySourceCardId(cardId);
+    return history;
+  }
+
+
 }

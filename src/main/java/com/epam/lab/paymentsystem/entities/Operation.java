@@ -3,43 +3,59 @@ package com.epam.lab.paymentsystem.entities;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "operations")
-public class Operation extends AbstractEntity {
+public class Operation {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id_operation")
+  private long id;
 
   @ManyToOne
-  @JoinColumn(name = "src_card")
+  @JoinColumn(name = "src_card_id")
   private Card sourceCard;
 
   @ManyToOne
-  @JoinColumn(name = "dst_card")
+  @JoinColumn(name = "dst_card_id")
   private Card targetCard;
 
-  @Column(name = "amount")
+  @Column(name = "transfer_amount")
   private long amount;
 
-  @Column(name = "date")
+  @Column(name = "date_op")
   private LocalDateTime date;
 
-  public Operation() {}
+  public Operation() {
+  }
 
   /**
    * Constructor for operation.
    *
    * @param sourceCard id of source card
    * @param targetCard id of target card
-   * @param amount amount of operation
-   * @param date date of operation
+   * @param amount     amount of operation
+   * @param date       date of operation
    */
   public Operation(Card sourceCard, Card targetCard, long amount, LocalDateTime date) {
     this.sourceCard = sourceCard;
     this.targetCard = targetCard;
     this.amount = amount;
     this.date = date;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public Card getSourceCard() {

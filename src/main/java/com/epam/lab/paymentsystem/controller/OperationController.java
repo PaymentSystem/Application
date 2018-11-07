@@ -4,13 +4,16 @@ import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.OperationService;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -20,6 +23,9 @@ public class OperationController {
   private static final String OPERATION_PAGE = "operation";
   private static final String OPERATION_FAIL_PAGE = "operationFail";
   private static final String HISTORY_PAGE = "history";
+  private static long cardSrcId;
+  private static long cardDstId;
+  private static LocalDateTime date;
 
   /**
    * Instance.
@@ -32,11 +38,7 @@ public class OperationController {
   public String getOperationPage() {
     return OPERATION_PAGE;
   }
-//
-//  @GetMapping(value = "/history")
-//  public String getHistoryPage() {
-//    return HISTORY_PAGE;
-//  }
+
 
   /**
    * @return view
@@ -48,14 +50,16 @@ public class OperationController {
                                  @RequestParam(name = "dst") Long dstId,
                                  @RequestParam(name = "amount") Long amount) {
 
-    LocalDateTime date = LocalDateTime.now();
+    cardSrcId = srcId;
+    cardDstId = dstId;
+    date = LocalDateTime.now();
     Operation operation = new Operation();
 
     Card srcCard = new Card();
-    srcCard.setId(srcId);
+    srcCard.setId(cardSrcId);
 
     Card dstCard = new Card();
-    dstCard.setId(dstId);
+    dstCard.setId(cardDstId);
 
     operation.setAmount(amount);
     operation.setSourceCard(srcCard);
@@ -73,9 +77,13 @@ public class OperationController {
     return OPERATION_PAGE;
   }
 
-  @PostMapping(value = "/history")
-  public String showHistory() {
+  @GetMapping(value = "/history")
+  public String getCardHistory(Model model) {
+    List<Operation> history = operationService.historyOperation(cardSrcId);
+    model.addAttribute("historyOperation", history);
+
     return HISTORY_PAGE;
   }
+
 
 }
