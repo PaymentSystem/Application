@@ -5,7 +5,6 @@ import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
-import com.epam.lab.paymentsystem.utility.CurrentUser;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +27,6 @@ public class AccountServiceTest {
   private String login;
   private Account account;
   private Account accountTarget;
-  @Mock
-  private CurrentUser currentUser;
   @Mock
   private UserService userService;
   @Mock
@@ -60,7 +57,7 @@ public class AccountServiceTest {
   public void testCreateAccountSavesAccount() {
     account.setAmount(1);
     accountDto = TransformerToDto.convertAccount(account);
-    when(currentUser.getCurrentUserLogin()).thenReturn(login);
+    when(userService.getCurrentUserLogin()).thenReturn(login);
     when(userService.getUserByLogin(login)).thenReturn(user);
     when(accountRepository.save(account)).thenReturn(account);
     assertEquals(account, accountService.createAccount(accountDto));

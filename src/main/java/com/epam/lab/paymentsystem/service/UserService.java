@@ -21,4 +21,6 @@ public interface UserService {
   User addUser(UserDto user) throws LoginAlreadyExistsException;
 
   User getUserByLogin(String login);
+
+  String getCurrentUserLogin();
 }

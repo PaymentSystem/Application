@@ -44,7 +44,7 @@ public class AccountController {
    */
   @GetMapping(value = "/user")
   public String getUserPage(Model model) {
-    List<Account> accounts = accountService.getAllAccountsOfUser();
+    List<Account> accounts = accountService.getAllAccountsOfCurrentUser();
     model.addAttribute("accountList", accounts);
     return USER_PAGE;
   }

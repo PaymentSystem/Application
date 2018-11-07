@@ -13,6 +13,9 @@ import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +71,17 @@ public class UserServiceImpl implements UserService {
   @Override
   public User getUserByLogin(String login) {
     return userRepository.getUserByLogin(login);
+  }
+
+  /**
+   * Returns current logged user's login.
+   *
+   * @return login
+   */
+  @Override
+  public String getCurrentUserLogin() {
+    SecurityContext context = SecurityContextHolder.getContext();
+    Authentication authentication = context.getAuthentication();
+    return authentication.getName();
   }
 }

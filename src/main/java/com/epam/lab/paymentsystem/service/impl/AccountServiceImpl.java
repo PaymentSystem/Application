@@ -6,7 +6,6 @@ import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
-import com.epam.lab.paymentsystem.utility.CurrentUser;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -27,8 +26,6 @@ public class AccountServiceImpl implements AccountService {
   private AccountRepository accountRepository;
   @Autowired
   private UserService userService;
-  @Autowired
-  private CurrentUser currentUser;
 
   public AccountServiceImpl(AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
@@ -49,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
     }
     Account accountToCreate = TransformerToEntity.convertAccount(accountDto);
 
-    String login = currentUser.getCurrentUserLogin();
+    String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     accountToCreate.setUser(user);
     accountToCreate.setActive(true);
@@ -103,8 +100,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsOfUser() {
-    String login = currentUser.getCurrentUserLogin();
+  public List<Account> getAllAccountsOfCurrentUser() {
+    String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }
