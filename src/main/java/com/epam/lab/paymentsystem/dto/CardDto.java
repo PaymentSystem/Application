@@ -7,6 +7,9 @@ public class CardDto {
   private String label;
   private boolean isActive;
 
+  public CardDto() {
+  }
+
   /**
    * Constructor with parameters for card dto.
    *

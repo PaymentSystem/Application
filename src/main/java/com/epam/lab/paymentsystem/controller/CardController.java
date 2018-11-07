@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CardController {
-  @Autowired private UserService userService;
-  @Autowired private CardService cardService;
-  @Autowired private AccountService accountService;
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private CardService cardService;
 
   private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
   private static final String ADD_CARD_PAGE = "addCard";

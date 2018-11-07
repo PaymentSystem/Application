@@ -15,31 +15,53 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class provides implementation of the CardService, provides methods to manipulate
+ * the data using repositories methods. The class is designed to implement business logic.
+ */
 @Service
 public class CardServiceImpl implements CardService {
 
+  @Autowired
   private CardRepository cardRepository;
 
   private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
-  @Autowired private UserService userService;
-  @Autowired private AccountService accountService;
+  @Autowired
+  private UserService userService;
 
-  public CardServiceImpl(CardRepository cardRepository) {
-    this.cardRepository = cardRepository;
-  }
+  @Autowired
+  private AccountService accountService;
 
+  /**
+   * Returns list of cards by given account id.
+   *
+   * @param id account id
+   * @return list of cards
+   */
   @Override
   public List<Card> getAllCardsByAccountId(long id) {
     Account account = accountService.getAccountById(id);
     return cardRepository.getAllByAccount(account);
   }
 
+  /**
+   * Returns list of cards by given login.
+   *
+   * @param login user's login
+   * @return list of cards
+   */
   @Override
   public List<Card> getAllCardsByLogin(String login) {
     return null;
   }
 
+  /**
+   * Creates new card in the database.
+   *
+   * @param card card dto passed by controller
+   * @return card entity
+   */
   @Override
   public Card createCard(CardDto card) {
     LOGGER.info("Creating new card");
