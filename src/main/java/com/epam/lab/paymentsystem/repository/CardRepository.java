@@ -3,6 +3,8 @@ package com.epam.lab.paymentsystem.repository;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import java.util.List;
+
+import com.epam.lab.paymentsystem.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -22,6 +24,14 @@ public interface CardRepository extends JpaRepository<Card, Long> {
    * @return list of cards by account
    */
   List<Card> getAllByAccount(Account account);
+
+  /**
+   * Returns card form database by passed user.
+   *
+   * @param user user
+   * @return list of cards by user
+   */
+  List<Card> getAllByUser(User user);
 
   /**
    * Returns card form database by passed id.

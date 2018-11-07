@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CardServiceTest {
     private long accountId;
+    private String login;
     private Account account;
     private List<Card> cards;
     private User user;
@@ -45,14 +46,15 @@ public class CardServiceTest {
     public void startUp() {
         MockitoAnnotations.initMocks(this);
         accountId = 1;
+        login = "test";
         account = new Account();
         cards = new ArrayList<>();
 
         user = new User();
-        user.setLogin("test");
+        user.setLogin(login);
 
         card = new Card(account, user, "test", true);
-        cardDto = new CardDto(0, accountId, "test", "test", true);
+        cardDto = new CardDto(0, accountId, login, "test", true);
     }
 
     @Test
@@ -60,6 +62,13 @@ public class CardServiceTest {
         when(accountService.getAccountById(accountId)).thenReturn(account);
         when(cardRepository.getAllByAccount(account)).thenReturn(cards);
         assertEquals(cards, cardService.getAllCardsByAccountId(accountId));
+    }
+
+    @Test
+    public void testGetAllCardsByUserLoginReturnsCardsList() {
+        when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
+        when(cardRepository.getAllByUser(user)).thenReturn(cards);
+        assertEquals(cards, cardService.getAllCardsByLogin(login));
     }
 
     @Test

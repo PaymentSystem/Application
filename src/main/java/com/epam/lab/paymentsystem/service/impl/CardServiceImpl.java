@@ -53,7 +53,8 @@ public class CardServiceImpl implements CardService {
    */
   @Override
   public List<Card> getAllCardsByLogin(String login) {
-    return null;
+    User user = userService.getUserByLogin(login);
+    return cardRepository.getAllByUser(user);
   }
 
   /**
