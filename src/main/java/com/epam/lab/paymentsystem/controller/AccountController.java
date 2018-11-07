@@ -2,12 +2,8 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.service.AccountService;
-import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
-import com.epam.lab.paymentsystem.service.impl.UserServiceImpl;
-import com.epam.lab.paymentsystem.utility.converter.CurrentUser;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,14 +30,10 @@ public class AccountController {
   private static final String USER_PAGE = "user";
 
   @Autowired
-  private UserService userService;
-
-  @Autowired
   private AccountService accountService;
 
-  public AccountController(AccountServiceImpl accountService, UserServiceImpl userService) {
+  public AccountController(AccountServiceImpl accountService) {
     this.accountService = accountService;
-    this.userService = userService;
   }
 
   /**
@@ -52,8 +44,7 @@ public class AccountController {
    */
   @GetMapping(value = "/user")
   public String getUserPage(Model model) {
-    List<Account> accounts = accountService
-        .getAllAccountsByLogin(CurrentUser.getCurrentUserLogin());
+    List<Account> accounts = accountService.getAllAccountsOfCurrentUser();
     model.addAttribute("accountList", accounts);
     return USER_PAGE;
   }
@@ -77,11 +68,7 @@ public class AccountController {
                            @RequestParam(name = "amount") long accountAmount,
                            Model model) {
 
-    User user = userService.getUserByLogin(CurrentUser.getCurrentUserLogin());
-    AccountDto accountDto = new AccountDto();
-    accountDto.setAmount(accountAmount);
-    accountDto.setLabel(accountLabel);
-    accountDto.setUser(user);
+    AccountDto accountDto = new AccountDto(0, null, accountLabel, accountAmount, false);
     LOGGER.info("Creating new account from web form");
 
     try {

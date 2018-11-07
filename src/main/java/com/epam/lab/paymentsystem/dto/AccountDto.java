@@ -9,6 +9,26 @@ public class AccountDto {
   private long amount;
   private boolean isActive;
 
+  public AccountDto() {
+  }
+
+  /**
+   * Constructor with parameters for account dto.
+   *
+   * @param id       account's id
+   * @param user     account linked to this user
+   * @param label    account's label
+   * @param amount   account's amount
+   * @param isActive boolean flag
+   */
+  public AccountDto(long id, User user, String label, long amount, boolean isActive) {
+    this.id = id;
+    this.user = user;
+    this.label = label;
+    this.amount = amount;
+    this.isActive = isActive;
+  }
+
   public long getId() {
     return id;
   }
