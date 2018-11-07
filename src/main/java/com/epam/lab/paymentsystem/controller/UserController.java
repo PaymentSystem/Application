@@ -55,10 +55,7 @@ public class UserController {
                         @RequestParam(name = "password") String userPassword,
                         Model model) {
 
-    UserDto userDto = new UserDto();
-    userDto.setName(userName);
-    userDto.setLogin(userLogin);
-    userDto.setPassword(userPassword);
+    UserDto userDto = new UserDto(0, userLogin, userName, userPassword, null);
 
     try {
       userService.addUser(userDto);

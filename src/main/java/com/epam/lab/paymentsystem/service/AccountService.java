@@ -12,10 +12,9 @@ public interface AccountService {
   /**
    * Returns list of accounts by user's login.
    *
-   * @param login user's login
    * @return list of accounts
    */
-  List<Account> getAllAccountsByLogin(String login);
+  List<Account> getAllAccountsOfCurrentUser();
 
   /**
    * Saves in the database account entity converted from accountDto.
@@ -36,6 +35,15 @@ public interface AccountService {
    */
   void makeTransaction(Account source, Account target, long amount)
       throws UnsupportedOperationException;
+
+  /**
+   * Interface method which provides money transfer.
+   *
+   * @param source source account
+   * @param target target account
+   * @param amount amount of transfer
+   */
+  void moneyTransfer(Account source, Account target, long amount);
 
   /**
    * Returns account by given id.

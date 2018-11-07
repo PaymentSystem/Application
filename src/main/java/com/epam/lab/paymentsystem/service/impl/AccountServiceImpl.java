@@ -45,6 +45,11 @@ public class AccountServiceImpl implements AccountService {
       throw new UnsupportedOperationException("Amount should be positive");
     }
     Account accountToCreate = TransformerToEntity.convertAccount(accountDto);
+
+    String login = userService.getCurrentUserLogin();
+    User user = userService.getUserByLogin(login);
+    accountToCreate.setUser(user);
+    accountToCreate.setActive(true);
     LOGGER.info("Account has been created");
 
     return accountRepository.save(accountToCreate);
@@ -59,11 +64,16 @@ public class AccountServiceImpl implements AccountService {
    * @throws UnsupportedOperationException if there's not enough money on source account
    */
   @Override
+  @Transactional
   public void makeTransaction(Account source, Account target, long amount)
       throws UnsupportedOperationException {
     if (source.getId() == target.getId()) {
       LOGGER.error("Passed same accounts");
       throw new UnsupportedOperationException("Accounts should be different");
+    }
+    if ((source.getAmount() - amount) < 0) {
+      LOGGER.error("Not enough money on source account");
+      throw new UnsupportedOperationException("Not enough money");
     }
     LOGGER.info("Creating transaction");
     moneyTransfer(source, target, amount);
@@ -73,18 +83,11 @@ public class AccountServiceImpl implements AccountService {
   /**
    * Provides money transfer.
    *
-   * @param source  source account
+   * @param source source account
    * @param target target account
    * @param amount amount of transfer
-   * @throws UnsupportedOperationException if not enough money
    */
-  @Transactional
-  public void moneyTransfer(Account source, Account target, long amount)
-      throws UnsupportedOperationException {
-    if (source.getAmount() - amount < 0) {
-      LOGGER.error("Not enough money on source account");
-      throw new UnsupportedOperationException("Not enough money");
-    }
+  public void moneyTransfer(Account source, Account target, long amount) {
     source.setAmount(source.getAmount() - amount);
     target.setAmount(target.getAmount() + amount);
     accountRepository.save(source);
@@ -97,7 +100,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsByLogin(String login) {
+  public List<Account> getAllAccountsOfCurrentUser() {
+    String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }
