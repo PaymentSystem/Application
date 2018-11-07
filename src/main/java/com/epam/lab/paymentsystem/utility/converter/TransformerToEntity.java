@@ -1,8 +1,10 @@
 package com.epam.lab.paymentsystem.utility.converter;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
+import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
+import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
 
 /**

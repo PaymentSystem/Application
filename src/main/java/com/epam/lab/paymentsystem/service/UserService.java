@@ -3,6 +3,7 @@ package com.epam.lab.paymentsystem.service;
 import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,4 +22,6 @@ public interface UserService {
   User addUser(UserDto user) throws LoginAlreadyExistsException;
 
   User getUserByLogin(String login);
+
+  List<User> getAllUsers();
 }
