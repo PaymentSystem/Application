@@ -33,7 +33,7 @@ public final class TransformerToDto {
     convertedAccount.setId(account.getId());
     convertedAccount.setUser(account.getUser());
     convertedAccount.setLabel(account.getLabel());
-    convertedAccount.setActive(account.getActive());
+    convertedAccount.setActive(account.getIsActive());
     convertedAccount.setAmount(account.getAmount());
     return convertedAccount;
   }

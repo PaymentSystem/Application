@@ -79,4 +79,20 @@ public class AccountServiceTest {
         () -> accountService.makeTransaction(account, accountTarget, amount),
         "Not enough money");
   }
+
+  @Test
+  public void testMakeTransactionFailsOnSourceAccountIsBlocked() {
+    account.setIsActive(false);
+    assertThrows(UnsupportedOperationException.class,
+        () -> accountService.makeTransaction(account, accountTarget, amount),
+        "Not enough money");
+  }
+
+  @Test
+  public void testMakeTransactionFailsOnTargetAccountIsBlocked() {
+    accountTarget.setIsActive(false);
+    assertThrows(UnsupportedOperationException.class,
+        () -> accountService.makeTransaction(account, accountTarget, amount),
+        "Not enough money");
+  }
 }

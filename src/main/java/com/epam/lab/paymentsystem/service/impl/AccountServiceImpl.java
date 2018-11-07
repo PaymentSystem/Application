@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     accountToCreate.setUser(user);
-    accountToCreate.setActive(true);
+    accountToCreate.setIsActive(true);
     LOGGER.info("Account has been created");
 
     return accountRepository.save(accountToCreate);
@@ -74,6 +74,14 @@ public class AccountServiceImpl implements AccountService {
     if ((source.getAmount() - amount) < 0) {
       LOGGER.error("Not enough money on source account");
       throw new UnsupportedOperationException("Not enough money");
+    }
+    if (!source.getIsActive()) {
+      LOGGER.error("Source account is blocked");
+      throw new UnsupportedOperationException("Source account is blocked");
+    }
+    if (!target.getIsActive()) {
+      LOGGER.error("Target account is blocked");
+      throw new UnsupportedOperationException("Target account is blocked");
     }
     LOGGER.info("Creating transaction");
     moneyTransfer(source, target, amount);
@@ -100,8 +108,21 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsOfCurrentUser() {
-    String login = userService.getCurrentUserLogin();
+  public Account blockAccountById(long id) {
+    Account account = accountRepository.getAccountById(id);
+    account.setIsActive(false);
+    return accountRepository.save(account);
+  }
+
+  @Override
+  public Account unblockAccountById(long id) {
+    Account account = accountRepository.getAccountById(id);
+    account.setIsActive(true);
+    return accountRepository.save(account);
+  }
+
+  @Override
+  public List<Account> getAllAccountsOfCurrentUser(String login) {
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }

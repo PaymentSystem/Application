@@ -15,6 +15,7 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
+<div th:if="${#authorization.expression('isAuthenticated()')}">Content For Authenticated</div>
 <form id="registrationLayer" action="addUser" method="post">
     <h1><p th:text="#{user.registration}"/></h1>
     <p th:text="#{user.fillForm}"/>

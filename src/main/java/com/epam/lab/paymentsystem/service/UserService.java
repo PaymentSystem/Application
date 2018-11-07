@@ -23,4 +23,8 @@ public interface UserService {
   User getUserByLogin(String login);
 
   String getCurrentUserLogin();
+
+  User blockUser(User user);
+
+  User unblockUser(User user);
 }

@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <!-- Required meta tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,6 +16,33 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
+<div>
+    <p th:text="#{user.login}+' : '+${userOnPage.login}"></p>
+    <p th:text="#{user.status}+' : '+${userOnPage.role.roleStatus}"></p>
+</div>
+<table th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+    <tr>
+        <th>
+            <form th:action="@{${userLogin}+'/block'}" method="post">
+                <button type="submit" class="btn btn-danger">
+                    <p th:text="#{user.block}"/>
+                </button>
+            </form>
+        </th>
+        <th>
+            <form th:action="@{${userLogin}+'/unblock'}" method="post">
+                <button type="submit" class="btn btn-danger">
+                    <p th:text="#{user.unblock}"/>
+                </button>
+            </form>
+        </th>
+    </tr>
+</table>
+<div>
+    <a href="logout" class="btn btn-/primary btn-light active" role="button" aria-pressed="true">
+        <p th:text="#{user.logout}"></p>
+    </a>
+</div>
 <div class="container">
     <div class="card">
         <div class="card-block">
@@ -25,6 +53,7 @@
                         <th><p th:text="#{id}"></p></th>
                         <th><p th:text="#{account.label}"></p></th>
                         <th><p th:text="#{account.amount}"></p></th>
+                        <th><p th:text="#{account.isActive}"></p></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -33,8 +62,25 @@
                             <td th:text="${account.id}"></td>
                             <td th:text="${account.label}"></td>
                             <td th:text="${account.amount}"></td>
-                            <td>
-                                <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}">view</a>
+                            <td th:text="${account.isActive}"></td>
+                            <td th:if="${#httpServletRequest.isUserInRole('USER')}">
+                                <a th:href="@{__${#httpServletRequest.requestURI}__/account/__${account.id}__}">view</a>
+                            </td>
+                            <td th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                                <form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"
+                                      method="post">
+                                    <button type="submit" class="btn btn-danger">
+                                        <p th:text="#{user.block}"/>
+                                    </button>
+                                </form>
+                            </td>
+                            <td th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                                <form th:action="@{${userLogin}+'/account/'+${account.id}+'/unblock'}"
+                                      method="post">
+                                    <button type="submit" class="btn btn-danger">
+                                        <p th:text="#{user.unblock}"/>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     </th:block>
@@ -44,7 +90,8 @@
         </div>
     </div>
 </div>
-<a th:href="@{${#httpServletRequest.requestURI}+'/addAccount'}"
+<a th:if="${currentUserLogin}==${userLogin}"
+   th:href="@{__${#httpServletRequest.requestURI}__/addAccount}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{account.create}"></p>
 </a>

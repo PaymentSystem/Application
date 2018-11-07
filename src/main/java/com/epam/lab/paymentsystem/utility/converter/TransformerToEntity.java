@@ -41,7 +41,7 @@ public final class TransformerToEntity {
     convertedAccount.setId(account.getId());
     convertedAccount.setUser(account.getUser());
     convertedAccount.setLabel(account.getLabel());
-    convertedAccount.setActive(account.getActive());
+    convertedAccount.setIsActive(account.getActive());
     convertedAccount.setAmount(account.getAmount());
     return convertedAccount;
   }
