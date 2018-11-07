@@ -13,7 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User extends AbstractEntity {
-
   @Column(name = "name")
   private String name;
 
@@ -27,21 +26,30 @@ public class User extends AbstractEntity {
   @JoinColumn(name = "id_role")
   private Role role;
 
-  public User() {}
+  public User() {
+  }
 
   /**
    * Instantiates a new User.
    *
-   * @param name the name
+   * @param name     the name
    * @param password the password
-   * @param login the login
-   * @param role the role
+   * @param login    the login
+   * @param role     the role
    */
   public User(String name, String password, String login, Role role) {
     this.name = name;
     this.password = password;
     this.login = login;
     this.role = role;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getName() {

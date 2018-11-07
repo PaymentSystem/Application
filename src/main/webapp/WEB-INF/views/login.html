@@ -5,12 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <title>Login page</title>
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <title th:text="#{loginpage}"></title>
     <style type="text/css">
         #registrationLayer {
             margin: 0 25% 0 25%;
@@ -23,20 +21,23 @@
 </head>
 
 <body>
-<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
+<div class="btn-group">
+    <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+    <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+</div>
 <form id="loginLayer" action="login" method="post">
-    <h1><p th:text = "#{user.login}"/></h1>
-    <p th:text = "#{user.fillLogin}"/></p>
+    <h1><p th:text="#{user.login}"/></h1>
+    <p th:text="#{user.fillLogin}"/></p>
     <hr>
 
     <table style="with: 50%">
         <tr>
-            <td><label for="login"><b><p th:text = "#{user.login}"/> </b></label></td>
+            <td><label for="login"><b><p th:text="#{user.login}"/></b></label></td>
             <td><input type="text" name="username" class="form-control input-lg"
                        th:placeholder="#{user.placeholder.login}" id="login" required></td>
         </tr>
         <tr>
-            <td><label for="password"><b><p th:text = "#{user.password}"/> </b></label></td>
+            <td><label for="password"><b><p th:text="#{user.password}"/></b></label></td>
             <td><input type="password" name="password" class="form-control input-lg"
                        th:placeholder="#{user.placeholder.password}" id="password" required>
             </td>
@@ -44,7 +45,7 @@
     </table>
     <hr>
     <button th:type="submit" class="btn btn-success">
-        <p th:text = "#{user.login}"/>
+        <p th:text="#{user.login}"/>
     </button>
 </form>
 </body>

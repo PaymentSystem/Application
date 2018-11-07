@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.service;
 
+import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
@@ -7,6 +8,7 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.impl.UserServiceImpl;
+import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,9 +23,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
+  private User user;
+  private UserDto userDto;
   @Mock
   private RoleRepository roleRepository;
-  private User user;
 
   @Mock
   private UserRepository userRepository;
@@ -36,21 +39,22 @@ class UserServiceTest {
     user = new User();
     user.setLogin("test");
     user.setPassword("testPassword");
+    userDto = TransformerToDto.convertUser(user);
   }
 
   @Test
   public void testAddUserThrowsException() {
     when(userRepository.getUserByLogin(user.getLogin())).thenReturn(user);
     assertThrows(LoginAlreadyExistsException.class,
-        () -> userService.addUser(user),
+        () -> userService.addUser(userDto),
         "Login already exists");
   }
 
   @Test
- public void testAddUserCreateUser() throws LoginAlreadyExistsException {
+  public void testAddUserCreateUser() throws LoginAlreadyExistsException {
     when(roleRepository.getRoleByRoleStatus(Roles.USER)).thenReturn(new Role());
     when(userRepository.getUserByLogin(user.getLogin())).thenReturn(null);
     when(userRepository.save(user)).thenReturn(user);
-    assertEquals(user, userService.addUser(user));
+    assertEquals(user, userService.addUser(userDto));
   }
 }

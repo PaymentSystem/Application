@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractEntity {
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   long id;
 
   public long getId() {

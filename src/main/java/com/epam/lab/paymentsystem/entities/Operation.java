@@ -3,33 +3,25 @@ package com.epam.lab.paymentsystem.entities;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "operations")
-public class Operation {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id_operation")
-  private long id;
-
+public class Operation extends AbstractEntity {
   @ManyToOne
-  @JoinColumn(name = "src_card_id")
+  @JoinColumn(name = "id_src_card")
   private Card sourceCard;
 
   @ManyToOne
-  @JoinColumn(name = "dst_card_id")
+  @JoinColumn(name = "id_dst_card")
   private Card targetCard;
 
   @Column(name = "transfer_amount")
   private long amount;
 
-  @Column(name = "date_op")
+  @Column(name = "date")
   private LocalDateTime date;
 
   public Operation() {
