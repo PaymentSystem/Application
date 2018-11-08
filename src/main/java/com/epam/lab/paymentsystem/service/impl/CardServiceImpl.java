@@ -57,6 +57,11 @@ public class CardServiceImpl implements CardService {
     return cardRepository.getAllByUser(user);
   }
 
+  @Override
+  public List<Card> getAllCardsByAccountIsIn(List<Account> account) {
+    return cardRepository.getAllCardsByAccountIsIn(account);
+  }
+
   /**
    * Creates new card in the database.
    *
@@ -77,4 +82,5 @@ public class CardServiceImpl implements CardService {
   public Card getCardById(long id) {
     return cardRepository.getCardById(id);
   }
+
 }

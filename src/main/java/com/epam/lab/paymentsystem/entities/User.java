@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -22,7 +23,7 @@ public class User extends AbstractEntity {
   @Column(name = "login")
   private String login;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "id_role")
   private Role role;
 

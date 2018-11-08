@@ -10,11 +10,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "cards")
 public class Card extends AbstractEntity {
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "id_account")
   private Account account;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "id_user")
   private User user;
 

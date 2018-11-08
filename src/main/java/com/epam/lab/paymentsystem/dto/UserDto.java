@@ -68,6 +68,4 @@ public class UserDto {
   public void setRole(Role role) {
     this.role = role;
   }
-
-  private Role role;
 }

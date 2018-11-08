@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import java.util.List;
 
@@ -25,6 +26,8 @@ public interface CardService {
    */
   List<Card> getAllCardsByLogin(String login);
 
+  List<Card> getAllCardsByAccountIsIn(List<Account> account);
+
   /**
    * Returns card by given id.
    *
@@ -40,4 +43,5 @@ public interface CardService {
    * @return card entity
    */
   Card createCard(CardDto card);
+
 }

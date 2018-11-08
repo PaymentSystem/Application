@@ -2,9 +2,7 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Card;
-import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
-
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +31,7 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that account.
    *
-   * @param id id of account
+   * @param id    id of account
    * @param model model
    * @return account page view
    */
@@ -64,7 +62,7 @@ public class CardController {
    * @param accountId account
    * @param cardLabel label
    * @param userLogin login
-   * @param model model
+   * @param model     model
    * @return JSP view
    */
   @PostMapping(value = "/user/account/{accountId}/addCard")
