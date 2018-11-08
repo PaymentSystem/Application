@@ -25,7 +25,7 @@
         <p th:text="#{user.logout}"></p>
     </a>
 </div>
-<div th:if="${userOnPage.role.roleStatus!=T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN}">
+<div th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')}">
     <table th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
         <tr>
             <th>

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for Account,
@@ -46,26 +46,30 @@ public class AccountController {
     return REDIRECT_TO + "/{userLogin}";
   }
 
+  /**
+   * Returns account creation page.
+   *
+   * @param model model
+   * @return HTML view
+   */
   @GetMapping(value = "/{userLogin}/addAccount")
-  public String getAddAccountPage() {
+  public String getAddAccountPage(Model model) {
     LOGGER.info("Access to account creation page");
+    model.addAttribute("accountDto", new AccountDto());
     return ADD_ACCOUNT_PAGE;
   }
 
   /**
    * Add account form and send it to service layer.
    *
-   * @param accountAmount double amount
-   * @param accountLabel  label
-   * @param model         model
+   * @param accountDto accountDto
+   * @param model      model
    * @return JSP view
    */
   @PostMapping(value = "/{userLogin}/addAccount")
-  public String addAccount(@RequestParam(name = "label") String accountLabel,
-                           @RequestParam(name = "amount") long accountAmount,
+  public String addAccount(@ModelAttribute(name = "accountDto") AccountDto accountDto,
                            Model model) {
 
-    AccountDto accountDto = new AccountDto(0, null, accountLabel, accountAmount, false);
     LOGGER.info("Creating new account from web form");
 
     try {

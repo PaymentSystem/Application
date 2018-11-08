@@ -48,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
 
     String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
-    if (!user.getRole().getRoleStatus().toString().equals("USER")) {
+    if (!user.roleStatusEquals("USER")) {
       throw new UnsupportedOperationException("User is blocked");
     }
     accountToCreate.setUser(user);

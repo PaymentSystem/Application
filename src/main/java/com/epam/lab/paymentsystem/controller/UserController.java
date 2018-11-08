@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for User,
@@ -44,7 +44,8 @@ public class UserController {
 
 
   @GetMapping(value = "/registration")
-  public String getRegistrationPage() {
+  public String getRegistrationPage(Model model) {
+    model.addAttribute("userDto", new UserDto());
     return REGISTRATION_PAGE;
   }
 
@@ -71,22 +72,16 @@ public class UserController {
   }
 
   /**
-   * This method takes {@link RequestParam} from the page forms, processes them
+   * This method takes {@link ModelAttribute} from the page forms, processes them
    * and sends them to the service.
    *
-   * @param userName     name of user from view form
-   * @param userLogin    login of user from view form
-   * @param userPassword password of user from view form
-   * @param model        model
+   * @param userDto userDto
+   * @param model   model
    * @return HTML view
    */
   @PostMapping(value = "/addUser")
-  public String addUser(@RequestParam(name = "name") String userName,
-                        @RequestParam(name = "login") String userLogin,
-                        @RequestParam(name = "password") String userPassword,
+  public String addUser(@ModelAttribute(name = "userDto") UserDto userDto,
                         Model model) {
-
-    UserDto userDto = new UserDto(0, userLogin, userName, userPassword, null);
 
     try {
       userService.addUser(userDto);

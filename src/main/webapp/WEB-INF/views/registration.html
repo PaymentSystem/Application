@@ -15,8 +15,7 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
-<div th:if="${#authorization.expression('isAuthenticated()')}">Content For Authenticated</div>
-<form id="registrationLayer" action="addUser" method="post">
+<form id="registrationLayer" action="addUser" method="post" th:object="${userDto}">
     <h1><p th:text="#{user.registration}"/></h1>
     <p th:text="#{user.fillForm}"/>
     <hr>
@@ -24,17 +23,17 @@
     <table style="with: 50%">
         <tr>
             <td><label for="login"><b><p th:text="#{user.login}"/></b></label></td>
-            <td><input type="text" name="login" class="form-control input-lg"
+            <td><input type="text" name="login" class="form-control input-lg" th:field="*{login}"
                        th:placeholder="#{user.placeholder.login}" id="login" required></td>
         </tr>
         <tr>
             <td><label for="name"><b><p th:text="#{user.name}"/></b></label></td>
-            <td><input type="text" name="name" class="form-control input-lg"
+            <td><input type="text" name="name" class="form-control input-lg" th:field="*{name}"
                        th:placeholder="#{user.placeholder.name}" id="name" required></td>
         </tr>
         <tr>
             <td><label for="password"><b><p th:text="#{user.password}"/></b></label></td>
-            <td><input type="password" name="password" class="form-control input-lg"
+            <td><input type="password" name="password" class="form-control input-lg" th:field="*{password}"
                        th:placeholder="#{user.placeholder.password}" id="password" required>
             </td>
         </tr>
