@@ -62,12 +62,17 @@ public class CardServiceImpl implements CardService {
    *
    * @param card card dto passed by controller
    * @return card entity
+   * @throws UnsupportedOperationException if such user doesn't exists
    */
   @Override
-  public Card createCard(CardDto card) {
+  public Card createCard(CardDto card) throws UnsupportedOperationException {
     LOGGER.info("Creating new card");
     Account account = accountService.getAccountById(card.getAccountId());
     User user = userService.getUserByLogin(card.getUserLogin());
+    if (user == null) {
+      LOGGER.error("Such user doesn't exists: " + card.getUserLogin());
+      throw new UnsupportedOperationException("No such user");
+    }
     Card cardToCreate = new Card(account, user, card.getLabel(), true);
     LOGGER.info("Card has been created");
     return cardRepository.save(cardToCreate);

@@ -72,8 +72,14 @@ public class CardController {
       Model model) {
 
     cardDto.setAccountId(accountId);
-    LOGGER.info("Creating new card from web form");
-    cardService.createCard(cardDto);
+    try {
+      LOGGER.info("Creating new card from web form");
+      cardService.createCard(cardDto);
+    } catch (UnsupportedOperationException e) {
+      model.addAttribute("messageCard", e.getMessage());
+      LOGGER.error("Failed to create new card", e);
+      return ADD_CARD_PAGE;
+    }
 
     return REDIRECT_TO;
   }
