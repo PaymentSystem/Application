@@ -45,6 +45,11 @@ public class AccountServiceImpl implements AccountService {
       throw new UnsupportedOperationException("Amount should be positive");
     }
     Account accountToCreate = TransformerToEntity.convertAccount(accountDto);
+
+    String login = userService.getCurrentUserLogin();
+    User user = userService.getUserByLogin(login);
+    accountToCreate.setUser(user);
+    accountToCreate.setActive(true);
     LOGGER.info("Account has been created");
 
     return accountRepository.save(accountToCreate);
@@ -95,7 +100,8 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsByLogin(String login) {
+  public List<Account> getAllAccountsOfCurrentUser() {
+    String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }

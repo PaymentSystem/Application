@@ -12,10 +12,9 @@ public interface AccountService {
   /**
    * Returns list of accounts by user's login.
    *
-   * @param login user's login
    * @return list of accounts
    */
-  List<Account> getAllAccountsByLogin(String login);
+  List<Account> getAllAccountsOfCurrentUser();
 
   /**
    * Saves in the database account entity converted from accountDto.

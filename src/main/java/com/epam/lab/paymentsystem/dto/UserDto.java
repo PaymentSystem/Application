@@ -9,6 +9,26 @@ public class UserDto {
   private String password;
   private Role role;
 
+  public UserDto() {
+  }
+
+  /**
+   * Constructor with parametrs for user dto.
+   *
+   * @param id       user's id
+   * @param login    user's login
+   * @param name     user's name
+   * @param password user's password
+   * @param role     user linked to this role
+   */
+  public UserDto(long id, String login, String name, String password, Role role) {
+    this.id = id;
+    this.login = login;
+    this.name = name;
+    this.password = password;
+    this.role = role;
+  }
+
   public long getId() {
     return id;
   }
@@ -48,4 +68,6 @@ public class UserDto {
   public void setRole(Role role) {
     this.role = role;
   }
+
+  private Role role;
 }

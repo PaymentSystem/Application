@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <title th:text="#{card.creation}"></title>
+</head>
+<body>
+<div class="btn-group">
+    <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+    <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+</div>
+<form id="registrationLayer" action="addCard" method="post">
+    <h1><p th:text="#{card.creation}"/></h1>
+    <p th:text="#{card.fillForm}"/>
+    <hr>
+
+    <table style="with: 50%">
+        <tr>
+            <td><label for="label"><b><p th:text="#{account.label}"/></b></label></td>
+            <td><input type="text" name="label" class="form-control input-lg"
+                       th:placeholder="#{user.placeholder.login}" id="label" required></td>
+        </tr>
+        <!-- DataList of all user logins -->
+        <tr>
+            <td><label for="login"><b><p th:text="#{user.login}"/></b></label></td>
+            <td><input list="logins" name="login" class="form-control input-lg"
+                       th:placeholder="#{user.placeholder.name}" id="login" required>
+                <datalist id="logins">
+                    <th:block th:each="user : ${userList}">
+                        <option th:value="${user.login}">
+                    </th:block>
+                </datalist>
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <button type="submit" class="btn btn-success"><p th:text="#{card.create}"/></button>
+</form>
+</body>
+</html>
