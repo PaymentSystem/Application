@@ -2,7 +2,6 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Card;
-import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 
 import com.epam.lab.paymentsystem.service.UserService;
@@ -13,17 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CardController {
-  @Autowired
-  private UserService userService;
+  @Autowired private UserService userService;
 
-  @Autowired
-  private CardService cardService;
+  @Autowired private CardService cardService;
 
   private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
   private static final String ADD_CARD_PAGE = "addCard";
@@ -56,6 +53,7 @@ public class CardController {
   public String getAddCardPage(Model model) {
     LOGGER.info("Access to card creation page");
     model.addAttribute("userList", userService.getAllUsers());
+    model.addAttribute("cardDto", new CardDto());
     return ADD_CARD_PAGE;
   }
 
@@ -63,19 +61,17 @@ public class CardController {
    * Add card form and send it to service layer.
    *
    * @param accountId account
-   * @param cardLabel label
-   * @param userLogin login
+   * @param cardDto card dto from form
    * @param model model
    * @return JSP view
    */
   @PostMapping(value = "/user/account/{accountId}/addCard")
   public String addCard(
       @PathVariable(name = "accountId") long accountId,
-      @RequestParam(name = "label") String cardLabel,
-      @RequestParam(name = "login") String userLogin,
+      @ModelAttribute(value = "cardDto") CardDto cardDto,
       Model model) {
 
-    CardDto cardDto = new CardDto(0, accountId, userLogin, cardLabel, false);
+    cardDto.setAccountId(accountId);
     LOGGER.info("Creating new card from web form");
     cardService.createCard(cardDto);
 
