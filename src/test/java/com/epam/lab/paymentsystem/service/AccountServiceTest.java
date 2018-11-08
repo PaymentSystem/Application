@@ -2,7 +2,9 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
+import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
@@ -21,6 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
 
+  private Role role;
   private User user;
   private AccountDto accountDto;
   private long amount;
@@ -37,6 +40,7 @@ public class AccountServiceTest {
   @BeforeEach
   public void startUp() {
     MockitoAnnotations.initMocks(this);
+    role = new Role();
     user = new User();
     account = new Account(user, "test", 0, true);
     accountTarget = new Account(user, "test", 0, true);
@@ -45,7 +49,7 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void testCreateAccountThrowsException() {
+  public void testCreateAccountThrowsExceptionWhenAmountIsNegative() {
     account.setAmount(-1);
     accountDto = TransformerToDto.convertAccount(account);
     assertThrows(UnsupportedOperationException.class,
@@ -54,8 +58,23 @@ public class AccountServiceTest {
   }
 
   @Test
+  public void testCreateAccountThrowsExceptionWhenUserIsInBlockedStatus() {
+    account.setAmount(1);
+    role.setRoleStatus(Roles.BLOCKED);
+    user.setRole(role);
+    accountDto = TransformerToDto.convertAccount(account);
+    when(userService.getCurrentUserLogin()).thenReturn(login);
+    when(userService.getUserByLogin(login)).thenReturn(user);
+    assertThrows(UnsupportedOperationException.class,
+        () -> accountService.createAccount(accountDto),
+        "User is blocked");
+  }
+
+  @Test
   public void testCreateAccountSavesAccount() {
     account.setAmount(1);
+    role.setRoleStatus(Roles.USER);
+    user.setRole(role);
     accountDto = TransformerToDto.convertAccount(account);
     when(userService.getCurrentUserLogin()).thenReturn(login);
     when(userService.getUserByLogin(login)).thenReturn(user);

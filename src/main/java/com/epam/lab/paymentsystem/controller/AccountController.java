@@ -1,12 +1,8 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
-import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.service.AccountService;
-import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,46 +26,12 @@ public class AccountController {
   private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
   private static final String ADD_ACCOUNT_PAGE = "addAccount";
   private static final String REDIRECT_TO = "redirect:";
-  private static final String USER_PAGE = "user";
-
-  @Autowired
-  private UserService userService;
 
   @Autowired
   private AccountService accountService;
 
   public AccountController(AccountServiceImpl accountService) {
     this.accountService = accountService;
-  }
-
-  /**
-   * Returns user page with list of all accounts linked to that user.
-   *
-   * @param model model
-   * @return user page view
-   */
-  @GetMapping(value = "/{userLogin}")
-  public String getUserPage(@PathVariable(name = "userLogin") String login,  Model model) {
-    List<Account> accounts = accountService.getAllAccountsOfCurrentUser(login);
-    model.addAttribute("accountList", accounts);
-    String currentUserLogin = userService.getCurrentUserLogin();
-    model.addAttribute("currentUserLogin", currentUserLogin);
-    User userOnPage = userService.getUserByLogin(login);
-    model.addAttribute("userOnPage", userOnPage);
-
-    return USER_PAGE;
-  }
-
-  @PostMapping(value = "/{userLogin}/block")
-  public String blockUser(@PathVariable(name = "userLogin") String userLogin) {
-    userService.blockUser(userService.getUserByLogin(userLogin));
-    return REDIRECT_TO + "/{userLogin}";
-  }
-
-  @PostMapping(value = "/{userLogin}/unblock")
-  public String unblockUser(@PathVariable(name = "userLogin") String userLogin) {
-    userService.unblockUser(userService.getUserByLogin(userLogin));
-    return REDIRECT_TO + "/{userLogin}";
   }
 
   @PostMapping(value = "/{userLogin}/account/{accountId}/block")
@@ -112,6 +74,7 @@ public class AccountController {
     } catch (UnsupportedOperationException e) {
       model.addAttribute("messageAccount", e.getMessage());
       LOGGER.error("Failed to create new account", e);
+      return ADD_ACCOUNT_PAGE;
     }
     return REDIRECT_TO + "/{userLogin}";
   }

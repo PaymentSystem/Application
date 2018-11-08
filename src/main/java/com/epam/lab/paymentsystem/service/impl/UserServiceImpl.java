@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.service.impl;
 
 import com.epam.lab.paymentsystem.dto.UserDto;
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
@@ -9,6 +10,7 @@ import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,10 @@ public class UserServiceImpl implements UserService {
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     user.setRole(role);
     return userRepository.save(user);
+  }
+
+  @Override
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
   }
 }

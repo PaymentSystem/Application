@@ -48,6 +48,9 @@ public class AccountServiceImpl implements AccountService {
 
     String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
+    if (!user.getRole().getRoleStatus().toString().equals("USER")) {
+      throw new UnsupportedOperationException("User is blocked");
+    }
     accountToCreate.setUser(user);
     accountToCreate.setIsActive(true);
     LOGGER.info("Account has been created");
@@ -122,7 +125,7 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsOfCurrentUser(String login) {
+  public List<Account> getAllAccountsOfUser(String login) {
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }

@@ -14,7 +14,7 @@ public interface AccountService {
    *
    * @return list of accounts
    */
-  List<Account> getAllAccountsOfCurrentUser(String login);
+  List<Account> getAllAccountsOfUser(String login);
 
   /**
    * Saves in the database account entity converted from accountDto.

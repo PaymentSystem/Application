@@ -25,7 +25,7 @@ public class CardController {
    * @param model model
    * @return account page view
    */
-  @GetMapping(value = "/user/account/{accountId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}")
   public String getAccountPage(@PathVariable(name = "accountId") long id, Model model) {
     LOGGER.info("Access to account page");
     List<Card> cards = cardService.getAllCardsByAccountId(id);
