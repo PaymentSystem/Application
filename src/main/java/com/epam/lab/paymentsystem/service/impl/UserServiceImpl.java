@@ -65,6 +65,12 @@ public class UserServiceImpl implements UserService {
     return userToAdd;
   }
 
+  /**
+   * Returns user by passed login.
+   *
+   * @param login user's login
+   * @return user
+   */
   @Override
   public User getUserByLogin(String login) {
     return userRepository.getUserByLogin(login);
@@ -82,20 +88,37 @@ public class UserServiceImpl implements UserService {
     return authentication.getName();
   }
 
+  /**
+   * Takes BLOCKED role status from {@code RoleRepository}
+   * and sends update to {@code UserRepository}.
+   *
+   * @param user user
+   */
   @Override
-  public User blockUser(User user) {
+  public void blockUser(User user) {
     Role role = roleRepository.getRoleByRoleStatus(Roles.BLOCKED);
     user.setRole(role);
-    return userRepository.save(user);
+    userRepository.save(user);
   }
 
+  /**
+   * Takes USER role status from {@code RoleRepository}
+   * and sends update to {@code UserRepository}.
+   *
+   * @param user user
+   */
   @Override
-  public User unblockUser(User user) {
+  public void unblockUser(User user) {
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     user.setRole(role);
-    return userRepository.save(user);
+    userRepository.save(user);
   }
 
+  /**
+   * Returns list of all users given by {@code UserRepository}.
+   *
+   * @return list
+   */
   @Override
   public List<User> getAllUsers() {
     return userRepository.findAll();

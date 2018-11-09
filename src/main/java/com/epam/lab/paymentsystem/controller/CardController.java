@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * Controller for Card,
+ * processes the specified URL and redirects
+ * the request to the specified page.
+ *
+ * @author unascribed
+ * @since 0.0.1
+ */
 @Controller
 public class CardController {
   private static final Logger LOGGER = LogManager.getLogger(CardController.class);

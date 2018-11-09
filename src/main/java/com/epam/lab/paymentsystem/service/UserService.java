@@ -21,13 +21,39 @@ public interface UserService {
    */
   User addUser(UserDto user) throws LoginAlreadyExistsException;
 
+  /**
+   * Returns user by passed login.
+   *
+   * @param login user's login
+   * @return user
+   */
   User getUserByLogin(String login);
 
+  /**
+   * Returns list of all users.
+   *
+   * @return list
+   */
   List<User> getAllUsers();
 
+  /**
+   * Returns current logged user's login.
+   *
+   * @return string
+   */
   String getCurrentUserLogin();
 
-  User blockUser(User user);
+  /**
+   * Sets passed user's role status to BLOCKED.
+   *
+   * @param user user
+   */
+  void blockUser(User user);
 
-  User unblockUser(User user);
+  /**
+   * Sets passed user's role status to USER.
+   *
+   * @param user user
+   */
+  void unblockUser(User user);
 }
