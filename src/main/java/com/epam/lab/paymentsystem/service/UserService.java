@@ -6,7 +6,9 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-/** UserService is the interface that specifies the service methods. */
+/**
+ * UserService is the interface that specifies the service methods.
+ */
 @Service
 public interface UserService {
   /**
@@ -28,6 +30,4 @@ public interface UserService {
   User blockUser(User user);
 
   User unblockUser(User user);
-
-  List<User> getAllUsers();
 }

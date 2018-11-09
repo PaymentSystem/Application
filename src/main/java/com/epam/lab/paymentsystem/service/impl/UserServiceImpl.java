@@ -1,7 +1,6 @@
 package com.epam.lab.paymentsystem.service.impl;
 
 import com.epam.lab.paymentsystem.dto.UserDto;
-import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
@@ -69,11 +68,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public User getUserByLogin(String login) {
     return userRepository.getUserByLogin(login);
-  }
-
-  @Override
-  public List<User> getAllUsers() {
-    return userRepository.findAll();
   }
 
   /**

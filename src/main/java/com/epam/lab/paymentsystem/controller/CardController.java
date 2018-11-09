@@ -3,7 +3,6 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.service.CardService;
-
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -18,22 +17,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class CardController {
-  @Autowired
-  private UserService userService;
-
-  @Autowired
-  private CardService cardService;
-
-  private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
+  private static final Logger LOGGER = LogManager.getLogger(CardController.class);
   private static final String ADD_CARD_PAGE = "addCard";
   private static final String ACCOUNT_PAGE = "account";
-
   private static final String REDIRECT_TO = "redirect:";
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private CardService cardService;
 
   /**
    * Returns account page with list of all cards linked to that account.
    *
-   * @param id id of account
+   * @param id    id of account
    * @param model model
    * @return account page view
    */
@@ -51,7 +47,7 @@ public class CardController {
    * @param model model
    * @return card add page view
    */
-  @GetMapping(value = "/user/account/{accountId}/addCard")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/addCard")
   public String getAddCardPage(Model model) {
     LOGGER.info("Access to card creation page");
     model.addAttribute("userList", userService.getAllUsers());
@@ -63,11 +59,11 @@ public class CardController {
    * Add card form and send it to service layer.
    *
    * @param accountId account
-   * @param cardDto card dto from form
-   * @param model model
+   * @param cardDto   card dto from form
+   * @param model     model
    * @return JSP view
    */
-  @PostMapping(value = "/user/account/{accountId}/addCard")
+  @PostMapping(value = "/{userLogin}/account/{accountId}/addCard")
   public String addCard(
       @PathVariable(name = "accountId") long accountId,
       @ModelAttribute(value = "cardDto") CardDto cardDto,
@@ -83,6 +79,6 @@ public class CardController {
       return ADD_CARD_PAGE;
     }
 
-    return REDIRECT_TO;
+    return REDIRECT_TO + "/{userLogin}/account/{accountId}";
   }
 }
