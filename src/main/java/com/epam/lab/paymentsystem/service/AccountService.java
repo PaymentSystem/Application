@@ -14,7 +14,7 @@ public interface AccountService {
    *
    * @return list of accounts
    */
-  List<Account> getAllAccountsOfCurrentUser();
+  List<Account> getAllAccountsOfUser(String login);
 
   /**
    * Saves in the database account entity converted from accountDto.
@@ -52,4 +52,8 @@ public interface AccountService {
    * @return account entity
    */
   Account getAccountById(long id);
+
+  Account blockAccountById(long id);
+
+  Account unblockAccountById(long id);
 }

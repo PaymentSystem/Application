@@ -24,4 +24,10 @@ public interface UserService {
   List<User> getAllUsers();
 
   String getCurrentUserLogin();
+
+  User blockUser(User user);
+
+  User unblockUser(User user);
+
+  List<User> getAllUsers();
 }

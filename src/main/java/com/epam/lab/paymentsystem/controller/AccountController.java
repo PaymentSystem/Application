@@ -1,18 +1,17 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
-import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Controller for Account,
@@ -27,7 +26,6 @@ public class AccountController {
   private static final Logger LOGGER = LogManager.getLogger(AccountController.class);
   private static final String ADD_ACCOUNT_PAGE = "addAccount";
   private static final String REDIRECT_TO = "redirect:";
-  private static final String USER_PAGE = "user";
 
   @Autowired
   private AccountService accountService;
@@ -36,39 +34,42 @@ public class AccountController {
     this.accountService = accountService;
   }
 
-  /**
-   * Returns user page with list of all accounts linked to that user.
-   *
-   * @param model model
-   * @return user page view
-   */
-  @GetMapping(value = "/user")
-  public String getUserPage(Model model) {
-    List<Account> accounts = accountService.getAllAccountsOfCurrentUser();
-    model.addAttribute("accountList", accounts);
-    return USER_PAGE;
+  @PostMapping(value = "/{userLogin}/account/{accountId}/block")
+  public String blockAccount(@PathVariable(name = "accountId") long id) {
+    accountService.blockAccountById(id);
+    return REDIRECT_TO + "/{userLogin}";
   }
 
-  @GetMapping(value = "/user/addAccount")
-  public String getAddAccountPage() {
+  @PostMapping(value = "/{userLogin}/account/{accountId}/unblock")
+  public String unblockAccount(@PathVariable(name = "accountId") long id) {
+    accountService.unblockAccountById(id);
+    return REDIRECT_TO + "/{userLogin}";
+  }
+
+  /**
+   * Returns account creation page.
+   *
+   * @param model model
+   * @return HTML view
+   */
+  @GetMapping(value = "/{userLogin}/addAccount")
+  public String getAddAccountPage(Model model) {
     LOGGER.info("Access to account creation page");
+    model.addAttribute("accountDto", new AccountDto());
     return ADD_ACCOUNT_PAGE;
   }
 
   /**
    * Add account form and send it to service layer.
    *
-   * @param accountAmount double amount
-   * @param accountLabel  label
-   * @param model         model
+   * @param accountDto accountDto
+   * @param model      model
    * @return JSP view
    */
-  @PostMapping(value = "/user/addAccount")
-  public String addAccount(@RequestParam(name = "label") String accountLabel,
-                           @RequestParam(name = "amount") long accountAmount,
+  @PostMapping(value = "/{userLogin}/addAccount")
+  public String addAccount(@ModelAttribute(name = "accountDto") AccountDto accountDto,
                            Model model) {
 
-    AccountDto accountDto = new AccountDto(0, null, accountLabel, accountAmount, false);
     LOGGER.info("Creating new account from web form");
 
     try {
@@ -77,7 +78,8 @@ public class AccountController {
     } catch (UnsupportedOperationException e) {
       model.addAttribute("messageAccount", e.getMessage());
       LOGGER.error("Failed to create new account", e);
+      return ADD_ACCOUNT_PAGE;
     }
-    return REDIRECT_TO;
+    return REDIRECT_TO + "/{userLogin}";
   }
 }

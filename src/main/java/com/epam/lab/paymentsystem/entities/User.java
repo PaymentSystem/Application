@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.entities;
 
+import com.epam.lab.paymentsystem.entities.enums.Roles;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -74,6 +75,14 @@ public class User extends AbstractEntity {
 
   public void setRole(Role role) {
     this.role = role;
+  }
+
+  public boolean roleStatusEquals(String roleStatus) {
+    return this.getRole().getRoleStatus().toString().equals(roleStatus);
+  }
+
+  public boolean roleStatusEquals(Roles roleStatus) {
+    return this.getRole().getRoleStatus() == roleStatus;
   }
 
   @Override
