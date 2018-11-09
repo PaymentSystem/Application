@@ -40,23 +40,10 @@
             </td>
         </tr>
         <tr>
-            <td><label for="dst"><b><p th:text="#{operation.source}"/></b></label></td>
-            <td><input list="dstCards" name="dst" class="form-control input-lg"
-                       th:placeholder="#{operation.placeholder.destination}" id="dst" required>
-                <datalist id="dstCards">
-                    <th:block th:each="dstCard : ${dstCardList}">
-                        <option th:value="${dstCard.id}">
-                    </th:block>
-                </datalist>
-            </td>
-        </tr>
-        <!--
-        <tr>
             <td><label for=><b><p th:text="#{operation.destination}"/></b></label></td>
             <td><input type="text" name="dst" class="form-control input-lg"
                        th:placeholder="#{operation.placeholder.destination}" id="dst" required></td>
         </tr>
-        -->
         <tr>
             <td><label for="amount"><b><p th:text="#{operation.amount}"/></b></label></td>
             <td><input type="number" min="1" name="amount" class="form-control input-lg"

@@ -48,7 +48,6 @@ public class OperationController {
   @GetMapping(value = "/operation")
   public String getOperationPage(Model model) {
     model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
-    model.addAttribute("dstCardList", cardService.getAllCards());
     return OPERATION_PAGE;
   }
 
