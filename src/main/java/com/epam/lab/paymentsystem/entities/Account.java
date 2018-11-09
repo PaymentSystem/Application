@@ -65,11 +65,11 @@ public class Account extends AbstractEntity {
     this.amount = amount;
   }
 
-  public boolean getActive() {
+  public boolean getIsActive() {
     return isActive;
   }
 
-  public void setActive(boolean active) {
+  public void setIsActive(boolean active) {
     isActive = active;
   }
 

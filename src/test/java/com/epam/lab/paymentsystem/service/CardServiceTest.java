@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,5 +78,14 @@ public class CardServiceTest {
         when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
         when(cardRepository.save(card)).thenReturn(card);
         assertEquals(card, cardService.createCard(cardDto));
+    }
+
+    @Test
+    public void testCreateCardThrowsException() {
+        when(accountService.getAccountById(accountId)).thenReturn(account);
+        when(userService.getUserByLogin(user.getLogin())).thenReturn(null);
+        assertThrows(UnsupportedOperationException.class,
+                () -> cardService.createCard(cardDto),
+                "No such user");
     }
 }

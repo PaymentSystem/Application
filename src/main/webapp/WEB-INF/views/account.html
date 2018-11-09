@@ -15,11 +15,18 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
-<div class="container">
+<div class="container" th:if="${!cardList.isEmpty()}">
     <div class="card">
         <div class="card-block">
             <div class="table table-hover">
                 <table>
+                    <thead>
+                    <tr>
+                        <th><p th:text="#{id}"></p></th>
+                        <th><p th:text="#{account.label}"></p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <th:block th:each="card : ${cardList}">
                         <tr>
                             <td th:text="${card.id}"></td>
@@ -30,10 +37,14 @@
                             </td>
                         </tr>
                     </th:block>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+</div>
+<div th:unless="${!cardList.isEmpty()}">
+    <p th:text="#{card.empty}"></p>
 </div>
 <a th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">

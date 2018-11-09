@@ -7,7 +7,6 @@ import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
-import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import java.util.List;
@@ -32,9 +31,6 @@ public class UserServiceImpl implements UserService {
    */
   @Autowired
   private UserRepository userRepository;
-
-  @Autowired
-  private AccountService accountService;
 
   /**
    * Instance of {@code RoleRepository} injects by Spring.
@@ -69,14 +65,15 @@ public class UserServiceImpl implements UserService {
     return userToAdd;
   }
 
+  /**
+   * Returns user by passed login.
+   *
+   * @param login user's login
+   * @return user
+   */
   @Override
   public User getUserByLogin(String login) {
     return userRepository.getUserByLogin(login);
-  }
-
-  @Override
-  public List<User> getAllUsers() {
-    return userRepository.findAll();
   }
 
   /**
@@ -89,5 +86,43 @@ public class UserServiceImpl implements UserService {
     SecurityContext context = SecurityContextHolder.getContext();
     Authentication authentication = context.getAuthentication();
     return authentication.getName();
+  }
+
+  /**
+   * Takes BLOCKED role status from {@code RoleRepository}
+   * and sends update to {@code UserRepository}.
+   *
+   * @param user user
+   * @return user
+   */
+  @Override
+  public User blockUser(User user) {
+    Role role = roleRepository.getRoleByRoleStatus(Roles.BLOCKED);
+    user.setRole(role);
+    return userRepository.save(user);
+  }
+
+  /**
+   * Takes USER role status from {@code RoleRepository}
+   * and sends update to {@code UserRepository}.
+   *
+   * @param user user
+   * @return user
+   */
+  @Override
+  public User unblockUser(User user) {
+    Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
+    user.setRole(role);
+    return userRepository.save(user);
+  }
+
+  /**
+   * Returns list of all users given by {@code UserRepository}.
+   *
+   * @return list
+   */
+  @Override
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
   }
 }

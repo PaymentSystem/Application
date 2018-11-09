@@ -24,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
   private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
   private AccountRepository accountRepository;
+
   @Autowired
   private UserService userService;
 
@@ -48,8 +49,11 @@ public class AccountServiceImpl implements AccountService {
 
     String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
+    if (!user.roleStatusEquals("USER")) {
+      throw new UnsupportedOperationException("User is blocked");
+    }
     accountToCreate.setUser(user);
-    accountToCreate.setActive(true);
+    accountToCreate.setIsActive(true);
     LOGGER.info("Account has been created");
 
     return accountRepository.save(accountToCreate);
@@ -79,6 +83,14 @@ public class AccountServiceImpl implements AccountService {
       LOGGER.error("Not correct amount");
       throw new UnsupportedOperationException("Not correct amount");
     }
+    if (!source.getIsActive()) {
+      LOGGER.error("Source account is blocked");
+      throw new UnsupportedOperationException("Source account is blocked");
+    }
+    if (!target.getIsActive()) {
+      LOGGER.error("Target account is blocked");
+      throw new UnsupportedOperationException("Target account is blocked");
+    }
     LOGGER.info("Creating transaction");
     moneyTransfer(source, target, amount);
     LOGGER.info("Transaction has been created");
@@ -104,8 +116,21 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public List<Account> getAllAccountsOfCurrentUser() {
-    String login = userService.getCurrentUserLogin();
+  public Account blockAccountById(long id) {
+    Account account = accountRepository.getAccountById(id);
+    account.setIsActive(false);
+    return accountRepository.save(account);
+  }
+
+  @Override
+  public Account unblockAccountById(long id) {
+    Account account = accountRepository.getAccountById(id);
+    account.setIsActive(true);
+    return accountRepository.save(account);
+  }
+
+  @Override
+  public List<Account> getAllAccountsOfUser(String login) {
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
   }

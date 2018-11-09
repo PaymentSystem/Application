@@ -15,7 +15,7 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
-<form id="registrationLayer" action="addAccount" method="post">
+<form id="registrationLayer" action="addAccount" method="post" th:object="${accountDto}">
     <h1><p th:text="#{account.creation}"/></h1>
     <p th:text="#{account.fillForm}"/>
     <hr>
@@ -24,12 +24,13 @@
         <tr>
             <td><label for="label"><b><p th:text="#{account.label}"/></b></label></td>
             <td><input type="text" name="label" class="form-control input-lg"
-                       th:placeholder="#{user.placeholder.login}" id="label" required></td>
+                       th:field="*{label}" id="label" required></td>
         </tr>
         <tr>
             <td><label for="amount"><b><p th:text="#{account.amount}"/></b></label></td>
-            <td><input type="number" min="1" name="amount" class="form-control input-lg"
-                       th:placeholder="#{user.placeholder.name}" id="amount" required></td>
+            <td><input type="number" min="0" name="amount" class="form-control input-lg"
+                       th:field="*{amount}" id="amount" required>
+            </td>
         </tr>
     </table>
     <hr>

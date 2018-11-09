@@ -6,7 +6,7 @@ services:
 addons:
   postgresql: "10.5"
 before_script:
-- bash install-postgres-10.sh
+- bash ./scripts/install-postgres-10.sh
 - psql -c 'create database payment_system;' -U postgres
 script:
 - mvn clean package
