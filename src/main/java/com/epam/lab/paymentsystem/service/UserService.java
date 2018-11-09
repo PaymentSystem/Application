@@ -47,13 +47,15 @@ public interface UserService {
    * Sets passed user's role status to BLOCKED.
    *
    * @param user user
+   * @return user
    */
-  void blockUser(User user);
+  User blockUser(User user);
 
   /**
    * Sets passed user's role status to USER.
    *
    * @param user user
+   * @return user
    */
-  void unblockUser(User user);
+  User unblockUser(User user);
 }

@@ -93,12 +93,13 @@ public class UserServiceImpl implements UserService {
    * and sends update to {@code UserRepository}.
    *
    * @param user user
+   * @return user
    */
   @Override
-  public void blockUser(User user) {
+  public User blockUser(User user) {
     Role role = roleRepository.getRoleByRoleStatus(Roles.BLOCKED);
     user.setRole(role);
-    userRepository.save(user);
+    return userRepository.save(user);
   }
 
   /**
@@ -106,12 +107,13 @@ public class UserServiceImpl implements UserService {
    * and sends update to {@code UserRepository}.
    *
    * @param user user
+   * @return user
    */
   @Override
-  public void unblockUser(User user) {
+  public User unblockUser(User user) {
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     user.setRole(role);
-    userRepository.save(user);
+    return userRepository.save(user);
   }
 
   /**
