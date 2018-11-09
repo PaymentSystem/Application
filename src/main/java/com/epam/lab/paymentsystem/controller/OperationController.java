@@ -30,6 +30,7 @@ public class OperationController {
 
   private static final Logger LOGGER = LogManager.getLogger(OperationController.class);
   private static final String HISTORY_PAGE = "history";
+  private static final String OPERATION_PAGE = "operation";
 
   @Autowired
   private OperationService operationService;
@@ -46,10 +47,9 @@ public class OperationController {
    */
   @GetMapping(value = "/operation")
   public String getOperationPage(Model model) {
-    String operationPage = "operation";
     model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
     model.addAttribute("dstCardList", cardService.getAllCards());
-    return operationPage;
+    return OPERATION_PAGE;
   }
 
   /**
@@ -67,7 +67,6 @@ public class OperationController {
                                  @RequestParam(name = "dst") Long dstId,
                                  @RequestParam(name = "amount") Long amount,
                                  Model model) {
-    String operationPage = "operation";
     LocalDateTime date = LocalDateTime.now().withNano(0);
     Operation operation = new Operation();
 
@@ -86,9 +85,9 @@ public class OperationController {
     } catch (UnsupportedOperationException e) {
       model.addAttribute("message", e.getMessage());
       LOGGER.error("Exception payment operation", e);
-      return operationPage;
+      return OPERATION_PAGE;
     }
-    return operationPage;
+    return OPERATION_PAGE;
   }
 
   /**

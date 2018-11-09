@@ -4,6 +4,8 @@ import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.repository.OperationRepository;
+import com.epam.lab.paymentsystem.service.AccountService;
+import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
@@ -24,10 +26,10 @@ public class OperationServiceImpl implements OperationService {
   private OperationRepository operationRepository;
 
   @Autowired
-  private AccountServiceImpl accountService;
+  private AccountService accountService;
 
   @Autowired
-  private CardServiceImpl cardService;
+  private CardService cardService;
 
   @Autowired
   private UserService userService;
