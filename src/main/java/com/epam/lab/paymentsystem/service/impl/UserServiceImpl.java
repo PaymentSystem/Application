@@ -1,7 +1,6 @@
 package com.epam.lab.paymentsystem.service.impl;
 
 import com.epam.lab.paymentsystem.dto.UserDto;
-import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
@@ -66,14 +65,15 @@ public class UserServiceImpl implements UserService {
     return userToAdd;
   }
 
+  /**
+   * Returns user by passed login.
+   *
+   * @param login user's login
+   * @return user
+   */
   @Override
   public User getUserByLogin(String login) {
     return userRepository.getUserByLogin(login);
-  }
-
-  @Override
-  public List<User> getAllUsers() {
-    return userRepository.findAll();
   }
 
   /**
@@ -88,6 +88,13 @@ public class UserServiceImpl implements UserService {
     return authentication.getName();
   }
 
+  /**
+   * Takes BLOCKED role status from {@code RoleRepository}
+   * and sends update to {@code UserRepository}.
+   *
+   * @param user user
+   * @return user
+   */
   @Override
   public User blockUser(User user) {
     Role role = roleRepository.getRoleByRoleStatus(Roles.BLOCKED);
@@ -95,6 +102,13 @@ public class UserServiceImpl implements UserService {
     return userRepository.save(user);
   }
 
+  /**
+   * Takes USER role status from {@code RoleRepository}
+   * and sends update to {@code UserRepository}.
+   *
+   * @param user user
+   * @return user
+   */
   @Override
   public User unblockUser(User user) {
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
@@ -102,6 +116,11 @@ public class UserServiceImpl implements UserService {
     return userRepository.save(user);
   }
 
+  /**
+   * Returns list of all users given by {@code UserRepository}.
+   *
+   * @return list
+   */
   @Override
   public List<User> getAllUsers() {
     return userRepository.findAll();
