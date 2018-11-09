@@ -39,13 +39,12 @@ public class OperationServiceImpl implements OperationService {
    */
   @Override
   public void makePayment(Operation operation) {
-
     Card sourceCard = cardService.getCardById(operation.getSourceCard().getId());
     Card destinationCard = cardService.getCardById(operation.getTargetCard().getId());
     Account srcAccount = sourceCard.getAccount();
     Account dstAccount = destinationCard.getAccount();
-    LOGGER.info("Payment operation is successful");
     accountService.makeTransaction(srcAccount, dstAccount, operation.getAmount());
+    LOGGER.info("Payment operation is successful");
   }
 
   /**
@@ -54,8 +53,9 @@ public class OperationServiceImpl implements OperationService {
    * @param operation operation.
    */
   @Override
-  public void writeHistory(Operation operation) {
+  public Operation writeHistory(Operation operation) {
     operationRepository.save(operation);
+    return operation;
   }
 
   /**
@@ -64,7 +64,7 @@ public class OperationServiceImpl implements OperationService {
    * @return operation list.
    */
   @Override
-  public List<Operation> historyOperation() {
+  public List<Operation> getAllOperations() {
     String userLogin = userService.getCurrentUserLogin();
     List<Card> card = cardService.getAllCardsByLogin(userLogin);
     List<Operation> history = operationRepository.getAllBySourceCardIsIn(card);
@@ -79,7 +79,7 @@ public class OperationServiceImpl implements OperationService {
    * @return operation list
    */
   @Override
-  public List<Operation> historyAccountOperation(long accountId) {
+  public List<Operation> getAllOperationsByAccount(long accountId) {
     List<Card> cards = cardService.getAllCardsByAccountId(accountId);
     List<Operation> historyByAccount = operationRepository.getAllBySourceCardIsIn(cards);
     LOGGER.info("Display history operation");
@@ -93,7 +93,7 @@ public class OperationServiceImpl implements OperationService {
    * @return operation list.
    */
   @Override
-  public List<Operation> historyCardOperation(long cardId) {
+  public List<Operation> getAllOperationsByCard(long cardId) {
     List<Operation> historyByCard = operationRepository.getAllBySourceCardId(cardId);
     LOGGER.info("Display history operation");
     return historyByCard;

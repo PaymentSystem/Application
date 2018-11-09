@@ -2,6 +2,7 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
+import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,19 +29,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OperationController {
 
   private static final Logger LOGGER = LogManager.getLogger(OperationController.class);
-  private static final String OPERATION_PAGE = "operation";
   private static final String HISTORY_PAGE = "history";
-  private static long cardSrcId;
-  private static long cardDstId;
-  private static LocalDateTime date;
 
   @Autowired
   private OperationService operationService;
 
+  @Autowired
+  private CardService cardService;
 
+
+  /**
+   * Get method for operation page.
+   *
+   * @param model model
+   * @return String
+   */
   @GetMapping(value = "/operation")
-  public String getOperationPage() {
-    return OPERATION_PAGE;
+  public String getOperationPage(Model model) {
+    String operationPage = "operation";
+    model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
+    model.addAttribute("dstCardList", cardService.getAllCards());
+    return operationPage;
   }
 
   /**
@@ -52,22 +61,18 @@ public class OperationController {
    * @param model  Model.
    * @return String
    */
-  @PostMapping(value = "/makePayment")
+  @PostMapping(value = "/operation")
   @Transactional(rollbackOn = Exception.class)
   public String paymentOperation(@RequestParam(name = "src") Long srcId,
                                  @RequestParam(name = "dst") Long dstId,
                                  @RequestParam(name = "amount") Long amount,
                                  Model model) {
-    cardSrcId = srcId;
-    cardDstId = dstId;
-    date = LocalDateTime.now();
+    String operationPage = "operation";
+    LocalDateTime date = LocalDateTime.now().withNano(0);
     Operation operation = new Operation();
 
-    Card srcCard = new Card();
-    srcCard.setId(cardSrcId);
-
-    Card dstCard = new Card();
-    dstCard.setId(cardDstId);
+    Card srcCard = cardService.getCardById(srcId);
+    Card dstCard = cardService.getCardById(dstId);
 
     operation.setAmount(amount);
     operation.setSourceCard(srcCard);
@@ -78,13 +83,12 @@ public class OperationController {
     try {
       operationService.makePayment(operation);
       operationService.writeHistory(operation);
-
     } catch (UnsupportedOperationException e) {
       model.addAttribute("message", e.getMessage());
       LOGGER.error("Exception payment operation", e);
-      return OPERATION_PAGE;
+      return operationPage;
     }
-    return OPERATION_PAGE;
+    return operationPage;
   }
 
   /**
@@ -95,39 +99,39 @@ public class OperationController {
    */
   @GetMapping(value = "/history")
   public String getUserHistory(Model model) {
-
-    List<Operation> history = operationService.historyOperation();
+    List<Operation> history = operationService.getAllOperations();
     model.addAttribute("historyOperation", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
 
-  /** Get accaunt history.
+  /**
+   * Get accaunt history.
+   *
    * @param accountId long
-   * @param model Vodel
+   * @param model     Model
    * @return string
    */
   @GetMapping(value = "/user/history/{accountId}")
   public String getAccountHistory(@PathVariable(name = "accountId") long accountId, Model model) {
-
-    List<Operation> history = operationService.historyAccountOperation(accountId);
+    List<Operation> history = operationService.getAllOperationsByAccount(accountId);
     model.addAttribute("historyOperation", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
 
-  /** Get card history.
+  /**
+   * Get card history.
+   *
    * @param cardId long
-   * @param model Model
+   * @param model  Model
    * @return String
    */
   @GetMapping(value = "/user/account/{accountId}/history/{cardId}")
   public String getCardHistory(@PathVariable(name = "cardId") long cardId, Model model) {
-
-    List<Operation> history = operationService.historyCardOperation(cardId);
+    List<Operation> history = operationService.getAllOperationsByCard(cardId);
     model.addAttribute("historyOperation", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
-
 }

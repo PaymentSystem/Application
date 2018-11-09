@@ -75,6 +75,10 @@ public class AccountServiceImpl implements AccountService {
       LOGGER.error("Not enough money on source account");
       throw new UnsupportedOperationException("Not enough money");
     }
+    if ((amount < 0 || amount == 0)) {
+      LOGGER.error("Not correct amount");
+      throw new UnsupportedOperationException("Not correct amount");
+    }
     LOGGER.info("Creating transaction");
     moneyTransfer(source, target, amount);
     LOGGER.info("Transaction has been created");

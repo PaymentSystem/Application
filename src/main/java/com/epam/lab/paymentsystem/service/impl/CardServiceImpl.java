@@ -34,6 +34,16 @@ public class CardServiceImpl implements CardService {
   private AccountService accountService;
 
   /**
+   * Returns list of all cards.
+   *
+   * @return list of cards
+   */
+  @Override
+  public List<Card> getAllCards() {
+    return cardRepository.findAll();
+  }
+
+  /**
    * Returns list of cards by given account id.
    *
    * @param id account id
@@ -55,6 +65,16 @@ public class CardServiceImpl implements CardService {
   public List<Card> getAllCardsByLogin(String login) {
     User user = userService.getUserByLogin(login);
     return cardRepository.getAllByUser(user);
+  }
+
+  /**
+   * Returns list of cards by current user.
+   *
+   * @return list of cards
+   */
+  @Override
+  public List<Card> getAllCardsByCurrentUser() {
+    return getAllCardsByLogin(userService.getCurrentUserLogin());
   }
 
   @Override

@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <td><label for="amount"><b><p th:text="#{account.amount}"/></b></label></td>
-            <td><input type="text" name="amount" class="form-control input-lg"
+            <td><input type="number" min="1" name="amount" class="form-control input-lg"
                        th:placeholder="#{user.placeholder.name}" id="amount" required></td>
         </tr>
     </table>

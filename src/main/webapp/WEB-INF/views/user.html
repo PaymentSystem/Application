@@ -22,7 +22,7 @@
                 <table id="user" style="with: 50%">
                     <thead>
                     <tr>
-                        <th><p th:text="#{id}"></p></th>
+                        <!--<th><p th:text="#{id}"></p></th>-->
                         <th><p th:text="#{account.label}"></p></th>
                         <th><p th:text="#{account.amount}"></p></th>
                     </tr>
@@ -30,7 +30,7 @@
                     <tbody>
                     <th:block th:each="account : ${accountList}">
                         <tr>
-                            <td th:text="${account.id}"></td>
+                            <!--<td th:text="${account.id}"></td>-->
                             <td th:text="${account.label}"></td>
                             <td th:text="${account.amount}"></td>
                             <td>
@@ -54,6 +54,10 @@
 <a th:href="@{${#httpServletRequest.requestURI}+'/addAccount'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{account.create}"></p>
+</a>
+<a th:href="@{'/operation'}"
+class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+<p th:text="#{operation.button}"></p>
 </a>
 </body>
 </html>

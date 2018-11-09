@@ -13,7 +13,7 @@ public interface OperationService {
    *
    * @return operation list.
    */
-  List<Operation> historyOperation();
+  List<Operation> getAllOperations();
 
   /**
    * History operation by account.
@@ -21,7 +21,7 @@ public interface OperationService {
    *
    * @return operation list
    */
-  List<Operation> historyAccountOperation(long accountId);
+  List<Operation> getAllOperationsByAccount(long accountId);
 
   /**
    * History operation by card.
@@ -29,7 +29,7 @@ public interface OperationService {
    * @param cardId long.
    * @return operation list.
    */
-  List<Operation> historyCardOperation(long cardId);
+  List<Operation> getAllOperationsByCard(long cardId);
 
   /**
    * Make payment operation.
@@ -42,7 +42,8 @@ public interface OperationService {
    * Write history in database.
    *
    * @param operation operation.
+   * @return operation.
    */
-  void writeHistory(Operation operation);
+  Operation writeHistory(Operation operation);
 }
 

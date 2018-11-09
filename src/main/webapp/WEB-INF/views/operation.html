@@ -22,7 +22,7 @@
 </head>
 <body>
 <a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
-<form id="operationLayer" action="makePayment" method="post">
+<form id="operationLayer" action="operation" method="post">
     <h1><p th:text="#{operation.title}"/></h1>
     <p th:text="#{operation.fillForm}"/>
     <hr>
@@ -30,17 +30,36 @@
     <table style="with: 50%">
         <tr>
             <td><label for="src"><b><p th:text="#{operation.source}"/></b></label></td>
-            <td><input type="text" name="src" class="form-control input-lg"
-                       th:placeholder="#{operation.placeholder.source}" id="src" required></td>
+            <td><input list="srcCards" name="src" class="form-control input-lg"
+                       th:placeholder="#{operation.placeholder.source}" id="src" required>
+                <datalist id="srcCards">
+                    <th:block th:each="srcCard : ${srcCardList}">
+                        <option th:value="${srcCard.id}">
+                    </th:block>
+                </datalist>
+            </td>
         </tr>
+        <tr>
+            <td><label for="dst"><b><p th:text="#{operation.source}"/></b></label></td>
+            <td><input list="dstCards" name="dst" class="form-control input-lg"
+                       th:placeholder="#{operation.placeholder.destination}" id="dst" required>
+                <datalist id="dstCards">
+                    <th:block th:each="dstCard : ${dstCardList}">
+                        <option th:value="${dstCard.id}">
+                    </th:block>
+                </datalist>
+            </td>
+        </tr>
+        <!--
         <tr>
             <td><label for=><b><p th:text="#{operation.destination}"/></b></label></td>
             <td><input type="text" name="dst" class="form-control input-lg"
                        th:placeholder="#{operation.placeholder.destination}" id="dst" required></td>
         </tr>
+        -->
         <tr>
             <td><label for="amount"><b><p th:text="#{operation.amount}"/></b></label></td>
-            <td><input type="text" name="amount" class="form-control input-lg"
+            <td><input type="number" min="1" name="amount" class="form-control input-lg"
                        th:placeholder="#{operation.placeholder.amount}" id="amount" required>
             </td>
         </tr>
@@ -48,7 +67,7 @@
     <hr>
     <button type="submit" class="btn btn-success"><p th:text="#{operation.send}"/></button>
 </form>
-<div class="alert alert-danger" role="alert">
+<!--<div class="alert alert-danger" role="alert">-->
     <h1 th:text="${message}"/>
 </div>
 </body>

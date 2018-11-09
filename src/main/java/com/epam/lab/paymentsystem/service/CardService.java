@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CardService {
 
+  List<Card> getAllCards();
+
   /**
    * Returns list of cards by given account id.
    *
@@ -25,6 +27,8 @@ public interface CardService {
    * @return list of cards
    */
   List<Card> getAllCardsByLogin(String login);
+
+  List<Card> getAllCardsByCurrentUser();
 
   List<Card> getAllCardsByAccountIsIn(List<Account> account);
 
