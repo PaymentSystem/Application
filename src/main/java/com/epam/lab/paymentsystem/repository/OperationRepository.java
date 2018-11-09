@@ -15,19 +15,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 0.0.1
  */
 public interface OperationRepository extends JpaRepository<Operation, Long> {
+
   /**
    * Returns list of operation from database which are linked to passed card id.
    *
-   * @param cardId long entity
+   * @param cardSrcId long src card id
+   * @param cardDstId long dst card id
    * @return list of operation entities
    */
-  List<Operation> getAllBySourceCardId(long cardId);
+  List<Operation> getAllBySourceCardIdOrTargetCardId(long cardSrcId, long cardDstId);
 
   /**
    * Returns list of operation from database which are linked to passed list card.
    *
-   * @param cards list entity
+   * @param cardsSrc list cards src entity
+   * @param cardsDst list cards dst entity
    * @return list of operation entities
    */
-  List<Operation> getAllBySourceCardIsIn(List<Card> cards);
+  List<Operation> getAllBySourceCardIsInOrTargetCardIsIn(List<Card> cardsSrc, List<Card> cardsDst);
 }

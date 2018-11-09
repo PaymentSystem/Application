@@ -22,7 +22,7 @@
 </head>
 <body>
 <a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
-<form id="operationLayer" action="operation" method="post">
+<form id="operationLayer" action="operation" method="post" th:object="${operationDto}">
     <h1><p th:text="#{operation.title}"/></h1>
     <p th:text="#{operation.fillForm}"/>
     <hr>
@@ -31,7 +31,7 @@
         <tr>
             <td><label for="src"><b><p th:text="#{operation.source}"/></b></label></td>
             <td><input list="srcCards" name="src" class="form-control input-lg"
-                       th:placeholder="#{operation.placeholder.source}" id="src" required>
+                       th:field="*{cardSrcId}" th:placeholder="#{operation.placeholder.source}" id="src" required>
                 <datalist id="srcCards">
                     <th:block th:each="srcCard : ${srcCardList}">
                         <option th:value="${srcCard.id}">
@@ -42,12 +42,12 @@
         <tr>
             <td><label for=><b><p th:text="#{operation.destination}"/></b></label></td>
             <td><input type="text" name="dst" class="form-control input-lg"
-                       th:placeholder="#{operation.placeholder.destination}" id="dst" required></td>
+                       th:field="*{cardDstId}" th:placeholder="#{operation.placeholder.destination}" id="dst" required></td>
         </tr>
         <tr>
             <td><label for="amount"><b><p th:text="#{operation.amount}"/></b></label></td>
             <td><input type="number" min="1" name="amount" class="form-control input-lg"
-                       th:placeholder="#{operation.placeholder.amount}" id="amount" required>
+                       th:field="*{amount}" th:placeholder="#{operation.placeholder.amount}" id="amount" required>
             </td>
         </tr>
     </table>

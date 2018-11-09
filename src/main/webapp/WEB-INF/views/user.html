@@ -65,9 +65,9 @@
                                 <td th:text="${account.label}"></td>
                                 <td th:text="${account.amount}"></td>
                                 <td th:text="${account.isActive}"></td>
-                                <td th:if="${#httpServletRequest.isUserInRole('USER')}">
+                                <!--<td th:if="${#httpServletRequest.isUserInRole('USER')}">
                                     <a th:href="@{__${#httpServletRequest.requestURI}__/account/__${account.id}__}">view</a>
-                                </td>
+                                </td>-->
                                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
                                     <form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"
@@ -134,9 +134,9 @@
                                 <td th:text="${user.login}"></td>
                                 <td th:text="${user.name}"></td>
                                 <td th:text="${user.role.roleStatus}"></td>
-                                <td>
+                                <!--<td>
                                     <a th:href="@{${user.login}}">view</a>
-                                </td>
+                                </td>-->
                             </tr>
                         </th:block>
                         </tbody>

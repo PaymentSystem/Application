@@ -68,8 +68,9 @@ public class OperationServiceImpl implements OperationService {
   @Override
   public List<Operation> getAllOperations() {
     String userLogin = userService.getCurrentUserLogin();
-    List<Card> card = cardService.getAllCardsByLogin(userLogin);
-    List<Operation> history = operationRepository.getAllBySourceCardIsIn(card);
+    List<Card> cards = cardService.getAllCardsByLogin(userLogin);
+    List<Operation> history
+        = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
     LOGGER.info("Display history operation");
     return history;
   }
@@ -83,7 +84,8 @@ public class OperationServiceImpl implements OperationService {
   @Override
   public List<Operation> getAllOperationsByAccount(long accountId) {
     List<Card> cards = cardService.getAllCardsByAccountId(accountId);
-    List<Operation> historyByAccount = operationRepository.getAllBySourceCardIsIn(cards);
+    List<Operation> historyByAccount
+        = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
     LOGGER.info("Display history operation");
     return historyByAccount;
   }
@@ -96,7 +98,8 @@ public class OperationServiceImpl implements OperationService {
    */
   @Override
   public List<Operation> getAllOperationsByCard(long cardId) {
-    List<Operation> historyByCard = operationRepository.getAllBySourceCardId(cardId);
+    List<Operation> historyByCard
+        = operationRepository.getAllBySourceCardIdOrTargetCardId(cardId, cardId);
     LOGGER.info("Display history operation");
     return historyByCard;
   }

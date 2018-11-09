@@ -148,7 +148,8 @@ public class OperationServiceTest {
   public void testGetAllOperationsReturnsOperationsList() {
     when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
     when(cardService.getAllCardsByLogin(user.getLogin())).thenReturn(cards);
-    when(operationRepository.getAllBySourceCardIsIn(cards)).thenReturn(operations);
+    when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards))
+        .thenReturn(operations);
     assertEquals(operations, operationService.getAllOperations());
   }
 
@@ -186,7 +187,8 @@ public class OperationServiceTest {
   @Test
   public void testGetAllOperationsByAccountReturnsOperationsList() {
     when(cardService.getAllCardsByAccountId(accountId)).thenReturn(cards);
-    when(operationRepository.getAllBySourceCardIsIn(cards)).thenReturn(operations);
+    when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards))
+        .thenReturn(operations);
     assertEquals(operations, operationService.getAllOperationsByAccount(accountId));
   }
 
