@@ -24,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
   private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
   private AccountRepository accountRepository;
+
   @Autowired
   private UserService userService;
 

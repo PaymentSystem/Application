@@ -10,6 +10,7 @@ import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public User getUserByLogin(String login) {
     return userRepository.getUserByLogin(login);
+  }
+
+  @Override
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
   }
 
   /**
