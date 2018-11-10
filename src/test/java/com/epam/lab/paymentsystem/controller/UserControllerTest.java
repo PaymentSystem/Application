@@ -1,7 +1,8 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.configuration.DispatcherConfiguration;
-import com.epam.lab.paymentsystem.configuration.TestApplicationConfiguration;
+import com.epam.lab.paymentsystem.configuration.H2TestConfiguration;
+import com.epam.lab.paymentsystem.configuration.WebSecurityConfiguration;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import javax.servlet.ServletContext;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,9 +36,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-    TestApplicationConfiguration.class,
+    H2TestConfiguration.class,
     DispatcherConfiguration.class
 })
+@PropertySource("classpath:h2test.properties")
 @WebAppConfiguration
 public class UserControllerTest {
 
@@ -44,6 +47,8 @@ public class UserControllerTest {
   private WebApplicationContext wac;
 
   private MockMvc mockMvc;
+  @Autowired
+  private UserRepository studentRepository;
 
   @BeforeEach
   public void setUp() {
@@ -72,12 +77,8 @@ public class UserControllerTest {
         .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"));
   }
 
-  @Autowired
-  private UserRepository studentRepository;
-
   @Test
   public void givenStudent_whenSave_thenGetOk() {
-
     User student = new User("test", "test", "test8", null);
     //student.setId(1);
     studentRepository.save(student);

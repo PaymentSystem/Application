@@ -15,20 +15,24 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * This class declares three @Bean methods and may be processed
  * by the Spring container using {@link Configuration @Configuration} to generate bean
  * definitions and service requests for those beans at runtime.
- * {@code ApplicationConfiguration} class configures the following back-end application components:
+ * {@code ApplicationConfiguration} class configures the following
+ * back-end application components:
  * database and Hibernate including entityManager and transactionManager.
  *
  * @author unascribed
  * @since 0.0.1
  */
-@PropertySource("classpath:application.properties")
+@Configuration
+@PropertySource("classpath:h2test.properties")
 @EnableJpaRepositories(basePackages = "com.epam.lab.paymentsystem.repository")
-public class TestApplicationConfiguration {
+@EnableWebMvc
+public class H2TestConfiguration {
 
   /**
    * Reading the file application.properties declared in {@link PropertySource @PropertySource}
@@ -47,11 +51,24 @@ public class TestApplicationConfiguration {
   @Bean
   public DataSource dataSource() {
     final BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName(environment.getProperty("spring.H2.database-driver"));
-    dataSource.setUrl(environment.getProperty("spring.H2.datasource.url"));
-    dataSource.setUsername(environment.getProperty("spring.H2.datasource.username"));
-    dataSource.setPassword(environment.getProperty("spring.H2.datasource.password"));
+    dataSource.setDriverClassName(environment.getProperty("spring.database-driver"));
+    dataSource.setUrl(environment.getProperty("spring.datasource.url"));
+    dataSource.setUsername(environment.getProperty("spring.datasource.username"));
+    dataSource.setPassword(environment.getProperty("spring.datasource.password"));
     return dataSource;
+  }
+
+
+  /**
+   * Method configure Hibernate properties.
+   *
+   * @return Hibernate properties
+   */
+  private Properties additionalProperties() {
+    Properties properties = new Properties();
+    properties.setProperty("hibernate.hbm2ddl.auto", "update");
+    properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+    return properties;
   }
 
   /**
@@ -75,19 +92,6 @@ public class TestApplicationConfiguration {
     em.setJpaProperties(additionalProperties());
 
     return em;
-  }
-
-  /**
-   * Method configure Hibernate properties.
-   *
-   * @return Hibernate properties
-   */
-  private Properties additionalProperties() {
-    Properties properties = new Properties();
-    properties.setProperty("hibernate.hbm2ddl.auto", "update");
-    properties.setProperty(
-        "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-    return properties;
   }
 
   /**
