@@ -2,13 +2,16 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
+import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.repository.CardRepo;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
 import com.epam.lab.paymentsystem.service.impl.UserServiceImpl;
 import com.epam.lab.paymentsystem.utility.converter.CurrentUser;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +35,18 @@ public class AccountController {
   private static final String ADD_ACCOUNT_PAGE = "addAccount";
   private static final String REDIRECT_TO = "redirect:";
   private static final String USER_PAGE = "user";
-
+  /**
+   * Add account form and send it to service layer.
+   *
+   * @param accountAmount double amount
+   * @param accountLabel  label
+   * @param model         model
+   * @return JSP view
+   */
+  @Autowired
+  CardRepo cardRepo;
   @Autowired
   private UserService userService;
-
   @Autowired
   private AccountService accountService;
 
@@ -64,18 +75,14 @@ public class AccountController {
     return ADD_ACCOUNT_PAGE;
   }
 
-  /**
-   * Add account form and send it to service layer.
-   *
-   * @param accountAmount double amount
-   * @param accountLabel  label
-   * @param model         model
-   * @return JSP view
-   */
+  @Transactional
   @PostMapping(value = "/user/addAccount")
   public String addAccount(@RequestParam(name = "label") String accountLabel,
                            @RequestParam(name = "amount") long accountAmount,
                            Model model) {
+    Card card = new Card();
+    card.setLabel("carta semki 99");
+    cardRepo.save(card);
 
     User user = userService.getUserByLogin(CurrentUser.getCurrentUserLogin());
     AccountDto accountDto = new AccountDto();
