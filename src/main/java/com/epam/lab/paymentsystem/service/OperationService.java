@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.service;
 
+import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import java.util.List;
 
@@ -34,16 +35,8 @@ public interface OperationService {
   /**
    * Make payment operation.
    *
-   * @param operation operation.
+   * @param operationDto operation dto.
    */
-  void makePayment(Operation operation);
-
-  /**
-   * Write history in database.
-   *
-   * @param operation operation.
-   * @return operation.
-   */
-  Operation writeHistory(Operation operation);
+  void makePayment(OperationDto operationDto);
 }
 

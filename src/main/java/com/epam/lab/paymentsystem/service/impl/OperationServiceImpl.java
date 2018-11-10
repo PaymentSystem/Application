@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.service.impl;
 
+import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
@@ -8,7 +9,10 @@ import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
 import com.epam.lab.paymentsystem.service.UserService;
+
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +41,23 @@ public class OperationServiceImpl implements OperationService {
   /**
    * Make payment operation.
    *
-   * @param operation operation.
+   * @param operationDto operation dto.
    */
   @Override
-  public void makePayment(Operation operation) {
-    Card sourceCard = cardService.getCardById(operation.getSourceCard().getId());
-    Card destinationCard = cardService.getCardById(operation.getTargetCard().getId());
-    Account srcAccount = sourceCard.getAccount();
-    Account dstAccount = destinationCard.getAccount();
+  @Transactional(rollbackOn = {Exception.class})
+  public void makePayment(OperationDto operationDto) {
+    Card srcCard = cardService.getCardById(operationDto.getCardSrcId());
+    Card dstCard = cardService.getCardById(operationDto.getCardDstId());
+    Account srcAccount = srcCard.getAccount();
+    Account dstAccount = dstCard.getAccount();
+
+    Operation operation = new Operation(srcCard, dstCard,
+            operationDto.getAmount(), LocalDateTime.now().withNano(0));
+
     accountService.makeTransaction(srcAccount, dstAccount, operation.getAmount());
     LOGGER.info("Payment operation is successful");
+    writeHistory(operation);
+    LOGGER.info("Payment operation has been written");
   }
 
   /**
@@ -54,8 +65,7 @@ public class OperationServiceImpl implements OperationService {
    *
    * @param operation operation.
    */
-  @Override
-  public Operation writeHistory(Operation operation) {
+  protected Operation writeHistory(Operation operation) {
     operationRepository.save(operation);
     return operation;
   }
