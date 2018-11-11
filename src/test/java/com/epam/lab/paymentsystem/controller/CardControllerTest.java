@@ -2,9 +2,10 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.configuration.DispatcherConfiguration;
 import com.epam.lab.paymentsystem.configuration.H2TestConfiguration;
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.entities.enums.Roles;
-import com.epam.lab.paymentsystem.repository.RoleRepository;
+import com.epam.lab.paymentsystem.repository.AccountRepository;
+import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.util.H2TestDataInitializer;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -37,8 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     H2TestConfiguration.class
 })
 @WebAppConfiguration
-public class UserControllerTest {
-
+public class CardControllerTest {
   @Autowired
   private WebApplicationContext wac;
   private MockMvc mockMvc;
@@ -47,8 +47,11 @@ public class UserControllerTest {
   @Autowired
   private UserService userService;
   @Autowired
-  private RoleRepository roleRepository;
+  private AccountRepository accountRepository;
+  @Autowired
+  private CardRepository cardRepository;
   private User user;
+  private Account account;
   @Autowired
   private H2TestDataInitializer h2TestDataInitializer;
 
@@ -62,48 +65,58 @@ public class UserControllerTest {
     h2TestDataInitializer.init();
 
     user = userRepository.getUserByLogin("test");
+    account = accountRepository.getAccountById(1);
+    cardRepository.getCardById(1);
     when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
 
     mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
   }
 
   @Test
-  public void testWelcomePage() throws Exception {
+  public void testCardListPage() throws Exception {
     mockMvc.perform(
-        get("/")
+        get("/{userLogin}/account/{accId}",
+            user.getLogin(), account.getId())
     )
         .andExpect(status().isOk())
-        .andExpect(view().name("index"))
-        .andExpect(content().contentType("text/html;charset=UTF-8"));
+        .andExpect(view().name("account"));
   }
 
   @Test
-  public void testAddUserPage() throws Exception {
+  public void testAddCardPage() throws Exception {
     mockMvc.perform(
-        get("/registration")
+        get("/{userLogin}/account/{accountId}/addCard",
+            user.getLogin(), account.getId())
     )
         .andExpect(status().isOk())
-        .andExpect(view().name("registration"))
-        .andExpect(content().contentType("text/html;charset=UTF-8"));
+        .andExpect(view().name("addCard"));
   }
 
   @Test
-  public void testBlockUser() throws Exception {
+  public void testAddCardCreatesNewCard() throws Exception {
     mockMvc.perform(
-        post("/{userLogin}/block", user.getLogin())
+        post("/{userLogin}/account/{accountId}/addCard",
+            user.getLogin(), account.getId())
+            .param("label", "visa")
+            .param("login", "test")
     )
-        .andExpect(status().is(302));
-    assertEquals(roleRepository.getRoleByRoleStatus(Roles.BLOCKED),
-        userRepository.getUserByLogin(user.getLogin()).getRole());
+        .andExpect(status().is(302))
+        .andExpect(view().name("redirect:/{userLogin}/account/{accountId}"));
+    assertEquals("visa", cardRepository.getCardById(2).getLabel());
+    assertEquals(userRepository.getUserByLogin("test"),
+        cardRepository.getCardById(2).getUser());
   }
 
   @Test
-  public void testUnblockUser() throws Exception {
+  public void testAddCardCreatesNewCard0() throws Exception {
     mockMvc.perform(
-        post("/{userLogin}/unblock", user.getLogin())
+        post("/{userLogin}/account/{accountId}/addCard",
+            user.getLogin(), account.getId())
+            .param("label", "visa")
+            .param("userLogin", "TAKOGO NET")
     )
-        .andExpect(status().is(302));
-    assertEquals(roleRepository.getRoleByRoleStatus(Roles.USER),
-        userRepository.getUserByLogin(user.getLogin()).getRole());
+        .andExpect(status().isOk())
+        .andExpect(model().attribute("messageCard",
+            "No such user"));
   }
 }

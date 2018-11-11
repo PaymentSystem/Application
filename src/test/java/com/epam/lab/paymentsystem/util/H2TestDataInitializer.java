@@ -1,0 +1,38 @@
+package com.epam.lab.paymentsystem.util;
+
+import com.epam.lab.paymentsystem.entities.Account;
+import com.epam.lab.paymentsystem.entities.Card;
+import com.epam.lab.paymentsystem.entities.Role;
+import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.entities.enums.Roles;
+import com.epam.lab.paymentsystem.repository.AccountRepository;
+import com.epam.lab.paymentsystem.repository.CardRepository;
+import com.epam.lab.paymentsystem.repository.RoleRepository;
+import com.epam.lab.paymentsystem.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class H2TestDataInitializer {
+  private static boolean initializer = false;
+  @Autowired
+  private RoleRepository roleRepository;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private AccountRepository accountRepository;
+  @Autowired
+  private CardRepository cardRepository;
+
+  public void init() {
+    if (!initializer) {
+      roleRepository.save(new Role(1, Roles.ADMIN));
+      roleRepository.save(new Role(3, Roles.BLOCKED));
+      Role role = roleRepository.save(new Role(2, Roles.USER));
+      User user = userRepository.save(new User("test", "test", "test", role));
+      Account account = accountRepository.save(new Account(user, "acc", 1000, true));
+      Card card = cardRepository.save(new Card(account, user, "card", true));
+      initializer = true;
+    }
+  }
+}

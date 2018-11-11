@@ -30,8 +30,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 @Configuration
 @PropertySource("classpath:h2test.properties")
-@EnableJpaRepositories(basePackages = "com.epam.lab.paymentsystem.repository")
-@EnableWebMvc
 public class H2TestConfiguration {
 
   /**
@@ -51,10 +49,10 @@ public class H2TestConfiguration {
   @Bean
   public DataSource dataSource() {
     final BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName(environment.getProperty("spring.database-driver"));
-    dataSource.setUrl(environment.getProperty("spring.datasource.url"));
-    dataSource.setUsername(environment.getProperty("spring.datasource.username"));
-    dataSource.setPassword(environment.getProperty("spring.datasource.password"));
+    dataSource.setDriverClassName(environment.getProperty("spring.H2.database-driver"));
+    dataSource.setUrl(environment.getProperty("spring.H2.datasource.url"));
+    dataSource.setUsername(environment.getProperty("spring.H2.datasource.username"));
+    dataSource.setPassword(environment.getProperty("spring.H2.datasource.password"));
     return dataSource;
   }
 
@@ -66,7 +64,7 @@ public class H2TestConfiguration {
    */
   private Properties additionalProperties() {
     Properties properties = new Properties();
-    properties.setProperty("hibernate.hbm2ddl.auto", "update");
+    properties.setProperty("hibernate.hbm2ddl.auto", "create");
     properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
     return properties;
   }
