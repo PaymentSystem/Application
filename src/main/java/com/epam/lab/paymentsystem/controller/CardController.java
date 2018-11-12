@@ -29,8 +29,10 @@ public class CardController {
   private static final String ADD_CARD_PAGE = "addCard";
   private static final String ACCOUNT_PAGE = "account";
   private static final String REDIRECT_TO = "redirect:";
+
   @Autowired
   private UserService userService;
+
   @Autowired
   private CardService cardService;
 

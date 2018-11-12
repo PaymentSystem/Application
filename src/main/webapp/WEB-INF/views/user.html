@@ -1,6 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -66,9 +65,9 @@
                                 <td th:text="${account.label}"></td>
                                 <td th:text="${account.amount}"></td>
                                 <td th:text="${account.isActive}"></td>
-                                <td th:if="${#httpServletRequest.isUserInRole('USER')}">
+                                <!--<td th:if="${#httpServletRequest.isUserInRole('USER')}">
                                     <a th:href="@{__${#httpServletRequest.requestURI}__/account/__${account.id}__}">view</a>
-                                </td>
+                                </td>-->
                                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
                                     <form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"
@@ -85,6 +84,16 @@
                                             <p th:text="#{user.unblock}"/>
                                         </button>
                                     </form>
+                                </td>
+                                <td>
+                                    <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}"
+                                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                                            th:text="#{showCard.button}"/></a>
+                                </td>
+                                <td>
+                                    <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${account.id}}"
+                                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                                            th:text="#{history.button}"/></a>
                                 </td>
                             </tr>
                         </th:block>
@@ -125,9 +134,9 @@
                                 <td th:text="${user.login}"></td>
                                 <td th:text="${user.name}"></td>
                                 <td th:text="${user.role.roleStatus}"></td>
-                                <td>
+                                <!--<td>
                                     <a th:href="@{${user.login}}">view</a>
-                                </td>
+                                </td>-->
                             </tr>
                         </th:block>
                         </tbody>
@@ -137,5 +146,8 @@
         </div>
     </div>
 </div>
+<a th:href="@{'/operation'}"
+   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+    <p th:text="#{operation.button}"></p>
 </body>
 </html>
