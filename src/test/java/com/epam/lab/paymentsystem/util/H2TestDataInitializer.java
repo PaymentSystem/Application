@@ -27,10 +27,14 @@ public class H2TestDataInitializer {
   public void init() {
     if (!initializer) {
       roleRepository.save(new Role(1, Roles.ADMIN));
-      roleRepository.save(new Role(3, Roles.BLOCKED));
+      Role roleBlocked = roleRepository.save(new Role(3, Roles.BLOCKED));
       Role role = roleRepository.save(new Role(2, Roles.USER));
       User user = userRepository.save(new User("test", "test", "test", role));
+      User user2 = userRepository.save(
+          new User("testBlocked", "testBlocked", "testBlocked", roleBlocked)
+      );
       Account account = accountRepository.save(new Account(user, "acc", 1000, true));
+      Account account2 = accountRepository.save(new Account(user, "acc", 1000, false));
       Card card = cardRepository.save(new Card(account, user, "card", true));
       initializer = true;
     }

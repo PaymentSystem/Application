@@ -8,14 +8,10 @@ import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
-import com.epam.lab.paymentsystem.util.H2TestDataInitializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     H2TestConfiguration.class
 })
 @WebAppConfiguration
-public class CardControllerTest {
+public class CardControllerTest extends AbstractControllerTest {
   @Autowired
   private WebApplicationContext wac;
   private MockMvc mockMvc;
@@ -52,18 +47,9 @@ public class CardControllerTest {
   private CardRepository cardRepository;
   private User user;
   private Account account;
-  @Autowired
-  private H2TestDataInitializer h2TestDataInitializer;
 
   @BeforeEach
-  public void setUp() {
-    Authentication authentication = mock(Authentication.class);
-    SecurityContext securityContext = mock(SecurityContext.class);
-    when(securityContext.getAuthentication()).thenReturn(authentication);
-    SecurityContextHolder.setContext(securityContext);
-
-    h2TestDataInitializer.init();
-
+  public void setUpFields() {
     user = userRepository.getUserByLogin("test");
     account = accountRepository.getAccountById(1);
     cardRepository.getCardById(1);
@@ -75,8 +61,11 @@ public class CardControllerTest {
   @Test
   public void testCardListPage() throws Exception {
     mockMvc.perform(
-        get("/{userLogin}/account/{accId}",
-            user.getLogin(), account.getId())
+        get(
+            "/{userLogin}/account/{accId}",
+            user.getLogin(),
+            account.getId()
+        )
     )
         .andExpect(status().isOk())
         .andExpect(view().name("account"));
@@ -85,8 +74,11 @@ public class CardControllerTest {
   @Test
   public void testAddCardPage() throws Exception {
     mockMvc.perform(
-        get("/{userLogin}/account/{accountId}/addCard",
-            user.getLogin(), account.getId())
+        get(
+            "/{userLogin}/account/{accountId}/addCard",
+            user.getLogin(),
+            account.getId()
+        )
     )
         .andExpect(status().isOk())
         .andExpect(view().name("addCard"));
@@ -94,17 +86,30 @@ public class CardControllerTest {
 
   @Test
   public void testAddCardCreatesNewCard() throws Exception {
+    String expectedLabel = "visa";
+    String expectedUserLogin = "test";
     mockMvc.perform(
-        post("/{userLogin}/account/{accountId}/addCard",
-            user.getLogin(), account.getId())
-            .param("label", "visa")
-            .param("userLogin", "test")
+        post(
+            "/{userLogin}/account/{accountId}/addCard",
+            user.getLogin(),
+            account.getId()
+        )
+            .param("label", expectedLabel)
+            .param("userLogin", expectedUserLogin)
     )
         .andExpect(status().is(302))
         .andExpect(view().name("redirect:/{userLogin}/account/{accountId}"));
-    assertEquals("visa", cardRepository.getCardById(2).getLabel());
-    assertEquals(userRepository.getUserByLogin("test"),
-        cardRepository.getCardById(2).getUser());
+    int actualId = 2;
+    assertEquals(
+        expectedLabel,
+        cardRepository.getCardById(actualId).getLabel(),
+        "Cards labels should be the same after test!"
+    );
+    assertEquals(
+        userRepository.getUserByLogin(expectedUserLogin),
+        cardRepository.getCardById(actualId).getUser(),
+        "Cards user should be the same after test!"
+    );
   }
 
   @Test
@@ -113,10 +118,12 @@ public class CardControllerTest {
         post("/{userLogin}/account/{accountId}/addCard",
             user.getLogin(), account.getId())
             .param("label", "visa")
-            .param("userLogin", "TAKOGO NET")
+            .param("userLogin", "noSuchUserLogin")
     )
         .andExpect(status().isOk())
-        .andExpect(model().attribute("messageCard",
-            "No such user"));
+        .andExpect(model().attribute(
+            "messageCard",
+            "No such user")
+        );
   }
 }

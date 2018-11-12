@@ -7,14 +7,10 @@ import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
-import com.epam.lab.paymentsystem.util.H2TestDataInitializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,7 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,8 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     H2TestConfiguration.class
 })
 @WebAppConfiguration
-public class UserControllerTest {
-
+public class UserControllerTest extends AbstractControllerTest {
   @Autowired
   private WebApplicationContext wac;
   private MockMvc mockMvc;
@@ -52,22 +46,12 @@ public class UserControllerTest {
   @Autowired
   private RoleRepository roleRepository;
   private User user;
-  @Autowired
-  private H2TestDataInitializer h2TestDataInitializer;
-  private BCryptPasswordEncoder encoder;
 
   @BeforeEach
-  public void setUp() {
-    Authentication authentication = mock(Authentication.class);
-    SecurityContext securityContext = mock(SecurityContext.class);
-    when(securityContext.getAuthentication()).thenReturn(authentication);
-    SecurityContextHolder.setContext(securityContext);
-
-    h2TestDataInitializer.init();
-
+  public void setUpFields() {
     user = userRepository.getUserByLogin("test");
     when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
-    encoder = new BCryptPasswordEncoder();
+    new BCryptPasswordEncoder();
 
     mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
   }
@@ -107,30 +91,40 @@ public class UserControllerTest {
         post("/{userLogin}/block", user.getLogin())
     )
         .andExpect(status().is(302));
-    assertEquals(roleRepository.getRoleByRoleStatus(Roles.BLOCKED),
-        userRepository.getUserByLogin(user.getLogin()).getRole());
+    assertEquals(
+        roleRepository.getRoleByRoleStatus(Roles.BLOCKED),
+        userRepository.getUserByLogin(user.getLogin()).getRole(),
+        "User role status should be 'BLOCKED' after test!"
+    );
   }
 
   @Test
   public void testUnblockUser() throws Exception {
+    String userLogin = "testBlocked";
     mockMvc.perform(
-        post("/{userLogin}/unblock", user.getLogin())
+        post("/{userLogin}/unblock", userLogin)
     )
         .andExpect(status().is(302));
-    assertEquals(roleRepository.getRoleByRoleStatus(Roles.USER),
-        userRepository.getUserByLogin(user.getLogin()).getRole());
+    assertEquals(
+        roleRepository.getRoleByRoleStatus(Roles.USER),
+        userRepository.getUserByLogin(userLogin).getRole(),
+        "User role status should be 'USER' after test!"
+    );
   }
 
   @Test
   public void testAddUserCreatesNewUser() throws Exception {
+    String expectedLogin = "addTest";
     mockMvc.perform(
         post("/addUser")
-            .param("login", "addTest")
+            .param("login", expectedLogin)
             .param("name", "addTest")
             .param("password", "addTest")
     )
         .andExpect(status().is(302));
-    assertNotNull(userRepository.getUserByLogin("addTest"));
+    assertNotNull(
+        userRepository.getUserByLogin(expectedLogin),
+        "User " + expectedLogin + " should exist after test!");
   }
 
   @Test
@@ -142,6 +136,9 @@ public class UserControllerTest {
             .param("password", "addTest")
     )
         .andExpect(status().isOk())
-        .andExpect(model().attribute("messageException", "Login already exists"));
+        .andExpect(model().attribute(
+            "messageException",
+            "Login already exists")
+        );
   }
 }
