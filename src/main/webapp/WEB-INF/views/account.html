@@ -32,7 +32,8 @@
                             <td th:text="${card.id}"></td>
                             <td th:text="${card.label}"></td>
                             <td>
-                                <a th:href="@{${#httpServletRequest.requestURI} + '/card/' + ${card.id}}">view</a>
+                                <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${card.id}}"
+                                   class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p th:text="#{history.button}"/></a>
                             </td>
                         </tr>
                     </th:block>
@@ -48,6 +49,10 @@
 <a th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{card.create}"></p>
+</a>
+<a th:href="@{'/operation'}"
+   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+    <p th:text="#{operation.button}"></p>
 </a>
 </body>
 </html>

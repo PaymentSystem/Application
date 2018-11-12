@@ -1,6 +1,7 @@
 package com.epam.lab.paymentsystem.entities;
 
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,11 +11,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "operations")
 public class Operation extends AbstractEntity {
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "id_src_card")
   private Card sourceCard;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "id_dst_card")
   private Card targetCard;
 
