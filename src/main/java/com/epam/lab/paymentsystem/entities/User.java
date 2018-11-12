@@ -24,7 +24,7 @@ public class User extends AbstractEntity {
   @Column(name = "login")
   private String login;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "id_role")
   private Role role;
 
