@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class H2TestDataInitializer {
-  private static boolean initializer = false;
   @Autowired
   private RoleRepository roleRepository;
   @Autowired
@@ -25,18 +24,22 @@ public class H2TestDataInitializer {
   private CardRepository cardRepository;
 
   public void init() {
-    if (!initializer) {
-      roleRepository.save(new Role(1, Roles.ADMIN));
-      Role roleBlocked = roleRepository.save(new Role(3, Roles.BLOCKED));
-      Role role = roleRepository.save(new Role(2, Roles.USER));
-      User user = userRepository.save(new User("test", "test", "test", role));
-      User user2 = userRepository.save(
-          new User("testBlocked", "testBlocked", "testBlocked", roleBlocked)
-      );
-      Account account = accountRepository.save(new Account(user, "acc", 1000, true));
-      Account account2 = accountRepository.save(new Account(user, "acc", 1000, false));
-      Card card = cardRepository.save(new Card(account, user, "card", true));
-      initializer = true;
-    }
+    roleRepository.save(new Role(1, Roles.ADMIN));
+    Role roleBlocked = roleRepository.save(new Role(3, Roles.BLOCKED));
+    Role role = roleRepository.save(new Role(2, Roles.USER));
+    User user = userRepository.save(new User("test", "test", "test", role));
+    User user2 = userRepository.save(
+        new User("testBlocked", "testBlocked", "testBlocked", roleBlocked)
+    );
+    Account account = accountRepository.save(new Account(user, "acc", 1000, true));
+    Account account2 = accountRepository.save(new Account(user, "acc", 1000, false));
+    Card card = cardRepository.save(new Card(account, user, "card", true));
+    card.setId(1);
+  }
+
+  public void clean() {
+    cardRepository.deleteAll();
+    accountRepository.deleteAll();
+    userRepository.deleteAll();
   }
 }
