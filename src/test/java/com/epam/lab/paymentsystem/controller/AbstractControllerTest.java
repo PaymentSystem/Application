@@ -54,9 +54,9 @@ public abstract class AbstractControllerTest {
   protected RoleRepository roleRepository;
   @Autowired
   private H2TestDataInitializer h2TestDataInitializer;
-  MockMvc mockMvc;
-  User user;
-  Account account;
+  protected MockMvc mockMvc;
+  protected User user;
+  protected Account account;
 
   @BeforeEach
   public void setUp() throws SQLException {
