@@ -28,9 +28,11 @@ public class CardController {
   private static final String ACCOUNT_PAGE = "account";
   private static final String REDIRECT_TO = "redirect:";
 
-  @Autowired private UserService userService;
+  @Autowired
+  private UserService userService;
 
-  @Autowired private CardService cardService;
+  @Autowired
+  private CardService cardService;
 
   /**
    * Returns account page with list of all cards linked to that account.
@@ -92,6 +94,11 @@ public class CardController {
     return REDIRECT_TO + "/{userLogin}/account/{accountId}";
   }
 
+  /** Blocking or activating card.
+   * @param id card id
+   * @param isBlock boolean
+   * @return redirect to card's account page
+   */
   @PostMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/blocking/{isBlock}")
   public String blockCard(@PathVariable(name = "cardId") long id,
                           @PathVariable(name = "isBlock") boolean isBlock) {
