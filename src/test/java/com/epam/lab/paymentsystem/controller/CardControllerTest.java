@@ -98,7 +98,7 @@ public class CardControllerTest {
         post("/{userLogin}/account/{accountId}/addCard",
             user.getLogin(), account.getId())
             .param("label", "visa")
-            .param("login", "test")
+            .param("userLogin", "test")
     )
         .andExpect(status().is(302))
         .andExpect(view().name("redirect:/{userLogin}/account/{accountId}"));
@@ -108,7 +108,7 @@ public class CardControllerTest {
   }
 
   @Test
-  public void testAddCardCreatesNewCard0() throws Exception {
+  public void testAddCardFailsWithInvalidUserLoginParam() throws Exception {
     mockMvc.perform(
         post("/{userLogin}/account/{accountId}/addCard",
             user.getLogin(), account.getId())
