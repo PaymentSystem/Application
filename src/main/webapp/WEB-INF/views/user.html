@@ -1,14 +1,17 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="style/main.css">
+
     <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <script src="js/scripts.js"></script>
     <title th:text="#{user.page}"></title>
 </head>
 <body>
@@ -68,6 +71,8 @@
             <th><p th:text="#{account.label}"></p></th>
             <th><p th:text="#{account.amount}"></p></th>
             <th><p th:text="#{account.isActive}"></p></th>
+            <th><p th:text="#{account.view}"></p></th>
+            <th><p th:text="#{account.block}"></p></th>
         </tr>
         </thead>
 
@@ -103,7 +108,7 @@
     </table>
 
 
-    <table th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+    <table class="table" th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
         <tr>
             <th>
                 <form th:action="@{${userLogin}+'/block'}" method="post">
@@ -181,15 +186,13 @@
     <!--<p th:text="#{account.create}"></p>-->
     <!--</a>-->
 </div>
+
 <div th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
 &&#httpServletRequest.isUserInRole('ADMIN')==false}"><h1>Poshel von otsudava</h1></div>
 <div th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
 &&#httpServletRequest.isUserInRole('ADMIN')}">
-    <div class="container">
-        <div class="card">
-            <div class="card-block">
-                <div class="table table-hover">
-                    <table id="admin" style="with: 50%">
+
+    <table id="admin" style="with: 50%">
                         <thead>
                         <tr>
                             <th><p th:text="#{user.login}"></p></th>
@@ -210,10 +213,6 @@
                         </th:block>
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>

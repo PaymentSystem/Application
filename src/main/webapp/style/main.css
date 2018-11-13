@@ -1,7 +1,4 @@
 /*##################login page##################*/
-body {
-    padding-top: 90px;
-}
 
 .panel-login {
     border-color: #ccc;
@@ -123,12 +120,15 @@ body {
 
 /*##################admin-user-profile##################*/
 .admin-user-data {
-    margin: 0 auto;
+    margin: 2% auto;
     width: 100%;
     max-width: 1920px;
 }
 
 .table {
-    width: 100%;
+ border: 1px solid #ddd;
+    width: 50%;
     margin: 0 auto;
+    text-align: center;
 }
+
