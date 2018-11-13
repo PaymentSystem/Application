@@ -53,7 +53,7 @@ public class OperationController {
    * Payment operation .
    *
    * @param operationDto operation dto
-   * @param model  Model.
+   * @param model        Model.
    * @return String
    */
   @PostMapping(value = "/operation")
@@ -88,7 +88,7 @@ public class OperationController {
   }
 
   /**
-   * Get accaunt history.
+   * Get account history.
    *
    * @param accountId long
    * @param model     Model

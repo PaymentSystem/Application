@@ -1,7 +1,9 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
+import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
@@ -36,6 +38,9 @@ public class CardController {
   @Autowired
   private CardService cardService;
 
+  @Autowired
+  private AccountService accountService;
+
   /**
    * Returns account page with list of all cards linked to that account.
    *
@@ -48,6 +53,9 @@ public class CardController {
     LOGGER.info("Access to account page");
     List<Card> cards = cardService.getAllCardsByAccountId(id);
     model.addAttribute("cardList", cards);
+    Account account = accountService.getAccountById(id);
+    long amountCard = account.getAmount();
+    model.addAttribute("amountCard", amountCard);
     return ACCOUNT_PAGE;
   }
 

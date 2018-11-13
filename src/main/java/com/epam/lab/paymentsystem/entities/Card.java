@@ -24,6 +24,9 @@ public class Card extends AbstractEntity {
   @Column(name = "is_active")
   private boolean isActive;
 
+  @Column(name = "card_number")
+  private long cardNumber;
+
   public Card() {
   }
 
@@ -100,5 +103,13 @@ public class Card extends AbstractEntity {
 
   public void setActive(boolean active) {
     isActive = active;
+  }
+
+  public long getCardNumber() {
+    return cardNumber;
+  }
+
+  public void setCardNumber(long cardNumber) {
+    this.cardNumber = cardNumber;
   }
 }

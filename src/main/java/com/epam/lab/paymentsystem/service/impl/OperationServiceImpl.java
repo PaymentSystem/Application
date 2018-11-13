@@ -9,7 +9,6 @@ import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
 import com.epam.lab.paymentsystem.service.UserService;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -51,8 +50,12 @@ public class OperationServiceImpl implements OperationService {
     Account srcAccount = srcCard.getAccount();
     Account dstAccount = dstCard.getAccount();
 
+    if (dstAccount.equals(null)) {
+      LOGGER.error("This card not exist");
+      throw new UnsupportedOperationException("This card not exist");
+    }
     Operation operation = new Operation(srcCard, dstCard,
-            operationDto.getAmount(), LocalDateTime.now().withNano(0));
+        operationDto.getAmount(), LocalDateTime.now().withNano(0));
 
     accountService.makeTransaction(srcAccount, dstAccount, operation.getAmount());
     LOGGER.info("Payment operation is successful");

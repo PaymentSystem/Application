@@ -211,7 +211,7 @@
                         <phase>validate</phase>
                         <configuration>
                             <configLocation>google_checks.xml</configLocation>
-                            <violationSeverity>warning</violationSeverity>
+                            <!--<violationSeverity>warning</violationSeverity>-->
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
                             <failsOnError>false</failsOnError>

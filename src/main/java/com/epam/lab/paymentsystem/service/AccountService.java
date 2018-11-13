@@ -56,4 +56,7 @@ public interface AccountService {
   Account blockAccountById(long id);
 
   Account unblockAccountById(long id);
+
+  Account addAmount(long accountId, long amount);
+
 }

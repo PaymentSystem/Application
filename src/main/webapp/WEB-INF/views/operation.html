@@ -47,6 +47,8 @@
         <tr>
             <td><label for="amount"><b><p th:text="#{operation.amount}"/></b></label></td>
             <td><input type="number" min="1" name="amount" class="form-control input-lg"
+                       th:oninvalid="this.setCustomValidity(${message})"
+                       oninput="setCustomValidity()"
                        th:field="*{amount}" th:placeholder="#{operation.placeholder.amount}" id="amount" required>
             </td>
         </tr>
@@ -56,6 +58,6 @@
 </form>
 <!--<div class="alert alert-danger" role="alert">-->
     <h1 th:text="${message}"/>
-</div>
+<!--</div>-->
 </body>
 </html>

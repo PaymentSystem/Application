@@ -15,6 +15,7 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
+<h2 th:text="#{account.amount.view} + ${amountCard}"></h2>
 <div class="container" th:if="${!cardList.isEmpty()}">
     <div class="card">
         <div class="card-block">
@@ -22,14 +23,14 @@
                 <table>
                     <thead>
                     <tr>
-                        <th><p th:text="#{id}"></p></th>
+                        <!--<th><p th:text="#{id}"></p></th>-->
                         <th><p th:text="#{account.label}"></p></th>
                     </tr>
                     </thead>
                     <tbody>
                     <th:block th:each="card : ${cardList}">
                         <tr>
-                            <td th:text="${card.id}"></td>
+                            <!--<td th:text="${card.id}"></td>-->
                             <td th:text="${card.label}"></td>
                             <td>
                                 <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${card.id}}"
@@ -53,6 +54,10 @@
 <a th:href="@{'/operation'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{operation.button}"></p>
+</a>
+<a th:href="@{${#httpServletRequest.requestURI}+'/addAmount'}"
+   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+    <p th:text="#{account.addAmount}"></p>
 </a>
 </body>
 </html>

@@ -7,7 +7,6 @@ import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
-
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -22,11 +21,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardServiceImpl implements CardService {
 
+  private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
   @Autowired
   private CardRepository cardRepository;
-
-  private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
-
   @Autowired
   private UserService userService;
 
@@ -105,6 +102,10 @@ public class CardServiceImpl implements CardService {
 
   @Override
   public Card getCardById(long id) {
+    if (cardRepository.getCardById(id) == null) {
+      LOGGER.error("Card not exist");
+      throw new UnsupportedOperationException("Card not exist");
+    }
     return cardRepository.getCardById(id);
   }
 

@@ -130,6 +130,21 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
+  public Account addAmount(long accountId, long amount)
+      throws UnsupportedOperationException {
+
+    Account account = accountRepository.getAccountById(accountId);
+    if (amount <= 0) {
+      LOGGER.error("Amount should be positive");
+      throw new UnsupportedOperationException("Amount should be positive");
+    }
+    account.setAmount(account.getAmount() + amount);
+
+    LOGGER.info("Account's amount has been updated");
+    return accountRepository.save(account);
+  }
+
+  @Override
   public List<Account> getAllAccountsOfUser(String login) {
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
