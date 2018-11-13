@@ -48,4 +48,12 @@ public interface CardService {
    */
   Card createCard(CardDto card);
 
+  /**
+   * Setting card active or inactive by id.
+   *
+   * @param id card
+   * @param isActive boolean
+   * @return card entity
+   */
+  Card setCardActive(long id, boolean isActive);
 }

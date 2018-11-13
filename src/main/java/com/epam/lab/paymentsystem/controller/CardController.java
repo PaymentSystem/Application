@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * Controller for Card,
- * processes the specified URL and redirects
- * the request to the specified page.
+ * Controller for Card, processes the specified URL and redirects the request to the specified page.
  *
  * @author unascribed
  * @since 0.0.1
@@ -39,14 +37,18 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that account.
    *
-   * @param id    id of account
+   * @param id id of account
    * @param model model
    * @return account page view
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}")
-  public String getAccountPage(@PathVariable(name = "accountId") long id, Model model) {
+  public String getAccountPage(
+      @PathVariable(name = "userLogin") String login,
+      @PathVariable(name = "accountId") long id,
+      Model model) {
     LOGGER.info("Access to account page");
     List<Card> cards = cardService.getAllCardsByAccountId(id);
+    model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
     model.addAttribute("cardList", cards);
     return ACCOUNT_PAGE;
   }
@@ -69,8 +71,8 @@ public class CardController {
    * Add card form and send it to service layer.
    *
    * @param accountId account
-   * @param cardDto   card dto from form
-   * @param model     model
+   * @param cardDto card dto from form
+   * @param model model
    * @return JSP view
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/addCard")
@@ -89,6 +91,18 @@ public class CardController {
       return ADD_CARD_PAGE;
     }
 
+    return REDIRECT_TO + "/{userLogin}/account/{accountId}";
+  }
+
+  /** Blocking or activating card.
+   * @param id card id
+   * @param isBlock boolean
+   * @return redirect to card's account page
+   */
+  @PostMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/blocking/{isBlock}")
+  public String blockCard(@PathVariable(name = "cardId") long id,
+                          @PathVariable(name = "isBlock") boolean isBlock) {
+    cardService.setCardActive(id, !isBlock);
     return REDIRECT_TO + "/{userLogin}/account/{accountId}";
   }
 }

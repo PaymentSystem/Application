@@ -108,4 +108,17 @@ public class CardServiceImpl implements CardService {
     return cardRepository.getCardById(id);
   }
 
+  /**
+   * Setting card active or inactive by id.
+   *
+   * @param id card
+   * @param isActive boolean
+   * @return card entity
+   */
+  @Override
+  public Card setCardActive(long id, boolean isActive) {
+    Card card = getCardById(id);
+    card.setIsActive(isActive);
+    return cardRepository.save(card);
+  }
 }

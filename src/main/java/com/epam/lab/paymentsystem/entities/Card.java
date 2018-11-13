@@ -24,15 +24,14 @@ public class Card extends AbstractEntity {
   @Column(name = "is_active")
   private boolean isActive;
 
-  public Card() {
-  }
+  public Card() {}
 
   /**
    * Constructor for card.
    *
-   * @param account  id of account
-   * @param user     userId of card
-   * @param label    label
+   * @param account id of account
+   * @param user userId of card
+   * @param label label
    * @param isActive boolean flag
    */
   public Card(Account account, User user, String label, boolean isActive) {
@@ -94,11 +93,11 @@ public class Card extends AbstractEntity {
     this.label = label;
   }
 
-  public boolean isActive() {
+  public boolean getIsActive() {
     return isActive;
   }
 
-  public void setActive(boolean active) {
+  public void setIsActive(boolean active) {
     isActive = active;
   }
 }
