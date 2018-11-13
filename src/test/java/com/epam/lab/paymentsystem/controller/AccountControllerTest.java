@@ -26,7 +26,7 @@ public class AccountControllerTest extends AbstractControllerTest {
         .andExpect(status().is(302))
         .andExpect(view().name("redirect:/{userLogin}"))
         .andExpect(redirectedUrl("/" + user.getLogin()));
-    int actualId = 3;
+    long actualId = account2.getId() + 1;
     assertEquals(
         expectedLabel,
         accountRepository.getAccountById(actualId).getLabel(),
@@ -77,17 +77,16 @@ public class AccountControllerTest extends AbstractControllerTest {
 
   @Test
   public void testUnblockAccount() throws Exception {
-    int blockedAccountId = 2;
     mockMvc.perform(
         post(
             "/{userLogin}/account/{accountId}/unblock",
             user.getLogin(),
-            blockedAccountId
+            account2.getId()
         )
     )
         .andExpect(status().is(302));
     assertTrue(
-        accountRepository.getAccountById(blockedAccountId).getIsActive(),
+        accountRepository.getAccountById(account2.getId()).getIsActive(),
         "Account should be unblocked!"
     );
   }

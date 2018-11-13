@@ -3,14 +3,15 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.configuration.DispatcherConfiguration;
 import com.epam.lab.paymentsystem.configuration.H2TestConfiguration;
 import com.epam.lab.paymentsystem.entities.Account;
+import com.epam.lab.paymentsystem.entities.Card;
+import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
-import com.epam.lab.paymentsystem.util.DbTestUtil;
-import com.epam.lab.paymentsystem.util.H2TestDataInitializer;
 import java.sql.SQLException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,11 +53,12 @@ public abstract class AbstractControllerTest {
   protected CardRepository cardRepository;
   @Autowired
   protected RoleRepository roleRepository;
-  @Autowired
-  private H2TestDataInitializer h2TestDataInitializer;
   protected MockMvc mockMvc;
   protected User user;
   protected Account account;
+  protected User user2;
+  protected Account account2;
+  protected Card card;
 
   @BeforeEach
   public void setUp() throws SQLException {
@@ -65,22 +67,37 @@ public abstract class AbstractControllerTest {
     when(securityContext.getAuthentication()).thenReturn(authentication);
     SecurityContextHolder.setContext(securityContext);
 
-    DbTestUtil.resetAutoIncrementColumns(
-        applicationContext, "users", "accounts", "cards", "operations"
-    );
-
-    h2TestDataInitializer.init();
+    init();
 
     mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-
-    user = userRepository.getUserByLogin("test");
-    account = accountRepository.getAccountById(1);
     when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
   }
 
 
   @AfterEach
   public void cleanUp() {
-    h2TestDataInitializer.clean();
+    clean();
+  }
+
+
+  public void init() {
+    roleRepository.save(new Role(1, Roles.ADMIN));
+    Role roleBlocked = roleRepository.save(new Role(3, Roles.BLOCKED));
+    Role role = roleRepository.save(new Role(2, Roles.USER));
+    user = userRepository.save(new User("test", "test", "test", role));
+    user2 = userRepository.save(
+        new User("testBlocked", "testBlocked", "testBlocked", roleBlocked)
+    );
+    account = accountRepository.save(new Account(user, "acc", 1000, true));
+    account2 = accountRepository.save(new Account(user, "acc", 1000, false));
+    card = cardRepository.save(new Card(account, user, "card", true));
+  }
+
+  public void clean() {
+    cardRepository.deleteAll();
+    accountRepository.deleteAll();
+    userRepository.deleteAll();
   }
 }
+
+

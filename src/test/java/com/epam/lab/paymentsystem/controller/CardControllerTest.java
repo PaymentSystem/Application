@@ -52,7 +52,7 @@ public class CardControllerTest extends AbstractControllerTest {
     )
         .andExpect(status().is(302))
         .andExpect(view().name("redirect:/{userLogin}/account/{accountId}"));
-    int actualId = 2;
+    long actualId = card.getId() + 1;
     assertEquals(
         expectedLabel,
         cardRepository.getCardById(actualId).getLabel(),
