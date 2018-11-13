@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "accounts")
 public class Account extends AbstractEntity {
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.REFRESH)
   @JoinColumn(name = "id_user")
   private User user;
 

@@ -79,6 +79,10 @@ public class AccountServiceImpl implements AccountService {
       LOGGER.error("Not enough money on source account");
       throw new UnsupportedOperationException("Not enough money");
     }
+    if ((amount <= 0)) {
+      LOGGER.error("Not correct amount");
+      throw new UnsupportedOperationException("Not correct amount");
+    }
     if (!source.getIsActive()) {
       LOGGER.error("Source account is blocked");
       throw new UnsupportedOperationException("Source account is blocked");

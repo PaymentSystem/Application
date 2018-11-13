@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>History page</title>
+    <style type="text/css">
+        #centerLayer {
+            margin: 0 25% 0 25%;
+            width: 50%; /* Ширина слоя */
+            background: #a3f8e3; /* Цвет фона */
+            padding: 10px; /* Поля вокруг текста */
+        }
+    </style>
+</head>
+<body>
+<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
+<div class="container" th:if="${!historyOperation.isEmpty()}">
+    <div class="card">
+        <div class="card-block">
+            <div class="table table-hover">
+                <table id="user" style="with: 50%">
+                    <thead>
+                    <tr>
+                        <th><p th:text="#{history.srcCard}"></p></th>
+                        <th><p th:text="#{history.dstCard}"></p></th>
+                        <th><p th:text="#{history.amount}"></p></th>
+                        <th><p th:text="#{history.date}"></p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="history : ${historyOperation}">
+                        <tr>
+                            <td th:text="${history.sourceCard.label}"></td>
+                            <td th:text="${history.targetCard.label}"></td>
+                            <td th:text="${history.amount}"></td>
+                            <td th:text="${history.date}"></td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:unless="${!historyOperation.isEmpty()}">
+    <h1 th:text="#{history.empty}"></h1>
+</div>
+
+
+</body>
+</html>

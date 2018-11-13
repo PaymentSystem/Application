@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 0.0.1
  */
 public interface CardRepository extends JpaRepository<Card, Long> {
+
   /**
    * Returns card form database by passed id.
    *
@@ -31,6 +32,14 @@ public interface CardRepository extends JpaRepository<Card, Long> {
    * @return list of cards by user
    */
   List<Card> getAllByUser(User user);
+
+  /**
+   * Returns card form database by passed id.
+   *
+   * @param account account of card
+   * @return list of cards by user
+   */
+  List<Card> getAllCardsByAccountIsIn(List<Account> account);
 
   /**
    * Returns card form database by passed id.

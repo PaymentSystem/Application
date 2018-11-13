@@ -34,6 +34,16 @@ public class CardServiceImpl implements CardService {
   private AccountService accountService;
 
   /**
+   * Returns list of all cards.
+   *
+   * @return list of cards
+   */
+  @Override
+  public List<Card> getAllCards() {
+    return cardRepository.findAll();
+  }
+
+  /**
    * Returns list of cards by given account id.
    *
    * @param id account id
@@ -58,6 +68,21 @@ public class CardServiceImpl implements CardService {
   }
 
   /**
+   * Returns list of cards by current user.
+   *
+   * @return list of cards
+   */
+  @Override
+  public List<Card> getAllCardsByCurrentUser() {
+    return getAllCardsByLogin(userService.getCurrentUserLogin());
+  }
+
+  @Override
+  public List<Card> getAllCardsByAccountIsIn(List<Account> account) {
+    return cardRepository.getAllCardsByAccountIsIn(account);
+  }
+
+  /**
    * Creates new card in the database.
    *
    * @param card card dto passed by controller
@@ -76,5 +101,24 @@ public class CardServiceImpl implements CardService {
     Card cardToCreate = new Card(account, user, card.getLabel(), true);
     LOGGER.info("Card has been created");
     return cardRepository.save(cardToCreate);
+  }
+
+  @Override
+  public Card getCardById(long id) {
+    return cardRepository.getCardById(id);
+  }
+
+  /**
+   * Setting card active or inactive by id.
+   *
+   * @param id card
+   * @param isActive boolean
+   * @return card entity
+   */
+  @Override
+  public Card setCardActive(long id, boolean isActive) {
+    Card card = getCardById(id);
+    card.setIsActive(isActive);
+    return cardRepository.save(card);
   }
 }
