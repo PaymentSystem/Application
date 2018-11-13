@@ -12,6 +12,10 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -129,9 +133,28 @@ public class AccountServiceImpl implements AccountService {
     return accountRepository.save(account);
   }
 
+  /*
   @Override
   public List<Account> getAllAccountsOfUser(String login) {
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user);
+  }
+  */
+
+  /**
+   * Returns list of accounts by user's login.
+   *
+   * @param login user's login
+   * @param pageable number of page
+   * @return list of accounts
+   */
+  @Override
+  public Page<Account> getAllAccountsOfUser(String login, Pageable pageable) {
+    User user = userService.getUserByLogin(login);
+    Pageable innerPageable = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.Direction.ASC, "label");
+    return accountRepository.getAllByUser(user, innerPageable);
   }
 }

@@ -3,13 +3,17 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.entities.enums.Roles;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,21 +56,26 @@ public class UserController {
   /**
    * Returns user page with list of all accounts linked to that user.
    *
+   * @param login user's login
+   * @param pageable pageable
    * @param model model
    * @return user page view
    */
   @GetMapping(value = "/{userLogin}")
-  public String getUserPage(@PathVariable(name = "userLogin") String login, Model model) {
-    List<Account> accounts = accountService.getAllAccountsOfUser(login);
-    model.addAttribute("accountList", accounts);
+  public String getUserPage(@PathVariable(name = "userLogin") String login,
+                            @PageableDefault(size = 3) Pageable pageable,
+                            Model model) {
+
     String currentUserLogin = userService.getCurrentUserLogin();
     User currentUser = userService.getUserByLogin(currentUserLogin);
     model.addAttribute("currentUser", currentUser);
     User userOnPage = userService.getUserByLogin(login);
     model.addAttribute("userOnPage", userOnPage);
 
-    List<User> users = userService.getAllUsers();
-    model.addAttribute("users", users);
+    Page<User> users = userService.getAllUsers(pageable);
+    model.addAttribute("usersPage", users);
+    Page<Account> accounts = accountService.getAllAccountsOfUser(login, pageable);
+    model.addAttribute("accountPage", accounts);
 
     return USER_PAGE;
   }
