@@ -55,9 +55,9 @@ public abstract class AbstractControllerTest {
   protected RoleRepository roleRepository;
   protected MockMvc mockMvc;
   protected User user;
+  protected User blockedUser;
   protected Account account;
-  protected User user2;
-  protected Account account2;
+  protected Account blockedAccount;
   protected Card card;
 
   @BeforeEach
@@ -85,11 +85,11 @@ public abstract class AbstractControllerTest {
     Role roleBlocked = roleRepository.save(new Role(3, Roles.BLOCKED));
     Role role = roleRepository.save(new Role(2, Roles.USER));
     user = userRepository.save(new User("test", "test", "test", role));
-    user2 = userRepository.save(
+    blockedUser = userRepository.save(
         new User("testBlocked", "testBlocked", "testBlocked", roleBlocked)
     );
     account = accountRepository.save(new Account(user, "acc", 1000, true));
-    account2 = accountRepository.save(new Account(user, "acc", 1000, false));
+    blockedAccount = accountRepository.save(new Account(user, "acc", 1000, false));
     card = cardRepository.save(new Card(account, user, "card", true));
   }
 
