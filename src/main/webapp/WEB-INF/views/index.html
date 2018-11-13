@@ -31,18 +31,18 @@
             <li class="nav-item active">
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="logout"><p th:text="#{user.logout}"></p><span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{${userLogin}}">
                     <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout"><p th:text="#{user.logout}"></p></a>
+            </li>
             <!--<li class="nav-item">-->
-                <!--<a class="nav-link" href="#">Pricing</a>-->
+            <!--<a class="nav-link" href="#">Pricing</a>-->
             <!--</li>-->
             <!--<li class="nav-item">-->
-                <!--<a class="nav-link disabled" href="#">Disabled</a>-->
+            <!--<a class="nav-link disabled" href="#">Disabled</a>-->
             <!--</li>-->
         </ul>
     </div>
@@ -52,16 +52,16 @@
 <!--<a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>-->
 <!--</div>-->
 <!--<div id="centerLayer">-->
-    <!--<h1><p th:text="#{user.welcome}"/></h1>-->
-    <!--<a href="registration" class="btn btn-primary btn-light active" role="button" aria-pressed="true">-->
-        <!--<p th:text="#{user.join}"></p>-->
-    <!--</a>-->
-    <!--<a href="logout" class="btn btn-/primary btn-light active" role="button" aria-pressed="true">-->
-        <!--<p th:text="#{user.logout}"></p>-->
-    <!--</a>-->
-    <!--<a th:href="@{${userLogin}}" class="btn btn-primary btn-light active" role="button" aria-pressed="true">-->
-        <!--<p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p>-->
-    <!--</a>-->
+<!--<h1><p th:text="#{user.welcome}"/></h1>-->
+<!--<a href="registration" class="btn btn-primary btn-light active" role="button" aria-pressed="true">-->
+<!--<p th:text="#{user.join}"></p>-->
+<!--</a>-->
+<!--<a href="logout" class="btn btn-/primary btn-light active" role="button" aria-pressed="true">-->
+<!--<p th:text="#{user.logout}"></p>-->
+<!--</a>-->
+<!--<a th:href="@{${userLogin}}" class="btn btn-primary btn-light active" role="button" aria-pressed="true">-->
+<!--<p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p>-->
+<!--</a>-->
 <!--</div>-->
 </body>
 </html>
