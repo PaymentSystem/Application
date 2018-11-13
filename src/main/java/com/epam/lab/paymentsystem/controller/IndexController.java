@@ -24,6 +24,11 @@ public class IndexController {
   @Autowired
   private UserService userService;
 
+  @GetMapping(value = "/error/404")
+  public String getErrorPage() {
+    return "404";
+  }
+
   /**
    * Returns application main page.
    *
