@@ -25,7 +25,7 @@ public class Card extends AbstractEntity {
   private boolean isActive;
 
   @Column(name = "card_number")
-  private long cardNumber;
+  private String cardNumber;
 
   public Card() {
   }
@@ -38,39 +38,12 @@ public class Card extends AbstractEntity {
    * @param label    label
    * @param isActive boolean flag
    */
-  public Card(Account account, User user, String label, boolean isActive) {
+  public Card(Account account, User user, String label, boolean isActive, String cardNumber) {
     this.account = account;
     this.user = user;
     this.label = label;
     this.isActive = isActive;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = 17;
-    result = 31 * result + user.hashCode();
-    result = 31 * result + account.hashCode();
-    result = 31 * result + label.hashCode();
-    result = 31 * result + Boolean.valueOf(isActive).hashCode();
-
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof Card)) {
-      return false;
-    }
-
-    Card card = (Card) obj;
-
-    return card.user.equals(user)
-        && card.account.equals(account)
-        && label.equals(label)
-        && card.isActive == isActive;
+    this.cardNumber = cardNumber;
   }
 
   public Account getAccount() {
@@ -105,11 +78,50 @@ public class Card extends AbstractEntity {
     isActive = active;
   }
 
-  public long getCardNumber() {
+  public String getCardNumber() {
     return cardNumber;
   }
 
-  public void setCardNumber(long cardNumber) {
+  public void setCardNumber(String cardNumber) {
     this.cardNumber = cardNumber;
+  }
+
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Card)) {
+      return false;
+    }
+
+    Card card = (Card) o;
+
+    if (isActive() != card.isActive()) {
+      return false;
+    }
+    if (getAccount() != null ? !getAccount().equals(card.getAccount())
+        : card.getAccount() != null) {
+      return false;
+    }
+    if (getUser() != null ? !getUser().equals(card.getUser()) : card.getUser() != null) {
+      return false;
+    }
+    if (getLabel() != null ? !getLabel().equals(card.getLabel()) : card.getLabel() != null) {
+      return false;
+    }
+    return getCardNumber() != null ? getCardNumber().equals(card.getCardNumber())
+        : card.getCardNumber() == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = getAccount() != null ? getAccount().hashCode() : 0;
+    result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
+    result = 31 * result + (getLabel() != null ? getLabel().hashCode() : 0);
+    result = 31 * result + (isActive() ? 1 : 0);
+    result = 31 * result + (getCardNumber() != null ? getCardNumber().hashCode() : 0);
+    return result;
   }
 }

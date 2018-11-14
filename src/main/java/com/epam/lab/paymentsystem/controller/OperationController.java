@@ -44,7 +44,7 @@ public class OperationController {
    */
   @GetMapping(value = "/operation")
   public String getOperationPage(Model model) {
-    model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
+    model.addAttribute("srcNumberCardList", cardService.getAllCardsByCurrentUserWithoutBlocked());
     model.addAttribute("operationDto", new OperationDto());
     return OPERATION_PAGE;
   }
@@ -69,7 +69,7 @@ public class OperationController {
       return OPERATION_PAGE;
     }
     LOGGER.info("Payment operation is successful");
-    model.addAttribute("message", "Money transfer made successful!");
+    model.addAttribute("message", "Money transfer successful!");
     return OPERATION_PAGE;
   }
 

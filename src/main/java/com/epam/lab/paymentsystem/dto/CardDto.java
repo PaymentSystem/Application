@@ -6,7 +6,7 @@ public class CardDto {
   private String userLogin;
   private String label;
   private boolean isActive;
-  private long cardNumber;
+  private String cardNumber;
 
 
   public CardDto() {
@@ -21,7 +21,8 @@ public class CardDto {
    * @param label     card's label
    * @param isActive  boolean flag
    */
-  public CardDto(long id, long accountId, String userLogin, String label, boolean isActive, long cardNumber) {
+  public CardDto(long id, long accountId, String userLogin,
+                 String label, boolean isActive, String cardNumber) {
     this.id = id;
     this.accountId = accountId;
     this.userLogin = userLogin;
@@ -70,11 +71,11 @@ public class CardDto {
     isActive = active;
   }
 
-  public long getCardNumber() {
+  public String getCardNumber() {
     return cardNumber;
   }
 
-  public void setCardNumber(long cardNumber) {
+  public void setCardNumber(String cardNumber) {
     this.cardNumber = cardNumber;
   }
 }

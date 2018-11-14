@@ -2,6 +2,7 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,5 +39,7 @@ public interface OperationService {
    * @param operationDto operation dto.
    */
   void makePayment(OperationDto operationDto);
+
+  String dateFormat(LocalDateTime date);
 }
 

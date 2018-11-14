@@ -110,11 +110,22 @@ public class AccountServiceImpl implements AccountService {
     accountRepository.save(target);
   }
 
+  /**
+   * Returns account by given id.
+   *
+   * @param id id
+   * @return account entity
+   */
   @Override
   public Account getAccountById(long id) {
     return accountRepository.getAccountById(id);
   }
 
+  /**
+   * Block account by given id.
+   * @param id long
+   * @return account entity
+   */
   @Override
   public Account blockAccountById(long id) {
     Account account = accountRepository.getAccountById(id);
@@ -122,6 +133,11 @@ public class AccountServiceImpl implements AccountService {
     return accountRepository.save(account);
   }
 
+  /**
+   * Unblock account by given id.
+   * @param id long
+   * @return account entity
+   */
   @Override
   public Account unblockAccountById(long id) {
     Account account = accountRepository.getAccountById(id);
@@ -129,6 +145,12 @@ public class AccountServiceImpl implements AccountService {
     return accountRepository.save(account);
   }
 
+  /**
+   * Add amount in account.
+   * @param accountId long
+   * @param amount long
+   * @return account entity
+   */
   @Override
   public Account addAmount(long accountId, long amount)
       throws UnsupportedOperationException {
@@ -144,6 +166,11 @@ public class AccountServiceImpl implements AccountService {
     return accountRepository.save(account);
   }
 
+  /**
+   * Returns list of accounts by user's login.
+   *
+   * @return list of accounts
+   */
   @Override
   public List<Account> getAllAccountsOfUser(String login) {
     User user = userService.getUserByLogin(login);

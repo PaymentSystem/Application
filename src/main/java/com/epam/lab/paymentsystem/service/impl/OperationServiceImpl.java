@@ -10,6 +10,8 @@ import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
@@ -45,8 +47,10 @@ public class OperationServiceImpl implements OperationService {
   @Override
   @Transactional(rollbackOn = {Exception.class})
   public void makePayment(OperationDto operationDto) {
-    Card srcCard = cardService.getCardById(operationDto.getCardSrcId());
-    Card dstCard = cardService.getCardById(operationDto.getCardDstId());
+
+    Card srcCard = cardService.getCardByCardNumber(operationDto.getNumberSrcCard());
+    Card dstCard = cardService.getCardByCardNumber(operationDto.getNumberDstCard());
+
     Account srcAccount = srcCard.getAccount();
     Account dstAccount = dstCard.getAccount();
 
@@ -54,8 +58,14 @@ public class OperationServiceImpl implements OperationService {
       LOGGER.error("This card not exist");
       throw new UnsupportedOperationException("This card not exist");
     }
+    LocalDateTime enter = LocalDateTime.now().withNano(0);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    String formattedDateTime = enter.format(formatter);
+    enter = LocalDateTime.parse(formattedDateTime, formatter);
+
     Operation operation = new Operation(srcCard, dstCard,
-        operationDto.getAmount(), LocalDateTime.now().withNano(0));
+        operationDto.getAmount(), enter,
+        operationDto.getNumberSrcCard(), operationDto.getNumberDstCard());
 
     accountService.makeTransaction(srcAccount, dstAccount, operation.getAmount());
     LOGGER.info("Payment operation is successful");
@@ -97,8 +107,8 @@ public class OperationServiceImpl implements OperationService {
   @Override
   public List<Operation> getAllOperationsByAccount(long accountId) {
     List<Card> cards = cardService.getAllCardsByAccountId(accountId);
-    List<Operation> historyByAccount
-        = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
+    List<Operation> historyByAccount = operationRepository
+        .getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
     LOGGER.info("Display history operation");
     return historyByAccount;
   }
@@ -116,4 +126,14 @@ public class OperationServiceImpl implements OperationService {
     LOGGER.info("Display history operation");
     return historyByCard;
   }
+
+  @Override
+  public String dateFormat(LocalDateTime date) {
+
+    //LocalDateTime enter = LocalDateTime.now().withNano(0).;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    return date.format(formatter);
+//    enter = LocalDateTime.parse(formattedDateTime, formatter);
+  }
+
 }

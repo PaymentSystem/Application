@@ -9,6 +9,7 @@ import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
+import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,12 @@ import org.springframework.stereotype.Service;
 public class CardServiceImpl implements CardService {
 
   private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
+  private static Random random = new Random();
+
   @Autowired
   private CardRepository cardRepository;
   @Autowired
   private UserService userService;
-
   @Autowired
   private AccountService accountService;
 
@@ -75,8 +77,10 @@ public class CardServiceImpl implements CardService {
   }
 
   @Override
-  public List<Card> getAllCardsByAccountIsIn(List<Account> account) {
-    return cardRepository.getAllCardsByAccountIsIn(account);
+  public List<Card> getAllCardsByCurrentUserWithoutBlocked() {
+    String userLogin = userService.getCurrentUserLogin();
+    User currentUser = userService.getUserByLogin(userLogin);
+    return cardRepository.getAllByUserOrIsActive(currentUser, true);
   }
 
   /**
@@ -91,15 +95,34 @@ public class CardServiceImpl implements CardService {
     LOGGER.info("Creating new card");
     Account account = accountService.getAccountById(card.getAccountId());
     User user = userService.getUserByLogin(card.getUserLogin());
+    String cardNumber = generateCardNumber();
     if (user == null) {
       LOGGER.error("Such user doesn't exists: " + card.getUserLogin());
       throw new UnsupportedOperationException("No such user");
     }
-    Card cardToCreate = new Card(account, user, card.getLabel(), true);
+
+    Card cardToCreate = new Card(account, user, card.getLabel(), true, cardNumber);
     LOGGER.info("Card has been created");
     return cardRepository.save(cardToCreate);
   }
 
+  /**
+   * Returns card by given number card.
+   *
+   * @param cardNumber String.
+   * @return card entity
+   */
+  @Override
+  public Card getCardByCardNumber(String cardNumber) {
+    return cardRepository.getCardByCardNumber(cardNumber);
+  }
+
+  /**
+   * Returns card by given id.
+   *
+   * @param id card id
+   * @return card
+   */
   @Override
   public Card getCardById(long id) {
     if (cardRepository.getCardById(id) == null) {
@@ -107,6 +130,21 @@ public class CardServiceImpl implements CardService {
       throw new UnsupportedOperationException("Card not exist");
     }
     return cardRepository.getCardById(id);
+  }
+
+  /**
+   * Return unique number card.
+   *
+   * @return string number card
+   */
+  private String generateCardNumber() {
+    String number = String.format("%04d", random.nextInt(10000));
+    Card cardWithNumber = cardRepository.findByCardNumber(number);
+    if (cardWithNumber != null) {
+      LOGGER.info("Number card already exist");
+      generateCardNumber();
+    }
+    return number;
   }
 
 }

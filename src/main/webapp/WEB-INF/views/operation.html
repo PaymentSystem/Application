@@ -30,11 +30,11 @@
     <table style="with: 50%">
         <tr>
             <td><label for="src"><b><p th:text="#{operation.source}"/></b></label></td>
-            <td><input list="srcCards" name="src" class="form-control input-lg"
-                       th:field="*{cardSrcId}" th:placeholder="#{operation.placeholder.source}" id="src" required>
-                <datalist id="srcCards">
-                    <th:block th:each="srcCard : ${srcCardList}">
-                        <option th:value="${srcCard.id}">
+            <td><input list="srcNumberCardList" name="src" class="form-control input-lg"
+                       th:field="*{numberSrcCard}" th:placeholder="#{operation.placeholder.source}" id="src" required>
+                <datalist id="srcNumberCardList">
+                    <th:block th:each="srcCard : ${srcNumberCardList}">
+                        <option th:value="${srcCard.cardNumber}">
                     </th:block>
                 </datalist>
             </td>
@@ -42,7 +42,8 @@
         <tr>
             <td><label for=><b><p th:text="#{operation.destination}"/></b></label></td>
             <td><input type="text" name="dst" class="form-control input-lg"
-                       th:field="*{cardDstId}" th:placeholder="#{operation.placeholder.destination}" id="dst" required></td>
+                       th:field="*{numberDstCard}" th:placeholder="#{operation.placeholder.destination}" id="dst"
+                       required></td>
         </tr>
         <tr>
             <td><label for="amount"><b><p th:text="#{operation.amount}"/></b></label></td>
@@ -57,7 +58,7 @@
     <button type="submit" class="btn btn-success"><p th:text="#{operation.send}"/></button>
 </form>
 <!--<div class="alert alert-danger" role="alert">-->
-    <h1 th:text="${message}"/>
+<h1 th:text="${message}"/>
 <!--</div>-->
 </body>
 </html>

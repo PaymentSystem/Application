@@ -23,18 +23,19 @@
                 <table>
                     <thead>
                     <tr>
-                        <!--<th><p th:text="#{id}"></p></th>-->
+                        <th><p th:text="#{card.numberCard}"></p></th>
                         <th><p th:text="#{account.label}"></p></th>
                     </tr>
                     </thead>
                     <tbody>
                     <th:block th:each="card : ${cardList}">
                         <tr>
-                            <!--<td th:text="${card.id}"></td>-->
+                            <td th:text="${card.cardNumber}"></td>
                             <td th:text="${card.label}"></td>
                             <td>
                                 <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${card.id}}"
-                                   class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p th:text="#{history.button}"/></a>
+                                   class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                                        th:text="#{history.button}"/></a>
                             </td>
                         </tr>
                     </th:block>

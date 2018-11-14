@@ -28,9 +28,14 @@ public interface CardService {
    */
   List<Card> getAllCardsByLogin(String login);
 
+  /**
+   * Returns list of cards by current user.
+   * @return list of cards
+   */
   List<Card> getAllCardsByCurrentUser();
 
-  List<Card> getAllCardsByAccountIsIn(List<Account> account);
+
+  List<Card> getAllCardsByCurrentUserWithoutBlocked();
 
   /**
    * Returns card by given id.
@@ -48,4 +53,11 @@ public interface CardService {
    */
   Card createCard(CardDto card);
 
+  /**
+   * Returns card by given number card.
+
+   * @param cardNumber String.
+   * @return card entity
+   */
+  Card getCardByCardNumber(String cardNumber);
 }
