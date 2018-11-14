@@ -16,6 +16,10 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -73,6 +77,26 @@ public class OperationServiceImpl implements OperationService {
   /**
    * History operation.
    *
+   * @param pageable pageable
+   * @return operation page.
+   */
+  @Override
+  public Page<Operation> getAllOperations(Pageable pageable) {
+    String userLogin = userService.getCurrentUserLogin();
+    List<Card> cards = cardService.getAllCardsByLogin(userLogin);
+    Pageable innerPageable = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.Direction.DESC, "date");
+    Page<Operation> history = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(
+                    cards, cards, innerPageable);
+    LOGGER.info("Display history operation");
+    return history;
+  }
+
+  /**
+   * History operation.
+   *
    * @return operation list.
    */
   @Override
@@ -83,6 +107,25 @@ public class OperationServiceImpl implements OperationService {
         = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
     LOGGER.info("Display history operation");
     return history;
+  }
+
+  /**
+   * History operation by account.
+   *
+   * @param accountId long.
+   * @param pageable pageable
+   * @return operation page
+   */
+  public Page<Operation> getAllOperationsByAccount(long accountId, Pageable pageable) {
+    List<Card> cards = cardService.getAllCardsByAccountId(accountId);
+    Pageable innerPageable = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.Direction.DESC, "date");
+    Page<Operation> historyByAccount = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(
+            cards, cards, innerPageable);
+    LOGGER.info("Display history operation");
+    return historyByAccount;
   }
 
   /**
@@ -98,6 +141,25 @@ public class OperationServiceImpl implements OperationService {
         = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
     LOGGER.info("Display history operation");
     return historyByAccount;
+  }
+
+  /**
+   * History operation by card.
+   *
+   * @param cardId long.
+   * @param pageable pageable
+   * @return operation page.
+   */
+  @Override
+  public Page<Operation> getAllOperationsByCard(long cardId, Pageable pageable) {
+    Pageable innerPageable = PageRequest.of(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            Sort.Direction.DESC, "date");
+    Page<Operation> historyByCard
+            = operationRepository.getAllBySourceCardIdOrTargetCardId(cardId, cardId, innerPageable);
+    LOGGER.info("Display history operation");
+    return historyByCard;
   }
 
   /**
