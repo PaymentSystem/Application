@@ -4,6 +4,9 @@ import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -16,6 +19,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 0.0.1
  */
 public interface CardRepository extends JpaRepository<Card, Long> {
+
+  /**
+   * Returns card form database by passed id.
+   *
+   * @param account account
+   * @return list of cards by account
+   */
+  Page<Card> getAllByAccount(Account account, Pageable pageable);
 
   /**
    * Returns card form database by passed id.

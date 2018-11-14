@@ -8,6 +8,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,11 +48,12 @@ public class CardController {
   public String getAccountPage(
       @PathVariable(name = "userLogin") String login,
       @PathVariable(name = "accountId") long id,
+      @PageableDefault(size = 4) Pageable pageable,
       Model model) {
     LOGGER.info("Access to account page");
-    List<Card> cards = cardService.getAllCardsByAccountId(id);
+    Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);
+    model.addAttribute("cardPage", cards);
     model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
-    model.addAttribute("cardList", cards);
     return ACCOUNT_PAGE;
   }
 

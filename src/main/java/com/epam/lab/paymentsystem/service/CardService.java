@@ -4,6 +4,9 @@ import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 /**
  * CardService is the interface that specifies the service methods.
@@ -11,6 +14,15 @@ import java.util.List;
 public interface CardService {
 
   List<Card> getAllCards();
+
+  /**
+   * Returns page of cards by given account id.
+   *
+   * @param id account id
+   * @param pageable pageable
+   * @return page of cards
+   */
+  Page<Card> getAllCardsByAccountId(long id, Pageable pageable);
 
   /**
    * Returns list of cards by given account id.
