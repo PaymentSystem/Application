@@ -69,10 +69,8 @@ public class GlobalControllerAdvice {
    */
   @ExceptionHandler(LoginAlreadyExistsException.class)
   public ModelAndView loginAlreadyExistsExceptionHandle(Exception exception) {
-    ModelAndView mav = new ModelAndView();
-    mav.addObject(MESSAGE_EXCEPTION, exception.getMessage());
+    ModelAndView mav = prepareModel("registration", exception);
     mav.addObject("userDto", new UserDto());
-    mav.setViewName("registration");
     return mav;
   }
 
@@ -84,10 +82,8 @@ public class GlobalControllerAdvice {
    */
   @ExceptionHandler(MoneyTransferException.class)
   public ModelAndView moneyTransferExceptionHandle(Exception exception) {
-    ModelAndView mav = new ModelAndView();
-    mav.addObject(MESSAGE_EXCEPTION, exception.getMessage());
+    ModelAndView mav = prepareModel("operation", exception);
     mav.addObject("operationDto", new OperationDto());
-    mav.setViewName("operation");
     return mav;
   }
 
@@ -99,10 +95,8 @@ public class GlobalControllerAdvice {
    */
   @ExceptionHandler(CardArgumentException.class)
   public ModelAndView cardArgumentExceptionHandle(Exception exception) {
-    ModelAndView mav = new ModelAndView();
-    mav.addObject(MESSAGE_EXCEPTION, exception.getMessage());
+    ModelAndView mav = prepareModel("addCard", exception);
     mav.addObject("cardDto", new CardDto());
-    mav.setViewName("addCard");
     return mav;
   }
 
@@ -114,10 +108,22 @@ public class GlobalControllerAdvice {
    */
   @ExceptionHandler(AccountArgumentException.class)
   public ModelAndView accountArgumentExceptionHandle(Exception exception) {
-    ModelAndView mav = new ModelAndView();
-    mav.addObject(MESSAGE_EXCEPTION, exception.getMessage());
+    ModelAndView mav = prepareModel("addAccount", exception);
     mav.addObject("accountDto", new AccountDto());
-    mav.setViewName("addAccount");
+    return mav;
+  }
+
+  /**
+   * Initialize ModelAndView object to sending response.
+   *
+   * @param viewName displayed view
+   * @param e handled exception
+   * @return model and view
+   */
+  private ModelAndView prepareModel(String viewName, Exception e) {
+    ModelAndView mav = new ModelAndView();
+    mav.addObject(MESSAGE_EXCEPTION, e.getMessage());
+    mav.setViewName(viewName);
     return mav;
   }
 }

@@ -1,7 +1,6 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
-import com.epam.lab.paymentsystem.exception.ResourceNotFoundException;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
 import org.apache.logging.log4j.LogManager;

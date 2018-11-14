@@ -2,7 +2,6 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Card;
-import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
@@ -34,9 +33,6 @@ public class CardController {
 
   @Autowired
   private CardService cardService;
-
-  @Autowired
-  private AccountService accountService;
 
   /**
    * Returns account page with list of all cards linked to that account.
