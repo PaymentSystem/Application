@@ -42,7 +42,7 @@ public class OperationController {
    * @param model model
    * @return String
    */
-  @GetMapping(value = "/operation")
+  @GetMapping(value = "/{userLogin}/operation")
   public String getOperationPage(Model model) {
     model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
@@ -53,21 +53,14 @@ public class OperationController {
    * Payment operation .
    *
    * @param operationDto operation dto
-   * @param model  Model.
+   * @param model        Model.
    * @return String
    */
-  @PostMapping(value = "/operation")
+  @PostMapping(value = "/{userLogin}/operation")
   public String paymentOperation(
       @ModelAttribute(value = "operationDto") OperationDto operationDto,
       Model model) {
-
-    try {
-      operationService.makePayment(operationDto);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("message", e.getMessage());
-      LOGGER.error("Exception payment operation", e);
-      return OPERATION_PAGE;
-    }
+    operationService.makePayment(operationDto);
     LOGGER.info("Payment operation is successful");
     model.addAttribute("message", "Money transfer made successful!");
     return OPERATION_PAGE;
@@ -79,7 +72,7 @@ public class OperationController {
    * @param model Model
    * @return String
    */
-  @GetMapping(value = "/history")
+  @GetMapping(value = "/{userLogin}/history")
   public String getUserHistory(Model model) {
     List<Operation> history = operationService.getAllOperations();
     model.addAttribute("historyOperation", history);

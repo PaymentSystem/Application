@@ -3,6 +3,8 @@ package com.epam.lab.paymentsystem.service.impl;
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.exception.AccountArgumentException;
+import com.epam.lab.paymentsystem.exception.MoneyTransferException;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
@@ -39,18 +41,18 @@ public class AccountServiceImpl implements AccountService {
    * @return account entity
    */
   @Override
-  public Account createAccount(AccountDto accountDto) throws UnsupportedOperationException {
+  public Account createAccount(AccountDto accountDto) throws AccountArgumentException {
     LOGGER.info("Creating new account");
     if (accountDto.getAmount() < 0) {
       LOGGER.error("Passed negative amount of account");
-      throw new UnsupportedOperationException("Amount should be positive");
+      throw new AccountArgumentException("Amount should be positive");
     }
     Account accountToCreate = TransformerToEntity.convertAccount(accountDto);
 
     String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     if (!user.roleStatusEquals("USER")) {
-      throw new UnsupportedOperationException("User is blocked");
+      throw new AccountArgumentException("User is blocked");
     }
     accountToCreate.setUser(user);
     accountToCreate.setIsActive(true);
@@ -65,31 +67,31 @@ public class AccountServiceImpl implements AccountService {
    * @param source source account
    * @param target target account
    * @param amount amount
-   * @throws UnsupportedOperationException if there's not enough money on source account
+   * @throws MoneyTransferException if there's not enough money on source account
    */
   @Override
   @Transactional
   public void makeTransaction(Account source, Account target, long amount)
-      throws UnsupportedOperationException {
+      throws MoneyTransferException {
     if (source.getId() == target.getId()) {
       LOGGER.error("Passed same accounts");
-      throw new UnsupportedOperationException("Accounts should be different");
+      throw new MoneyTransferException("Accounts should be different");
     }
     if ((source.getAmount() - amount) < 0) {
       LOGGER.error("Not enough money on source account");
-      throw new UnsupportedOperationException("Not enough money");
+      throw new MoneyTransferException("Not enough money");
     }
     if ((amount <= 0)) {
       LOGGER.error("Not correct amount");
-      throw new UnsupportedOperationException("Not correct amount");
+      throw new MoneyTransferException("Not correct amount");
     }
     if (!source.getIsActive()) {
       LOGGER.error("Source account is blocked");
-      throw new UnsupportedOperationException("Source account is blocked");
+      throw new MoneyTransferException("Source account is blocked");
     }
     if (!target.getIsActive()) {
       LOGGER.error("Target account is blocked");
-      throw new UnsupportedOperationException("Target account is blocked");
+      throw new MoneyTransferException("Target account is blocked");
     }
     LOGGER.info("Creating transaction");
     moneyTransfer(source, target, amount);

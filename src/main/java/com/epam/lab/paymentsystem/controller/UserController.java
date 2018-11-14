@@ -3,19 +3,24 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
+import com.epam.lab.paymentsystem.exception.ResourceNotFoundException;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.HandlerMapping;
 
 /**
  * Controller for User,
@@ -76,32 +81,37 @@ public class UserController {
    * and sends them to the service.
    *
    * @param userDto userDto
-   * @param model   model
    * @return HTML view
    */
   @PostMapping(value = "/addUser")
-  public String addUser(@ModelAttribute(name = "userDto") UserDto userDto,
-                        Model model) {
-
-    try {
-      userService.addUser(userDto);
-    } catch (LoginAlreadyExistsException e) {
-      LOGGER.error("Exception in addUser in UserController", e);
-      model.addAttribute("messageException", e.getMessage());
-      return REGISTRATION_PAGE;
-    }
+  public String addUser(@ModelAttribute(name = "userDto") UserDto userDto) {
+    userService.addUser(userDto);
     return REDIRECT_TO + LOGIN_PAGE;
   }
 
+  /**
+   * Changes user's role status to 'BLOCKED'.
+   *
+   * @param userLogin user's login
+   * @return redirect to user page
+   */
   @PostMapping(value = "/{userLogin}/block")
   public String blockUser(@PathVariable(name = "userLogin") String userLogin) {
     userService.blockUser(userService.getUserByLogin(userLogin));
+    LOGGER.info("User " + userLogin + " has been blocked");
     return REDIRECT_TO + "/{userLogin}";
   }
 
+  /**
+   * Changes user's role status to 'USER'.
+   *
+   * @param userLogin user's login
+   * @return redirect to user page
+   */
   @PostMapping(value = "/{userLogin}/unblock")
   public String unblockUser(@PathVariable(name = "userLogin") String userLogin) {
     userService.unblockUser(userService.getUserByLogin(userLogin));
+    LOGGER.info("User " + userLogin + " has been unblocked");
     return REDIRECT_TO + "/{userLogin}";
   }
 }
