@@ -41,6 +41,22 @@
                 <a class="nav-link" th:if="${currentUser.login==userLogin}"
                    th:href="@{${userLogin}+'/addAccount'}"><p th:text="#{account.create}"></p></a>
             </li>
+            <li th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                <form th:action="@{${userLogin}+'/block'}" method="post">
+                    <button type="submit" class="btn btn-link" id="focus2"
+                            th:disabled="${userOnPage.role.roleStatus
+                        !=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
+                        <p th:text="#{user.block}"/></button>
+                </form>
+            </li>
+            <li th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                <form th:action="@{${userLogin}+'/unblock'}" method="post">
+                    <button type="submit" class="btn btn-link" id="focus1"
+                            th:disabled="${userOnPage.role.roleStatus
+                            ==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
+                        <p th:text="#{user.unblock}"/></button>
+                </form>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="logout"><p th:text="#{user.logout}"></p></a>
             </li>
@@ -108,28 +124,28 @@
     </table>
 
 
-    <table class="table" th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
-        <tr>
-            <th>
-                <form th:action="@{${userLogin}+'/block'}" method="post">
-                    <button type="submit" class="btn btn-danger"
-                            th:disabled="${userOnPage.role.roleStatus
-                            !=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
-                        <p th:text="#{user.block}"/>
-                    </button>
-                </form>
-            </th>
-            <th>
-                <form th:action="@{${userLogin}+'/unblock'}" method="post">
-                    <button type="submit" class="btn btn-danger"
-                            th:disabled="${userOnPage.role.roleStatus
-                            ==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
-                        <p th:text="#{user.unblock}"/>
-                    </button>
-                </form>
-            </th>
-        </tr>
-    </table>
+    <!--<table class="table" th:if="${#httpServletRequest.isUserInRole('ADMIN')}">-->
+    <!--<tr>-->
+    <!--<th>-->
+    <!--<form th:action="@{${userLogin}+'/block'}" method="post">-->
+    <!--<button type="submit" class="btn btn-danger"-->
+    <!--th:disabled="${userOnPage.role.roleStatus-->
+    <!--!=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">-->
+    <!--<p th:text="#{user.block}"/>-->
+    <!--</button>-->
+    <!--</form>-->
+    <!--</th>-->
+    <!--<th>-->
+    <!--<form th:action="@{${userLogin}+'/unblock'}" method="post">-->
+    <!--<button type="submit" class="btn btn-danger"-->
+    <!--th:disabled="${userOnPage.role.roleStatus-->
+    <!--==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">-->
+    <!--<p th:text="#{user.unblock}"/>-->
+    <!--</button>-->
+    <!--</form>-->
+    <!--</th>-->
+    <!--</tr>-->
+    <!--</table>-->
 
     <!--<div class="container" th:if="${accountList.isEmpty()==false}">-->
     <!--<div class="card">-->
@@ -177,7 +193,7 @@
     <!--</div>-->
     <!--</div>-->
     <!--</div>-->
-    <div th:unless="${!accountList.isEmpty()}">
+    <div class="notifying-message" th:unless="${!accountList.isEmpty()}">
         <h3 th:text="#{account.notFound}"></h3>
     </div>
     <!--<a th:if="${currentUser.login==userLogin}"-->

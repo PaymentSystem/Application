@@ -132,3 +132,45 @@
     text-align: center;
 }
 
+/*настройка кнопок, фон кнопки, цвет текста кнопки, рамка кнопки */
+.btn-link {
+    background-color: #343a40;
+    color: #9a9d9a;
+    border-color: #343a40;
+
+}
+
+/*псевдоклас :hover, отвечает за наведение мышки, навели мышку background-color(фон кнопки)
+изменился, навели мышку color(цвет текста) исзменился*/
+.btn-link:hover {
+    text-decoration: none;
+    background-color: #343a40;
+    color: #cccecf;
+    outline: 0 !important;
+}
+
+#focus1:hover {
+    color: limegreen;
+}
+
+#focus2:hover {
+    color: red;
+}
+
+/*псевдокласс :focus определяет стиль для элемента получающего фокус,
+если я нажал кнопку, то кнопка в фокусе, определяет background-color(фон кнопки) в фокусе,
+color(цвет текста) в фокусе*/
+.btn-link:focus {
+    text-decoration: none;
+    background-color: #343a40;
+    color: #cccecf;
+    outline: 0 !important;
+}
+
+.notifying-message {
+    width: 500px; /* Ширина элемента в пикселах */
+    padding: 10px; /* Поля вокруг текста */
+    margin: auto; /* Выравниваем по центру */
+    font-size: 30px;
+    color: #000000;
+}
