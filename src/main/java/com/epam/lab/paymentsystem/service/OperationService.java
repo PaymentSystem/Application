@@ -21,13 +21,6 @@ public interface OperationService {
   Page<Operation> getAllOperations(Pageable pageable);
 
   /**
-   * History operation.
-   *
-   * @return operation list.
-   */
-  List<Operation> getAllOperations();
-
-  /**
    * History operation by account.
    *
    * @param accountId long.
@@ -37,14 +30,6 @@ public interface OperationService {
   Page<Operation> getAllOperationsByAccount(long accountId, Pageable pageable);
 
   /**
-   * History operation by account.
-   * * @param accountId long.
-   *
-   * @return operation list
-   */
-  List<Operation> getAllOperationsByAccount(long accountId);
-
-  /**
    * History operation by card.
    *
    * @param cardId long.
@@ -52,14 +37,6 @@ public interface OperationService {
    * @return operation page.
    */
   Page<Operation> getAllOperationsByCard(long cardId, Pageable pageable);
-
-  /**
-   * History operation by card.
-   *
-   * @param cardId long.
-   * @return operation list.
-   */
-  List<Operation> getAllOperationsByCard(long cardId);
 
   /**
    * Make payment operation.

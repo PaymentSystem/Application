@@ -7,7 +7,6 @@ import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
-import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,14 +26,11 @@ public class AccountServiceImpl implements AccountService {
 
   private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
+  @Autowired
   private AccountRepository accountRepository;
 
   @Autowired
   private UserService userService;
-
-  public AccountServiceImpl(AccountRepository accountRepository) {
-    this.accountRepository = accountRepository;
-  }
 
   /**
    * Creates new account in the database.
@@ -132,14 +128,6 @@ public class AccountServiceImpl implements AccountService {
     account.setIsActive(true);
     return accountRepository.save(account);
   }
-
-  /*
-  @Override
-  public List<Account> getAllAccountsOfUser(String login) {
-    User user = userService.getUserByLogin(login);
-    return accountRepository.getAllByUser(user);
-  }
-  */
 
   /**
    * Returns list of accounts by user's login.

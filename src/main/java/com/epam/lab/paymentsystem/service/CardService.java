@@ -13,8 +13,6 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CardService {
 
-  List<Card> getAllCards();
-
   /**
    * Returns page of cards by given account id.
    *
@@ -41,8 +39,6 @@ public interface CardService {
   List<Card> getAllCardsByLogin(String login);
 
   List<Card> getAllCardsByCurrentUser();
-
-  List<Card> getAllCardsByAccountIsIn(List<Account> account);
 
   /**
    * Returns card by given id.

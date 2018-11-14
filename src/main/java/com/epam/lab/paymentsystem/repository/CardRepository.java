@@ -24,6 +24,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
    * Returns card form database by passed id.
    *
    * @param account account
+   * @param pageable pageable
    * @return list of cards by account
    */
   Page<Card> getAllByAccount(Account account, Pageable pageable);

@@ -26,26 +26,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardServiceImpl implements CardService {
 
+  private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
+
   @Autowired
   private CardRepository cardRepository;
-
-  private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
   @Autowired
   private UserService userService;
 
   @Autowired
   private AccountService accountService;
-
-  /**
-   * Returns list of all cards.
-   *
-   * @return list of cards
-   */
-  @Override
-  public List<Card> getAllCards() {
-    return cardRepository.findAll();
-  }
 
   /**
    * Returns page of cards by given account id.
@@ -95,11 +85,6 @@ public class CardServiceImpl implements CardService {
   @Override
   public List<Card> getAllCardsByCurrentUser() {
     return getAllCardsByLogin(userService.getCurrentUserLogin());
-  }
-
-  @Override
-  public List<Card> getAllCardsByAccountIsIn(List<Account> account) {
-    return cardRepository.getAllCardsByAccountIsIn(account);
   }
 
   /**
