@@ -88,7 +88,7 @@ public class UserController {
     } catch (LoginAlreadyExistsException e) {
       LOGGER.error("Exception in addUser in UserController", e);
       model.addAttribute("messageException", e.getMessage());
-      return REGISTRATION_PAGE;
+      return LOGIN_PAGE;
     }
     return REDIRECT_TO + LOGIN_PAGE;
   }

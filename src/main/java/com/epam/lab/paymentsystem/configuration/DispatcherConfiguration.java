@@ -75,8 +75,8 @@ public class DispatcherConfiguration implements WebMvcConfigurer {
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
     registry
-        .addResourceHandler("/webjars/**")
-        .addResourceLocations("/webjars/");
+        .addResourceHandler("/webjars/**", "/style/**", "/js/**")
+        .addResourceLocations("/webjars/", "/style/", "/js/");
   }
 
   /**
