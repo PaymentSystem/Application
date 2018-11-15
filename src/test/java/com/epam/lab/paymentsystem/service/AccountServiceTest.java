@@ -5,6 +5,8 @@ import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Role;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.enums.Roles;
+import com.epam.lab.paymentsystem.exception.AccountArgumentException;
+import com.epam.lab.paymentsystem.exception.MoneyTransferException;
 import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
@@ -30,6 +32,7 @@ public class AccountServiceTest {
   private String login;
   private Account account;
   private Account accountTarget;
+
   @Mock
   private UserService userService;
   @Mock
@@ -52,7 +55,7 @@ public class AccountServiceTest {
   public void testCreateAccountThrowsExceptionWhenAmountIsNegative() {
     account.setAmount(-1);
     accountDto = TransformerToDto.convertAccount(account);
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(AccountArgumentException.class,
         () -> accountService.createAccount(accountDto),
         "Amount should be positive");
   }
@@ -65,7 +68,7 @@ public class AccountServiceTest {
     accountDto = TransformerToDto.convertAccount(account);
     when(userService.getCurrentUserLogin()).thenReturn(login);
     when(userService.getUserByLogin(login)).thenReturn(user);
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(AccountArgumentException.class,
         () -> accountService.createAccount(accountDto),
         "User is blocked");
   }
@@ -86,7 +89,7 @@ public class AccountServiceTest {
   public void testMakeTransactionFailsOnIdenticalAccounts() {
     account.setId(1);
     accountTarget.setId(1);
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(MoneyTransferException.class,
         () -> accountService.makeTransaction(account, accountTarget, amount),
         "Accounts should be different");
   }
@@ -94,7 +97,7 @@ public class AccountServiceTest {
   @Test
   public void testMakeTransactionFailsOnSourceAccountAmount() {
     account.setAmount(100);
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(MoneyTransferException.class,
         () -> accountService.makeTransaction(account, accountTarget, amount),
         "Not enough money");
   }
@@ -102,7 +105,7 @@ public class AccountServiceTest {
   @Test
   public void testMakeTransactionFailsOnSourceAccountIsBlocked() {
     account.setIsActive(false);
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(MoneyTransferException.class,
         () -> accountService.makeTransaction(account, accountTarget, amount),
         "Not enough money");
   }
@@ -110,7 +113,7 @@ public class AccountServiceTest {
   @Test
   public void testMakeTransactionFailsOnTargetAccountIsBlocked() {
     accountTarget.setIsActive(false);
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(MoneyTransferException.class,
         () -> accountService.makeTransaction(account, accountTarget, amount),
         "Not enough money");
   }

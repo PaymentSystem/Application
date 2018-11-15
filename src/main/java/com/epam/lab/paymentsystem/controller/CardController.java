@@ -39,7 +39,7 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that account.
    *
-   * @param id id of account
+   * @param id    id of account
    * @param model model
    * @return account page view
    */
@@ -49,6 +49,7 @@ public class CardController {
       @PathVariable(name = "accountId") long id,
       @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
       Model model) {
+
     LOGGER.info("Access to account page");
     Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);
     model.addAttribute("cardPage", cards);
@@ -74,31 +75,23 @@ public class CardController {
    * Add card form and send it to service layer.
    *
    * @param accountId account
-   * @param cardDto card dto from form
-   * @param model model
+   * @param cardDto   card dto from form
    * @return JSP view
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/addCard")
   public String addCard(
       @PathVariable(name = "accountId") long accountId,
-      @ModelAttribute(value = "cardDto") CardDto cardDto,
-      Model model) {
+      @ModelAttribute(value = "cardDto") CardDto cardDto) {
 
     cardDto.setAccountId(accountId);
-    try {
-      LOGGER.info("Creating new card from web form");
-      cardService.createCard(cardDto);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("messageCard", e.getMessage());
-      LOGGER.error("Failed to create new card", e);
-      return ADD_CARD_PAGE;
-    }
-
+    cardService.createCard(cardDto);
     return REDIRECT_TO + "/{userLogin}/account/{accountId}";
   }
 
-  /** Blocking or activating card.
-   * @param id card id
+  /**
+   * Blocking or activating card.
+   *
+   * @param id      card id
    * @param isBlock boolean
    * @return redirect to card's account page
    */

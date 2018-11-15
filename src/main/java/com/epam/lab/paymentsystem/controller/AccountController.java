@@ -64,17 +64,8 @@ public class AccountController {
   @PostMapping(value = "/{userLogin}/addAccount")
   public String addAccount(@ModelAttribute(name = "accountDto") AccountDto accountDto,
                            Model model) {
-
     LOGGER.info("Creating new account from web form");
-
-    try {
-      LOGGER.info("Account has been created");
-      accountService.createAccount(accountDto);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("messageAccount", e.getMessage());
-      LOGGER.error("Failed to create new account", e);
-      return ADD_ACCOUNT_PAGE;
-    }
+    accountService.createAccount(accountDto);
     return REDIRECT_TO + "/{userLogin}";
   }
 }

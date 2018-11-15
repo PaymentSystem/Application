@@ -4,8 +4,11 @@ import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.exception.CardArgumentException;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.service.impl.CardServiceImpl;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,9 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,13 +37,17 @@ public class CardServiceTest {
   private Card card;
   private CardDto cardDto;
 
-  @Mock private CardRepository cardRepository;
+  @Mock
+  private CardRepository cardRepository;
 
-  @Mock private UserService userService;
+  @Mock
+  private UserService userService;
 
-  @Mock private AccountService accountService;
+  @Mock
+  private AccountService accountService;
 
-  @InjectMocks private CardServiceImpl cardService;
+  @InjectMocks
+  private CardServiceImpl cardService;
 
   @BeforeEach
   public void startUp() {
@@ -93,6 +97,6 @@ public class CardServiceTest {
     when(accountService.getAccountById(accountId)).thenReturn(account);
     when(userService.getUserByLogin(user.getLogin())).thenReturn(null);
     assertThrows(
-        UnsupportedOperationException.class, () -> cardService.createCard(cardDto), "No such user");
+        CardArgumentException.class, () -> cardService.createCard(cardDto), "No such user");
   }
 }

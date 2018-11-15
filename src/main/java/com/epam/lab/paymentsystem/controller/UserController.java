@@ -3,7 +3,6 @@ package com.epam.lab.paymentsystem.controller;
 import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -88,32 +87,37 @@ public class UserController {
    * and sends them to the service.
    *
    * @param userDto userDto
-   * @param model   model
    * @return HTML view
    */
   @PostMapping(value = "/addUser")
-  public String addUser(@ModelAttribute(name = "userDto") UserDto userDto,
-                        Model model) {
-
-    try {
-      userService.addUser(userDto);
-    } catch (LoginAlreadyExistsException e) {
-      LOGGER.error("Exception in addUser in UserController", e);
-      model.addAttribute("messageException", e.getMessage());
-      return REGISTRATION_PAGE;
-    }
+  public String addUser(@ModelAttribute(name = "userDto") UserDto userDto) {
+    userService.addUser(userDto);
     return REDIRECT_TO + LOGIN_PAGE;
   }
 
+  /**
+   * Changes user's role status to 'BLOCKED'.
+   *
+   * @param userLogin user's login
+   * @return redirect to user page
+   */
   @PostMapping(value = "/{userLogin}/block")
   public String blockUser(@PathVariable(name = "userLogin") String userLogin) {
     userService.blockUser(userService.getUserByLogin(userLogin));
+    LOGGER.info("User " + userLogin + " has been blocked");
     return REDIRECT_TO + "/{userLogin}";
   }
 
+  /**
+   * Changes user's role status to 'USER'.
+   *
+   * @param userLogin user's login
+   * @return redirect to user page
+   */
   @PostMapping(value = "/{userLogin}/unblock")
   public String unblockUser(@PathVariable(name = "userLogin") String userLogin) {
     userService.unblockUser(userService.getUserByLogin(userLogin));
+    LOGGER.info("User " + userLogin + " has been unblocked");
     return REDIRECT_TO + "/{userLogin}";
   }
 }

@@ -168,8 +168,9 @@
         </div>
     </div>
 </div>
-<a th:href="@{'/operation'}"
+<a th:href="@{${userLogin}+'/operation'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{operation.button}"></p>
+</a>
 </body>
 </html>
