@@ -2,7 +2,8 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * AccountService is the interface that specifies the service methods.
@@ -12,9 +13,11 @@ public interface AccountService {
   /**
    * Returns list of accounts by user's login.
    *
+   * @param login user's login
+   * @param pageable pageable
    * @return list of accounts
    */
-  List<Account> getAllAccountsOfUser(String login);
+  Page<Account> getAllAccountsOfUser(String login, Pageable pageable);
 
   /**
    * Saves in the database account entity converted from accountDto.

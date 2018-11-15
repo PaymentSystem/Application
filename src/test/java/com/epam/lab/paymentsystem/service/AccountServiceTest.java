@@ -32,6 +32,7 @@ public class AccountServiceTest {
   private String login;
   private Account account;
   private Account accountTarget;
+
   @Mock
   private UserService userService;
   @Mock

@@ -3,6 +3,9 @@ package com.epam.lab.paymentsystem.repository;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -17,6 +20,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OperationRepository extends JpaRepository<Operation, Long> {
 
   /**
+   * Returns page of operation from database which are linked to passed card id.
+   *
+   * @param cardSrcId long src card id
+   * @param cardDstId long dst card id
+   * @param pageable pageable
+   * @return page of operation entities
+   */
+  Page<Operation> getAllBySourceCardIdOrTargetCardId(long cardSrcId,
+                                                     long cardDstId,
+                                                     Pageable pageable);
+
+  /**
    * Returns list of operation from database which are linked to passed card id.
    *
    * @param cardSrcId long src card id
@@ -24,6 +39,18 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
    * @return list of operation entities
    */
   List<Operation> getAllBySourceCardIdOrTargetCardId(long cardSrcId, long cardDstId);
+
+  /**
+   * Returns list of operation from database which are linked to passed list card.
+   *
+   * @param cardsSrc list cards src entity
+   * @param cardsDst list cards dst entity
+   * @param pageable pageable
+   * @return page of operation entities
+   */
+  Page<Operation> getAllBySourceCardIsInOrTargetCardIsIn(List<Card> cardsSrc,
+                                                         List<Card> cardsDst,
+                                                         Pageable pageable);
 
   /**
    * Returns list of operation from database which are linked to passed list card.

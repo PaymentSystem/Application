@@ -15,7 +15,7 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
-<div class="container" th:if="${!cardList.isEmpty()}">
+<div class="container" th:if="${!cardPage.isEmpty()}">
     <div class="card">
         <div class="card-block">
             <div class="table table-hover">
@@ -28,7 +28,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <th:block th:each="card : ${cardList}">
+                    <th:block th:each="card : ${cardPage.content}">
                         <tr>
                             <td th:text="${card.id}"></td>
                             <td th:text="${card.label}"></td>
@@ -59,11 +59,21 @@
                     </th:block>
                     </tbody>
                 </table>
+                <nav aria-label="..." th:if="${cardPage.totalPages > 0}">
+                    <ul class="pagination">
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, cardPage.totalPages)}">
+                            <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                               th:text=${pageNumber}
+                               th:class="${pageNumber==cardPage.number + 1} ? active">
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
-<div th:unless="${!cardList.isEmpty()}">
+<div th:unless="${!cardPage.isEmpty()}">
     <p th:text="#{card.empty}"></p>
 </div>
 <a th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"

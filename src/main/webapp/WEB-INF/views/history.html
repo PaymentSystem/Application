@@ -21,7 +21,7 @@
 </head>
 <body>
 <a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
-<div class="container" th:if="${!historyOperation.isEmpty()}">
+<div class="container" th:if="${!historyOperationPage.isEmpty()}">
     <div class="card">
         <div class="card-block">
             <div class="table table-hover">
@@ -35,7 +35,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <th:block th:each="history : ${historyOperation}">
+                    <th:block th:each="history : ${historyOperationPage.content}">
                         <tr>
                             <td th:text="${history.sourceCard.label}"></td>
                             <td th:text="${history.targetCard.label}"></td>
@@ -45,11 +45,22 @@
                     </th:block>
                     </tbody>
                 </table>
+                <nav aria-label="..." th:if="${historyOperationPage.totalPages > 0}">
+                    <ul class="pagination">
+                        <li class="page-item"
+                            th:each="pageNumber : ${#numbers.sequence(1, historyOperationPage.totalPages)}">
+                            <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                               th:text=${pageNumber}
+                               th:class="${pageNumber==historyOperationPage.number + 1} ? active">
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
-<div th:unless="${!historyOperation.isEmpty()}">
+<div th:unless="${!historyOperationPage.isEmpty()}">
     <h1 th:text="#{history.empty}"></h1>
 </div>
 

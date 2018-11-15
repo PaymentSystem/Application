@@ -1,78 +1,9 @@
 package com.epam.lab.paymentsystem.service;
-/*
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-import com.epam.lab.paymentsystem.dto.CardDto;
-import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.Card;
-import com.epam.lab.paymentsystem.entities.Operation;
-import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.entities.enums.Roles;
-import com.epam.lab.paymentsystem.repository.CardRepository;
-import com.epam.lab.paymentsystem.repository.OperationRepository;
-import com.epam.lab.paymentsystem.service.impl.CardServiceImpl;
-import com.epam.lab.paymentsystem.service.impl.OperationServiceImpl;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-@ExtendWith(MockitoExtension.class)
-public class OperationServiceTest {
-  private long accountId;
-  private long cardId;
-  private Operation operation;
-  private List<Card> cards;
-  private List<Operation> operations;
-  private String login;
-  private User user;
-
-  @Mock
-  private OperationRepository operationRepository;
-
-  @Mock
-  private UserService userService;
-
-  @Mock
-  private CardService cardService;
-
-  @InjectMocks
-  private OperationServiceImpl operationService;
-
-  @BeforeEach
-  public void startUp() {
-    MockitoAnnotations.initMocks(this);
-    accountId = 1;
-    cardId = 1;
-    operation = new Operation();
-    cards = new ArrayList<>();
-    operations = new ArrayList<>();
-    login = "test";
-    user = new User();
-    user.setLogin(login);
-  }
-
-  @Test
-  public void testGetAllOperationsReturnsOperationsList(){
-    when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
-    when(cardService.getAllCardsByLogin(user.getLogin())).thenReturn(cards);
-    when(operationRepository.getAllBySourceCardIsIn(cards)).thenReturn(operations);
-    assertEquals(operations, operationService.getAllOperations());
-  }
-}*/
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import com.epam.lab.paymentsystem.dto.OperationDto;
@@ -84,6 +15,7 @@ import com.epam.lab.paymentsystem.repository.OperationRepository;
 import com.epam.lab.paymentsystem.service.impl.OperationServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -92,13 +24,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 public class OperationServiceTest {
   private long accountId;
   private String login;
   private List<Card> cards;
-  private List<Operation> operations;
+  private Page<Operation> operationsPage;
   private User user;
   private Card cardSrc;
   private Card cardDst;
@@ -112,6 +48,7 @@ public class OperationServiceTest {
   private long prevSrcAmount;
   private long prevDstAmount;
   private long transferAmount;
+  private Pageable pageable;
 
   @Mock
   private OperationRepository operationRepository;
@@ -131,12 +68,14 @@ public class OperationServiceTest {
   @BeforeEach
   public void startUp() {
     MockitoAnnotations.initMocks(this);
+    pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "date");
+    operationsPage = Page.empty(pageable);
+
     accountId = 1;
     cardId = 1;
     cardSrcId = 1;
     cardDstId = 2;
     cards = new ArrayList<>();
-    operations = new ArrayList<>();
 
     prevSrcAmount = 500;
     prevDstAmount = 100;
@@ -158,48 +97,65 @@ public class OperationServiceTest {
   }
 
   @Test
-  public void testGetAllOperationsReturnsOperationsList() {
+  public void testGetAllOperationsReturnsOperationsPage() {
     when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
     when(cardService.getAllCardsByLogin(user.getLogin())).thenReturn(cards);
-    when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards))
-        .thenReturn(operations);
-    assertEquals(operations, operationService.getAllOperations());
+    when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards, pageable))
+        .thenReturn(operationsPage);
+    assertEquals(
+        operationsPage,
+        operationService.getAllOperations(pageable),
+        "The operation page should be equal to the operation page retrieved by operation service");
   }
 
   @Test
   public void testMakePayment() {
-    Answer<Card> cardAnswer = invocationOnMock -> {
-      Long idCard = (Long) invocationOnMock.getArgument(0);
-      return idCard.equals(cardSrcId) ? cardSrc : cardDst;
-    };
+    Answer<Card> cardAnswer =
+        invocationOnMock -> {
+          Long idCard = (Long) invocationOnMock.getArgument(0);
+          return idCard.equals(cardSrcId) ? cardSrc : cardDst;
+        };
     when(cardService.getCardById(anyLong())).thenAnswer(cardAnswer);
 
-    Answer<Void> makeTransactionAnswer = invocation -> {
-      Account srcAccount = (Account) invocation.getArgument(0);
-      Account dstAccount = (Account) invocation.getArgument(1);
-      Long amount = (Long) invocation.getArgument(2);
+    Answer<Void> makeTransactionAnswer =
+        invocation -> {
+          Account srcAccount = (Account) invocation.getArgument(0);
+          Account dstAccount = (Account) invocation.getArgument(1);
+          Long amount = (Long) invocation.getArgument(2);
 
-      srcAccount.setAmount(srcAccount.getAmount() - amount);
-      dstAccount.setAmount(dstAccount.getAmount() + amount);
-      return null;
-    };
-    doAnswer(makeTransactionAnswer).when(accountService).makeTransaction(
-            any(Account.class), any(Account.class), any(Long.class));
+          srcAccount.setAmount(srcAccount.getAmount() - amount);
+          dstAccount.setAmount(dstAccount.getAmount() + amount);
+          return null;
+        };
+    doAnswer(makeTransactionAnswer)
+        .when(accountService)
+        .makeTransaction(any(Account.class), any(Account.class), any(Long.class));
 
     operationService.makePayment(operationDto);
-    assertEquals(prevSrcAmount - operation.getAmount(), cardSrc.getAccount().getAmount());
+    assertEquals(
+        prevSrcAmount - operation.getAmount(),
+        cardSrc.getAccount().getAmount(),
+        "Previous source amount minus transfer amount must be equal actual amount");
   }
 
   @Test
-  public void testGetAllOperationsByAccountReturnsOperationsList() {
+  public void testGetAllOperationsByAccountReturnsOperationsPage() {
     when(cardService.getAllCardsByAccountId(accountId)).thenReturn(cards);
-    when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards))
-        .thenReturn(operations);
-    assertEquals(operations, operationService.getAllOperationsByAccount(accountId));
+    when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards, pageable))
+        .thenReturn(operationsPage);
+    assertEquals(
+        operationsPage,
+        operationService.getAllOperationsByAccount(accountId, pageable),
+        "The operation page should be equal to the operation page retrieved by operation service");
   }
 
   @Test
-  public void testGetAllOperationsByCardReturnsOperationsList() {
-    assertEquals(operations, operationService.getAllOperationsByCard(cardId));
+  public void testGetAllOperationsByCardReturnsOperationsPage() {
+    when(operationRepository.getAllBySourceCardIdOrTargetCardId(cardSrcId, cardSrcId, pageable))
+        .thenReturn(operationsPage);
+    assertEquals(
+        operationsPage,
+        operationService.getAllOperationsByCard(cardId, pageable),
+        "The operation page should be equal to the operation page retrieved by operation service");
   }
 }

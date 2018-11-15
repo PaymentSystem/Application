@@ -13,6 +13,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -124,5 +126,16 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> getAllUsers() {
     return userRepository.findAll();
+  }
+
+  /**
+   * Returns list of all users.
+   *
+   * @param pageable pageable
+   * @return list
+   */
+  @Override
+  public Page<User> getAllUsers(Pageable pageable) {
+    return userRepository.findAll(pageable);
   }
 }

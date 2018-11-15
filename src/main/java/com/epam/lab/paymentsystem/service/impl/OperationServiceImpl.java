@@ -16,6 +16,8 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -73,29 +75,30 @@ public class OperationServiceImpl implements OperationService {
   /**
    * History operation.
    *
-   * @return operation list.
+   * @param pageable pageable
+   * @return operation page.
    */
   @Override
-  public List<Operation> getAllOperations() {
+  public Page<Operation> getAllOperations(Pageable pageable) {
     String userLogin = userService.getCurrentUserLogin();
     List<Card> cards = cardService.getAllCardsByLogin(userLogin);
-    List<Operation> history
-        = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
+    Page<Operation> history = operationRepository
+            .getAllBySourceCardIsInOrTargetCardIsIn(cards, cards, pageable);
     LOGGER.info("Display history operation");
     return history;
   }
 
   /**
    * History operation by account.
-   * * @param accountId long.
    *
-   * @return operation list
+   * @param accountId long.
+   * @param pageable pageable
+   * @return operation page
    */
-  @Override
-  public List<Operation> getAllOperationsByAccount(long accountId) {
+  public Page<Operation> getAllOperationsByAccount(long accountId, Pageable pageable) {
     List<Card> cards = cardService.getAllCardsByAccountId(accountId);
-    List<Operation> historyByAccount
-        = operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards);
+    Page<Operation> historyByAccount = operationRepository
+            .getAllBySourceCardIsInOrTargetCardIsIn(cards, cards, pageable);
     LOGGER.info("Display history operation");
     return historyByAccount;
   }
@@ -104,12 +107,13 @@ public class OperationServiceImpl implements OperationService {
    * History operation by card.
    *
    * @param cardId long.
-   * @return operation list.
+   * @param pageable pageable
+   * @return operation page.
    */
   @Override
-  public List<Operation> getAllOperationsByCard(long cardId) {
-    List<Operation> historyByCard
-        = operationRepository.getAllBySourceCardIdOrTargetCardId(cardId, cardId);
+  public Page<Operation> getAllOperationsByCard(long cardId, Pageable pageable) {
+    Page<Operation> historyByCard = operationRepository
+            .getAllBySourceCardIdOrTargetCardId(cardId, cardId, pageable);
     LOGGER.info("Display history operation");
     return historyByCard;
   }

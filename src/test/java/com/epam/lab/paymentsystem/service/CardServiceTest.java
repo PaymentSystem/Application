@@ -16,6 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,6 +30,8 @@ public class CardServiceTest {
   private long accountId;
   private String login;
   private Account account;
+  private Pageable pageable;
+  private Page<Card> cardsPage;
   private List<Card> cards;
   private User user;
   private Card card;
@@ -46,6 +52,9 @@ public class CardServiceTest {
   @BeforeEach
   public void startUp() {
     MockitoAnnotations.initMocks(this);
+    pageable = PageRequest.of(0, 5, Sort.Direction.ASC, "label");
+    cardsPage = Page.empty(pageable);
+
     accountId = 1;
     login = "test";
     account = new Account();
@@ -59,10 +68,13 @@ public class CardServiceTest {
   }
 
   @Test
-  public void testGetAllCardsByAccountIdReturnsCardsList() {
+  public void testGetAllCardsByAccountIdReturnsCardsPage() {
     when(accountService.getAccountById(accountId)).thenReturn(account);
-    when(cardRepository.getAllByAccount(account)).thenReturn(cards);
-    assertEquals(cards, cardService.getAllCardsByAccountId(accountId));
+    when(cardRepository.getAllByAccount(account, pageable)).thenReturn(cardsPage);
+    assertEquals(
+        cardsPage,
+        cardService.getAllCardsByAccountId(accountId, pageable),
+        "The card page should be equal to the card page retrieved by the card service");
   }
 
   @Test
@@ -84,7 +96,8 @@ public class CardServiceTest {
   public void testCreateCardThrowsException() {
     when(accountService.getAccountById(accountId)).thenReturn(account);
     when(userService.getUserByLogin(user.getLogin())).thenReturn(null);
-    assertThrows(CardArgumentException.class,
+    assertThrows(
+        CardArgumentException.class,
         () -> cardService.createCard(cardDto),
         "No such user");
   }
