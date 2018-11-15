@@ -97,6 +97,8 @@ public class CardServiceTest {
     when(accountService.getAccountById(accountId)).thenReturn(account);
     when(userService.getUserByLogin(user.getLogin())).thenReturn(null);
     assertThrows(
-        CardArgumentException.class, () -> cardService.createCard(cardDto), "No such user");
+        CardArgumentException.class,
+        () -> cardService.createCard(cardDto),
+        "No such user");
   }
 }
