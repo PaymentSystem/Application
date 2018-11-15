@@ -4,6 +4,7 @@ import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.exception.CardArgumentException;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
@@ -87,16 +88,16 @@ public class CardServiceImpl implements CardService {
    *
    * @param card card dto passed by controller
    * @return card entity
-   * @throws UnsupportedOperationException if such user doesn't exists
+   * @throws CardArgumentException if such user doesn't exists
    */
   @Override
-  public Card createCard(CardDto card) throws UnsupportedOperationException {
+  public Card createCard(CardDto card) throws CardArgumentException {
     LOGGER.info("Creating new card");
     Account account = accountService.getAccountById(card.getAccountId());
     User user = userService.getUserByLogin(card.getUserLogin());
     if (user == null) {
       LOGGER.error("Such user doesn't exists: " + card.getUserLogin());
-      throw new UnsupportedOperationException("No such user");
+      throw new CardArgumentException("No such user");
     }
     Card cardToCreate = new Card(account, user, card.getLabel(), true);
     LOGGER.info("Card has been created");

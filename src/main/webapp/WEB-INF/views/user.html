@@ -116,38 +116,32 @@
 &&#httpServletRequest.isUserInRole('ADMIN')==false}"><h1>Poshel von otsudava</h1></div>
 <div th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
 &&#httpServletRequest.isUserInRole('ADMIN')}">
-    <div class="container">
-        <div class="card">
-            <div class="card-block">
-                <div class="table table-hover">
-                    <table id="admin" style="with: 50%">
-                        <thead>
-                        <tr>
-                            <th><p th:text="#{user.login}"></p></th>
-                            <th><p th:text="#{user.name}"></p></th>
-                            <th><p th:text="#{user.status}"></p></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <th:block th:each="user : ${users}">
-                            <tr>
-                                <td th:text="${user.login}"></td>
-                                <td th:text="${user.name}"></td>
-                                <td th:text="${user.role.roleStatus}"></td>
-                                <!--<td>
-                                    <a th:href="@{${user.login}}">view</a>
-                                </td>-->
-                            </tr>
-                        </th:block>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    <table id="admin" style="with: 50%">
+        <thead>
+        <tr>
+            <th><p th:text="#{user.login}"></p></th>
+            <th><p th:text="#{user.name}"></p></th>
+            <th><p th:text="#{user.status}"></p></th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="user : ${users}">
+            <tr>
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.role.roleStatus}"></td>
+                <!--<td>
+                    <a th:href="@{${user.login}}">view</a>
+                </td>-->
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
 </div>
-<a th:href="@{'/operation'}"
+<a th:href="@{${userLogin}+'/operation'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{operation.button}"></p>
+</a>
 </body>
 </html>
