@@ -87,7 +87,7 @@ public class OperationController {
    * @param model     Model
    * @return string
    */
-  @GetMapping(value = "/{userLogin}/history/{accountId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/history")
   public String getAccountHistory(@PathVariable(name = "accountId") long accountId, Model model) {
     List<Operation> history = operationService.getAllOperationsByAccount(accountId);
     model.addAttribute("historyOperation", history);
@@ -102,7 +102,7 @@ public class OperationController {
    * @param model  Model
    * @return String
    */
-  @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/history")
   public String getCardHistory(@PathVariable(name = "cardId") long cardId, Model model) {
     List<Operation> history = operationService.getAllOperationsByCard(cardId);
     model.addAttribute("historyOperation", history);

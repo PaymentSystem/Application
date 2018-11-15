@@ -50,7 +50,7 @@
                                 </form>
                             </td>
                             <td>
-                                <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${card.id}}"
+                                <a th:href="@{${#httpServletRequest.requestURI}+'/card/'+${card.id}+'/history'}"
                                    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
                                     <p th:text="#{history.button}"/>
                                 </a>

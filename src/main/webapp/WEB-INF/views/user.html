@@ -91,7 +91,7 @@
                                             th:text="#{showCard.button}"/></a>
                                 </td>
                                 <td>
-                                    <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${account.id}}"
+                                    <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}+'/history'}"
                                        class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
                                             th:text="#{history.button}"/></a>
                                 </td>

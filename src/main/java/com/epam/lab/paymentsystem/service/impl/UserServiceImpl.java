@@ -8,6 +8,7 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
+import com.epam.lab.paymentsystem.utility.Reserved;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +33,8 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private Reserved reserved;
   /**
    * Instance of {@code RoleRepository} injects by Spring.
    */
@@ -53,7 +56,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public User addUser(UserDto userDto) throws LoginAlreadyExistsException {
     User userToAdd = userRepository.getUserByLogin(userDto.getLogin());
-    if (userToAdd != null) {
+    if ((userToAdd != null) || (reserved.getReserved().contains(userDto.getLogin()))) {
       LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
       throw new LoginAlreadyExistsException("Login already exists");
     }

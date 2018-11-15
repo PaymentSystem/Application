@@ -24,9 +24,9 @@ public class IndexController {
   @Autowired
   private UserService userService;
 
-  @GetMapping(value = "/error/404")
+  @GetMapping(value = "/error/403")
   public String getErrorPage() {
-    return "404";
+    return "403";
   }
 
   /**
