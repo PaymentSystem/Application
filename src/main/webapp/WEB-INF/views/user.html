@@ -70,7 +70,6 @@
                                 </td>-->
                                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
-                                    <!--<form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}" method="post">-->
                                     <form th:action="@{${userLogin} + '/account/' + ${account.id} + '/block'}"
                                           method="post">
                                         <button type="submit" class="btn btn-danger" th:disabled="${!account.isActive}">
@@ -103,21 +102,13 @@
                     <nav aria-label="..." th:if="${accountPage.totalPages > 0}">
                         <ul class="pagination">
                             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
-                                <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                                <a th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
                                    th:text=${pageNumber}
                                    th:class="${pageNumber==accountPage.number + 1} ? active">
                                 </a>
                             </li>
                         </ul>
                     </nav>
-
-                    <!--<div th:if="${accountPage.totalPages > 0}" class="pagination"
-                         th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
-                        <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
-                           th:text=${pageNumber}
-                           th:class="${pageNumber==accountPage.number + 1} ? active">
-                        </a>
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -165,20 +156,13 @@
                     <nav aria-label="..." th:if="${usersPage.totalPages > 0}">
                         <ul class="pagination">
                             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
-                                <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                                <a th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
                                    th:text=${pageNumber}
                                    th:class="${pageNumber==usersPage.number + 1} ? active">
                                 </a>
                             </li>
                         </ul>
                     </nav>
-
-                    <!--<div th:if="${usersPage.totalPages > 0}" class="pagination"
-                         th:each="usersPageNumber : ${usersPageNumbers}">
-                        <a th:href="@{${#httpServletRequest.requestURI} + /(page=${usersPageNumber})}"
-                           th:text=${usersPageNumber}
-                           th:class="${usersPageNumber==usersPage.number + 1} ? active"></a>
-                    </div>-->
                 </div>
             </div>
         </div>

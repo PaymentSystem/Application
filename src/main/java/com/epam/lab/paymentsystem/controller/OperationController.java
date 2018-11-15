@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,7 +84,7 @@ public class OperationController {
    */
   @GetMapping(value = "/history")
   public String getUserHistory(
-          @PageableDefault(size = 8) Pageable pageable,
+          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
           Model model) {
     Page<Operation> history = operationService.getAllOperations(pageable);
     model.addAttribute("historyOperationPage", history);
@@ -101,7 +102,7 @@ public class OperationController {
   @GetMapping(value = "/{userLogin}/history/{accountId}")
   public String getAccountHistory(
           @PathVariable(name = "accountId") long accountId,
-          @PageableDefault(size = 8) Pageable pageable,
+          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
           Model model) {
     Page<Operation> history = operationService.getAllOperationsByAccount(accountId, pageable);
     model.addAttribute("historyOperationPage", history);
@@ -119,7 +120,7 @@ public class OperationController {
   @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
   public String getCardHistory(
           @PathVariable(name = "cardId") long cardId,
-          @PageableDefault(size = 8) Pageable pageable,
+          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
           Model model) {
     Page<Operation> history = operationService.getAllOperationsByCard(cardId, pageable);
     model.addAttribute("historyOperationPage", history);

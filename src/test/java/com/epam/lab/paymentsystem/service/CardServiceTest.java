@@ -27,74 +27,72 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CardServiceTest {
-    private long accountId;
-    private String login;
-    private Account account;
-    private Pageable pageable;
-    private Page<Card> cardsPage;
-    private List<Card> cards;
-    private User user;
-    private Card card;
-    private CardDto cardDto;
+  private long accountId;
+  private String login;
+  private Account account;
+  private Pageable pageable;
+  private Page<Card> cardsPage;
+  private List<Card> cards;
+  private User user;
+  private Card card;
+  private CardDto cardDto;
 
-    @Mock
-    private CardRepository cardRepository;
+  @Mock private CardRepository cardRepository;
 
-    @Mock
-    private UserService userService;
+  @Mock private UserService userService;
 
-    @Mock
-    private AccountService accountService;
+  @Mock private AccountService accountService;
 
-    @InjectMocks
-    private CardServiceImpl cardService;
+  @InjectMocks private CardServiceImpl cardService;
 
-    @BeforeEach
-    public void startUp() {
-        MockitoAnnotations.initMocks(this);
-        pageable = PageRequest.of(0, 5, Sort.Direction.ASC, "label");
-        cardsPage = Page.empty(pageable);
+  @BeforeEach
+  public void startUp() {
+    MockitoAnnotations.initMocks(this);
+    pageable = PageRequest.of(0, 5, Sort.Direction.ASC, "label");
+    cardsPage = Page.empty(pageable);
 
-        accountId = 1;
-        login = "test";
-        account = new Account();
-        cards = new ArrayList<>();
+    accountId = 1;
+    login = "test";
+    account = new Account();
+    cards = new ArrayList<>();
 
-        user = new User();
-        user.setLogin(login);
+    user = new User();
+    user.setLogin(login);
 
-        card = new Card(account, user, "test", true);
-        cardDto = new CardDto(0, accountId, login, "test", true);
-    }
+    card = new Card(account, user, "test", true);
+    cardDto = new CardDto(0, accountId, login, "test", true);
+  }
 
-    @Test
-    public void testGetAllCardsByAccountIdReturnsCardsPage() {
-        when(accountService.getAccountById(accountId)).thenReturn(account);
-        when(cardRepository.getAllByAccount(account, pageable)).thenReturn(cardsPage);
-        assertEquals(cardsPage, cardService.getAllCardsByAccountId(accountId, pageable));
-    }
+  @Test
+  public void testGetAllCardsByAccountIdReturnsCardsPage() {
+    when(accountService.getAccountById(accountId)).thenReturn(account);
+    when(cardRepository.getAllByAccount(account, pageable)).thenReturn(cardsPage);
+    assertEquals(
+        cardsPage,
+        cardService.getAllCardsByAccountId(accountId, pageable),
+        "The card page should be equal to the card page retrieved by the card service");
+  }
 
-    @Test
-    public void testGetAllCardsByUserLoginReturnsCardsList() {
-        when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
-        when(cardRepository.getAllByUser(user)).thenReturn(cards);
-        assertEquals(cards, cardService.getAllCardsByLogin(login));
-    }
+  @Test
+  public void testGetAllCardsByUserLoginReturnsCardsList() {
+    when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
+    when(cardRepository.getAllByUser(user)).thenReturn(cards);
+    assertEquals(cards, cardService.getAllCardsByLogin(login));
+  }
 
-    @Test
-    public void testCreateCardReturnsCard() {
-        when(accountService.getAccountById(accountId)).thenReturn(account);
-        when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
-        when(cardRepository.save(card)).thenReturn(card);
-        assertEquals(card, cardService.createCard(cardDto));
-    }
+  @Test
+  public void testCreateCardReturnsCard() {
+    when(accountService.getAccountById(accountId)).thenReturn(account);
+    when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
+    when(cardRepository.save(card)).thenReturn(card);
+    assertEquals(card, cardService.createCard(cardDto));
+  }
 
-    @Test
-    public void testCreateCardThrowsException() {
-        when(accountService.getAccountById(accountId)).thenReturn(account);
-        when(userService.getUserByLogin(user.getLogin())).thenReturn(null);
-        assertThrows(UnsupportedOperationException.class,
-                () -> cardService.createCard(cardDto),
-                "No such user");
-    }
+  @Test
+  public void testCreateCardThrowsException() {
+    when(accountService.getAccountById(accountId)).thenReturn(account);
+    when(userService.getUserByLogin(user.getLogin())).thenReturn(null);
+    assertThrows(
+        UnsupportedOperationException.class, () -> cardService.createCard(cardDto), "No such user");
+  }
 }

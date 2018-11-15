@@ -47,7 +47,7 @@ public class CardController {
   public String getAccountPage(
       @PathVariable(name = "userLogin") String login,
       @PathVariable(name = "accountId") long id,
-      @PageableDefault(size = 4) Pageable pageable,
+      @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
       Model model) {
     LOGGER.info("Access to account page");
     Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);

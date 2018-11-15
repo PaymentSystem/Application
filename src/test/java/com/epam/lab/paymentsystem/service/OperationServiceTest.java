@@ -50,20 +50,15 @@ public class OperationServiceTest {
   private long transferAmount;
   private Pageable pageable;
 
-  @Mock
-  private OperationRepository operationRepository;
+  @Mock private OperationRepository operationRepository;
 
-  @Mock
-  private UserService userService;
+  @Mock private UserService userService;
 
-  @Mock
-  private AccountService accountService;
+  @Mock private AccountService accountService;
 
-  @Mock
-  private CardService cardService;
+  @Mock private CardService cardService;
 
-  @InjectMocks
-  private OperationServiceImpl operationService;
+  @InjectMocks private OperationServiceImpl operationService;
 
   @BeforeEach
   public void startUp() {
@@ -102,28 +97,34 @@ public class OperationServiceTest {
     when(cardService.getAllCardsByLogin(user.getLogin())).thenReturn(cards);
     when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards, pageable))
         .thenReturn(operationsPage);
-    assertEquals(operationsPage, operationService.getAllOperations(pageable));
+    assertEquals(
+        operationsPage,
+        operationService.getAllOperations(pageable),
+        "The operation page should be equal to the operation page retrieved by operation service");
   }
 
   @Test
   public void testMakePayment() {
-    Answer<Card> cardAnswer = invocationOnMock -> {
-      Long idCard = (Long) invocationOnMock.getArgument(0);
-      return idCard.equals(cardSrcId) ? cardSrc : cardDst;
-    };
+    Answer<Card> cardAnswer =
+        invocationOnMock -> {
+          Long idCard = (Long) invocationOnMock.getArgument(0);
+          return idCard.equals(cardSrcId) ? cardSrc : cardDst;
+        };
     when(cardService.getCardById(anyLong())).thenAnswer(cardAnswer);
 
-    Answer<Void> makeTransactionAnswer = invocation -> {
-      Account srcAccount = (Account) invocation.getArgument(0);
-      Account dstAccount = (Account) invocation.getArgument(1);
-      Long amount = (Long) invocation.getArgument(2);
+    Answer<Void> makeTransactionAnswer =
+        invocation -> {
+          Account srcAccount = (Account) invocation.getArgument(0);
+          Account dstAccount = (Account) invocation.getArgument(1);
+          Long amount = (Long) invocation.getArgument(2);
 
-      srcAccount.setAmount(srcAccount.getAmount() - amount);
-      dstAccount.setAmount(dstAccount.getAmount() + amount);
-      return null;
-    };
-    doAnswer(makeTransactionAnswer).when(accountService).makeTransaction(
-            any(Account.class), any(Account.class), any(Long.class));
+          srcAccount.setAmount(srcAccount.getAmount() - amount);
+          dstAccount.setAmount(dstAccount.getAmount() + amount);
+          return null;
+        };
+    doAnswer(makeTransactionAnswer)
+        .when(accountService)
+        .makeTransaction(any(Account.class), any(Account.class), any(Long.class));
 
     operationService.makePayment(operationDto);
     assertEquals(prevSrcAmount - operation.getAmount(), cardSrc.getAccount().getAmount());
@@ -134,13 +135,19 @@ public class OperationServiceTest {
     when(cardService.getAllCardsByAccountId(accountId)).thenReturn(cards);
     when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards, pageable))
         .thenReturn(operationsPage);
-    assertEquals(operationsPage, operationService.getAllOperationsByAccount(accountId, pageable));
+    assertEquals(
+        operationsPage,
+        operationService.getAllOperationsByAccount(accountId, pageable),
+        "The operation page should be equal to the operation page retrieved by operation service");
   }
 
   @Test
   public void testGetAllOperationsByCardReturnsOperationsPage() {
     when(operationRepository.getAllBySourceCardIdOrTargetCardId(cardSrcId, cardSrcId, pageable))
-            .thenReturn(operationsPage);
-    assertEquals(operationsPage, operationService.getAllOperationsByCard(cardId, pageable));
+        .thenReturn(operationsPage);
+    assertEquals(
+        operationsPage,
+        operationService.getAllOperationsByCard(cardId, pageable),
+        "The operation page should be equal to the operation page retrieved by operation service");
   }
 }

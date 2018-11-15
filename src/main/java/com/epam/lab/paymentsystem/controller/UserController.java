@@ -9,6 +9,7 @@ import com.epam.lab.paymentsystem.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -55,14 +56,17 @@ public class UserController {
    * Returns user page with list of all accounts linked to that user.
    *
    * @param login user's login
-   * @param pageable pageable
+   * @param pageableUser pageable
+   * @param pageableAdmin pageable
    * @param model model
    * @return user page view
    */
   @GetMapping(value = "/{userLogin}")
-  public String getUserPage(@PathVariable(name = "userLogin") String login,
-                            @PageableDefault(size = 3) Pageable pageable,
-                            Model model) {
+  public String getUserPage(
+          @PathVariable(name = "userLogin") String login,
+          @Qualifier("user")  @PageableDefault(size = 5, sort = {"label"}) Pageable pageableUser,
+          @Qualifier("admin") @PageableDefault(size = 5, sort = {"login"}) Pageable pageableAdmin,
+          Model model) {
 
     String currentUserLogin = userService.getCurrentUserLogin();
     User currentUser = userService.getUserByLogin(currentUserLogin);
@@ -70,10 +74,11 @@ public class UserController {
     User userOnPage = userService.getUserByLogin(login);
     model.addAttribute("userOnPage", userOnPage);
 
-    Page<User> users = userService.getAllUsers(pageable);
-    model.addAttribute("usersPage", users);
-    Page<Account> accounts = accountService.getAllAccountsOfUser(login, pageable);
+    Page<Account> accounts = accountService.getAllAccountsOfUser(login, pageableUser);
     model.addAttribute("accountPage", accounts);
+
+    Page<User> users = userService.getAllUsers(pageableAdmin);
+    model.addAttribute("usersPage", users);
 
     return USER_PAGE;
   }
