@@ -1,7 +1,6 @@
 package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
-import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public interface CardService {
   List<Card> getAllCardsByCurrentUser();
 
 
-  List<Card> getAllCardsByCurrentUserWithoutBlocked();
+  List<Card> getAllNonBlockedCardsOfCurrentUser();
 
   /**
    * Returns card by given id.

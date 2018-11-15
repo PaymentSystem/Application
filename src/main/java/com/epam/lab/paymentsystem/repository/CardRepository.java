@@ -26,7 +26,13 @@ public interface CardRepository extends JpaRepository<Card, Long> {
   List<Card> getAllByAccount(Account account);
 
 
-  List<Card> getAllByUserOrIsActive(User user, boolean active);
+  /**
+   * Get all active card.
+   * @param isActive boolean
+   * @param user user entity
+   * @return list of card
+   */
+  List<Card> getAllByIsActiveAndUser(boolean isActive, User user);
 
   /**
    * Returns card form database by passed user.
@@ -35,14 +41,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
    * @return list of cards by user
    */
   List<Card> getAllByUser(User user);
-
-  /**
-   * Returns card form database by passed id.
-   *
-   * @param account account of card
-   * @return list of cards by user
-   */
-  //List<Card> getAllCardsByAccountIsIn(List<Account> account);
 
   /**
    * Returns card form database by passed id.
@@ -57,7 +55,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
    * @param cardNumber String
    * @return Card
    */
-  Card findByCardNumber(String cardNumber);
+  Card getByCardNumber(String cardNumber);
 
 
   /** Get card by number card.

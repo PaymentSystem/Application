@@ -31,6 +31,8 @@ public class Operation extends AbstractEntity {
   @Column(name = "number_dst_card")
   private String numberDstCard;
 
+  private String dateString;
+
   public Operation() {
   }
 
@@ -145,5 +147,13 @@ public class Operation extends AbstractEntity {
     result = 31 * result + (getNumberSrcCard() != null ? getNumberSrcCard().hashCode() : 0);
     result = 31 * result + (getNumberDstCard() != null ? getNumberDstCard().hashCode() : 0);
     return result;
+  }
+
+  public String getDateString() {
+    return dateString;
+  }
+
+  public void setDateString(String dateString) {
+    this.dateString = dateString;
   }
 }

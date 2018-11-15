@@ -33,8 +33,8 @@
             <td><input list="srcNumberCardList" name="src" class="form-control input-lg"
                        th:field="*{numberSrcCard}" th:placeholder="#{operation.placeholder.source}" id="src" required>
                 <datalist id="srcNumberCardList">
-                    <th:block th:each="srcCard : ${srcNumberCardList}">
-                        <option th:value="${srcCard.cardNumber}">
+                    <th:block th:each="srcNumberCardList : ${srcNumberCardList}">
+                        <option th:value="${srcNumberCardList.cardNumber}">
                     </th:block>
                 </datalist>
             </td>

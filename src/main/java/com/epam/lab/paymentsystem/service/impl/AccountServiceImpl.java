@@ -123,6 +123,7 @@ public class AccountServiceImpl implements AccountService {
 
   /**
    * Block account by given id.
+   *
    * @param id long
    * @return account entity
    */
@@ -135,6 +136,7 @@ public class AccountServiceImpl implements AccountService {
 
   /**
    * Unblock account by given id.
+   *
    * @param id long
    * @return account entity
    */
@@ -147,8 +149,9 @@ public class AccountServiceImpl implements AccountService {
 
   /**
    * Add amount in account.
+   *
    * @param accountId long
-   * @param amount long
+   * @param amount    long
    * @return account entity
    */
   @Override

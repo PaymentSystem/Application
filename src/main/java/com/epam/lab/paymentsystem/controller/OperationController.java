@@ -4,6 +4,7 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
+import com.epam.lab.paymentsystem.utility.DateConverter;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +45,7 @@ public class OperationController {
    */
   @GetMapping(value = "/operation")
   public String getOperationPage(Model model) {
-    model.addAttribute("srcNumberCardList", cardService.getAllCardsByCurrentUserWithoutBlocked());
+    model.addAttribute("srcNumberCardList", cardService.getAllNonBlockedCardsOfCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
     return OPERATION_PAGE;
   }
@@ -81,7 +82,8 @@ public class OperationController {
    */
   @GetMapping(value = "/history")
   public String getUserHistory(Model model) {
-    List<Operation> history = operationService.getAllOperations();
+    List<Operation> operations = operationService.getAllOperations();
+    List<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperation", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
@@ -96,7 +98,8 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/history/{accountId}")
   public String getAccountHistory(@PathVariable(name = "accountId") long accountId, Model model) {
-    List<Operation> history = operationService.getAllOperationsByAccount(accountId);
+    List<Operation> operations = operationService.getAllOperationsByAccount(accountId);
+    List<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperation", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
@@ -111,7 +114,8 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
   public String getCardHistory(@PathVariable(name = "cardId") long cardId, Model model) {
-    List<Operation> history = operationService.getAllOperationsByCard(cardId);
+    List<Operation> operations = operationService.getAllOperationsByCard(cardId);
+    List<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperation", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;

@@ -77,10 +77,10 @@ public class CardServiceImpl implements CardService {
   }
 
   @Override
-  public List<Card> getAllCardsByCurrentUserWithoutBlocked() {
+  public List<Card> getAllNonBlockedCardsOfCurrentUser() {
     String userLogin = userService.getCurrentUserLogin();
     User currentUser = userService.getUserByLogin(userLogin);
-    return cardRepository.getAllByUserOrIsActive(currentUser, true);
+    return cardRepository.getAllByIsActiveAndUser(true, currentUser);
   }
 
   /**
@@ -95,12 +95,11 @@ public class CardServiceImpl implements CardService {
     LOGGER.info("Creating new card");
     Account account = accountService.getAccountById(card.getAccountId());
     User user = userService.getUserByLogin(card.getUserLogin());
-    String cardNumber = generateCardNumber();
     if (user == null) {
       LOGGER.error("Such user doesn't exists: " + card.getUserLogin());
       throw new UnsupportedOperationException("No such user");
     }
-
+    String cardNumber = generateCardNumber();
     Card cardToCreate = new Card(account, user, card.getLabel(), true, cardNumber);
     LOGGER.info("Card has been created");
     return cardRepository.save(cardToCreate);
@@ -139,11 +138,11 @@ public class CardServiceImpl implements CardService {
    */
   private String generateCardNumber() {
     String number = String.format("%04d", random.nextInt(10000));
-    Card cardWithNumber = cardRepository.findByCardNumber(number);
+    Card cardWithNumber = cardRepository.getByCardNumber(number);
     if (cardWithNumber != null) {
-      LOGGER.info("Number card already exist");
       generateCardNumber();
     }
+    LOGGER.info("Number card created");
     return number;
   }
 

@@ -55,6 +55,7 @@ public interface AccountService {
 
   /**
    * Block account by given id.
+   *
    * @param id long
    * @return account entity
    */
@@ -62,6 +63,7 @@ public interface AccountService {
 
   /**
    * Unblock account by given id.
+   *
    * @param id long
    * @return account entity
    */
@@ -69,10 +71,10 @@ public interface AccountService {
 
   /**
    * Add amount in account.
+   *
    * @param accountId long
-   * @param amount long
+   * @param amount    long
    * @return account entity
    */
   Account addAmount(long accountId, long amount);
-
 }

@@ -70,11 +70,11 @@ public class Card extends AbstractEntity {
     this.label = label;
   }
 
-  public boolean isActive() {
+  public boolean getIsActive() {
     return isActive;
   }
 
-  public void setActive(boolean active) {
+  public void setIsActive(boolean active) {
     isActive = active;
   }
 
@@ -98,7 +98,7 @@ public class Card extends AbstractEntity {
 
     Card card = (Card) o;
 
-    if (isActive() != card.isActive()) {
+    if (getIsActive() != card.getIsActive()) {
       return false;
     }
     if (getAccount() != null ? !getAccount().equals(card.getAccount())
@@ -120,7 +120,7 @@ public class Card extends AbstractEntity {
     int result = getAccount() != null ? getAccount().hashCode() : 0;
     result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
     result = 31 * result + (getLabel() != null ? getLabel().hashCode() : 0);
-    result = 31 * result + (isActive() ? 1 : 0);
+    result = 31 * result + (getIsActive() ? 1 : 0);
     result = 31 * result + (getCardNumber() != null ? getCardNumber().hashCode() : 0);
     return result;
   }
