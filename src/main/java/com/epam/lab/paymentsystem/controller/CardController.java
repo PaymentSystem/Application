@@ -4,10 +4,12 @@ import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +39,9 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that account.
    *
+   * @param login user's login
    * @param id    id of account
+   * @param pageable pageable
    * @param model model
    * @return account page view
    */
@@ -45,12 +49,34 @@ public class CardController {
   public String getAccountPage(
       @PathVariable(name = "userLogin") String login,
       @PathVariable(name = "accountId") long id,
+      @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
       Model model) {
 
     LOGGER.info("Access to account page");
-    List<Card> cards = cardService.getAllCardsByAccountId(id);
+    Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);
+    model.addAttribute("cardPage", cards);
     model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
-    model.addAttribute("cardList", cards);
+    return ACCOUNT_PAGE;
+  }
+
+  /**
+   * Returns account page with list of all cards linked to that user.
+   *
+   * @param login user's login
+   * @param pageable pageable
+   * @param model model
+   * @return account page view
+   */
+  @GetMapping(value = "/{userLogin}/cards")
+  public String getAccountPageUserCards(
+          @PathVariable(name = "userLogin") String login,
+          @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
+          Model model) {
+
+    LOGGER.info("Access to account page");
+    Page<Card> cards = cardService.getAllCardsByLogin(login, pageable);
+    model.addAttribute("cardPage", cards);
+    model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
     return ACCOUNT_PAGE;
   }
 

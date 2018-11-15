@@ -14,6 +14,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,10 +25,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardServiceImpl implements CardService {
 
+  private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
+
   @Autowired
   private CardRepository cardRepository;
-
-  private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
   @Autowired
   private UserService userService;
@@ -35,13 +37,15 @@ public class CardServiceImpl implements CardService {
   private AccountService accountService;
 
   /**
-   * Returns list of all cards.
+   * Returns page of cards by given account id.
    *
-   * @return list of cards
+   * @param id account id
+   * @param pageable pageable
+   * @return page of cards
    */
-  @Override
-  public List<Card> getAllCards() {
-    return cardRepository.findAll();
+  public Page<Card> getAllCardsByAccountId(long id, Pageable pageable) {
+    Account account = accountService.getAccountById(id);
+    return cardRepository.getAllByAccount(account, pageable);
   }
 
   /**
@@ -69,6 +73,19 @@ public class CardServiceImpl implements CardService {
   }
 
   /**
+   * Returns list of cards by given login.
+   *
+   * @param login user's login
+   * @param pageable pageable
+   * @return page of cards
+   */
+  @Override
+  public Page<Card> getAllCardsByLogin(String login, Pageable pageable) {
+    User user = userService.getUserByLogin(login);
+    return cardRepository.getAllByUser(user, pageable);
+  }
+
+  /**
    * Returns list of cards by current user.
    *
    * @return list of cards
@@ -76,11 +93,6 @@ public class CardServiceImpl implements CardService {
   @Override
   public List<Card> getAllCardsByCurrentUser() {
     return getAllCardsByLogin(userService.getCurrentUserLogin());
-  }
-
-  @Override
-  public List<Card> getAllCardsByAccountIsIn(List<Account> account) {
-    return cardRepository.getAllCardsByAccountIsIn(account);
   }
 
   /**

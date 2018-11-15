@@ -2,7 +2,6 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.service.AccountService;
-import com.epam.lab.paymentsystem.service.impl.AccountServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,6 @@ public class AccountController {
 
   @Autowired
   private AccountService accountService;
-
-  public AccountController(AccountServiceImpl accountService) {
-    this.accountService = accountService;
-  }
 
   @PostMapping(value = "/{userLogin}/account/{accountId}/block")
   public String blockAccount(@PathVariable(name = "accountId") long id) {
