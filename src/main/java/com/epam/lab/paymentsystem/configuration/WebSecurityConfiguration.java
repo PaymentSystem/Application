@@ -28,8 +28,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   private AccountService accountService;
   @Autowired
-  private UserService userService;
-  @Autowired
   private Reserved reserved;
   @Autowired
   private CardService cardService;
@@ -64,7 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/{userLogin}/account/{accountId}/**")
         .access("@webSecurityConfiguration.checkAccount(authentication, #accountId)"
             + " and hasRole('USER')")
-        .antMatchers("/{userLogin}**", "/{userLogin}/**")
+        .antMatchers("/{userLogin}/**")
         .access("(@webSecurityConfiguration.checkUser(authentication, #userLogin) "
             + "and !hasRole('BLOCKED'))"
             + " or hasRole('ADMIN')")
@@ -89,7 +87,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * aga.
+   * Checks if account belongs to current logged user.
    *
    * @param authentication authentication
    * @param accountId      accountId
@@ -104,7 +102,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * aga.
+   * Checks if card belongs to current logged user.
    *
    * @param authentication authentication
    * @param cardId         accountId
@@ -119,7 +117,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * aga.
+   * Checks if user page belongs to current logged user.
    *
    * @param authentication authentication
    * @param userLogin      accountId

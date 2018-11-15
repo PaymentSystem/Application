@@ -93,7 +93,7 @@ public class OperationController {
    * @param model     Model
    * @return string
    */
-  @GetMapping(value = "/{userLogin}/history/{accountId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/history")
   public String getAccountHistory(
           @PathVariable(name = "accountId") long accountId,
           @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
@@ -111,7 +111,7 @@ public class OperationController {
    * @param model  Model
    * @return String
    */
-  @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/history")
   public String getCardHistory(
           @PathVariable(name = "cardId") long cardId,
           @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,

@@ -36,7 +36,7 @@ public class OperationControllerTest extends AbstractControllerTest {
   @Test
   public void testAccountHistoryPage() throws Exception {
     mockMvc.perform(
-        get("/{userLogin}/history/{accountId}",
+        get("/{userLogin}/account/{accountId}/history",
             user.getLogin(),
             account.getId())
     )
@@ -47,7 +47,7 @@ public class OperationControllerTest extends AbstractControllerTest {
   @Test
   public void testCardHistoryPage() throws Exception {
     mockMvc.perform(
-        get("/{userLogin}/account/{accountId}/history/{cardId}",
+        get("/{userLogin}/account/{accountId}/card/{cardId}/history",
             user.getLogin(),
             account.getId(),
             card.getId())
