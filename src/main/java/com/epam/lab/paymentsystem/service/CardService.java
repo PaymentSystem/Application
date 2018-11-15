@@ -38,6 +38,15 @@ public interface CardService {
    */
   List<Card> getAllCardsByLogin(String login);
 
+  /**
+   * Returns list of cards by given login.
+   *
+   * @param login user's login
+   * @param pageable pageable
+   * @return page of cards
+   */
+  Page<Card> getAllCardsByLogin(String login, Pageable pageable);
+
   List<Card> getAllCardsByCurrentUser();
 
   /**

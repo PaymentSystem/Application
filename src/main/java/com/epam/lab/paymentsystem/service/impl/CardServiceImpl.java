@@ -73,6 +73,19 @@ public class CardServiceImpl implements CardService {
   }
 
   /**
+   * Returns list of cards by given login.
+   *
+   * @param login user's login
+   * @param pageable pageable
+   * @return page of cards
+   */
+  @Override
+  public Page<Card> getAllCardsByLogin(String login, Pageable pageable) {
+    User user = userService.getUserByLogin(login);
+    return cardRepository.getAllByUser(user, pageable);
+  }
+
+  /**
    * Returns list of cards by current user.
    *
    * @return list of cards

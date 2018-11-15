@@ -50,15 +50,20 @@ public class OperationServiceTest {
   private long transferAmount;
   private Pageable pageable;
 
-  @Mock private OperationRepository operationRepository;
+  @Mock
+  private OperationRepository operationRepository;
 
-  @Mock private UserService userService;
+  @Mock
+  private UserService userService;
 
-  @Mock private AccountService accountService;
+  @Mock
+  private AccountService accountService;
 
-  @Mock private CardService cardService;
+  @Mock
+  private CardService cardService;
 
-  @InjectMocks private OperationServiceImpl operationService;
+  @InjectMocks
+  private OperationServiceImpl operationService;
 
   @BeforeEach
   public void startUp() {
@@ -127,7 +132,10 @@ public class OperationServiceTest {
         .makeTransaction(any(Account.class), any(Account.class), any(Long.class));
 
     operationService.makePayment(operationDto);
-    assertEquals(prevSrcAmount - operation.getAmount(), cardSrc.getAccount().getAmount());
+    assertEquals(
+        prevSrcAmount - operation.getAmount(),
+        cardSrc.getAccount().getAmount(),
+        "Previous source amount minus transfer amount must be equal actual amount");
   }
 
   @Test

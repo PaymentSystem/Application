@@ -39,7 +39,9 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that account.
    *
+   * @param login user's login
    * @param id    id of account
+   * @param pageable pageable
    * @param model model
    * @return account page view
    */
@@ -52,6 +54,27 @@ public class CardController {
 
     LOGGER.info("Access to account page");
     Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);
+    model.addAttribute("cardPage", cards);
+    model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
+    return ACCOUNT_PAGE;
+  }
+
+  /**
+   * Returns account page with list of all cards linked to that user.
+   *
+   * @param login user's login
+   * @param pageable pageable
+   * @param model model
+   * @return account page view
+   */
+  @GetMapping(value = "/{userLogin}/cards")
+  public String getAccountPageUserCards(
+          @PathVariable(name = "userLogin") String login,
+          @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
+          Model model) {
+
+    LOGGER.info("Access to account page");
+    Page<Card> cards = cardService.getAllCardsByLogin(login, pageable);
     model.addAttribute("cardPage", cards);
     model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
     return ACCOUNT_PAGE;
