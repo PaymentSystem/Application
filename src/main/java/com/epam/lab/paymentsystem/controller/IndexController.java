@@ -1,5 +1,6 @@
 package com.epam.lab.paymentsystem.controller;
 
+import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +33,10 @@ public class IndexController {
   @GetMapping(value = "/")
   public String getIndexPage(Model model) {
     LOGGER.info("Return index page");
-    model.addAttribute("userLogin", userService.getCurrentUserLogin());
+    String login = userService.getCurrentUserLogin();
+    model.addAttribute("userLogin", login);
+    User userOnPage = userService.getUserByLogin(login);
+    model.addAttribute("userOnPage", userOnPage);
     return INDEX_PAGE;
   }
 
