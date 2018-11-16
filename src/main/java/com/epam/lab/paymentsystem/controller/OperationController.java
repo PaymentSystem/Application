@@ -43,8 +43,7 @@ public class OperationController {
    * @return String
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/operation")
-  public String getOperationPage(Model model, @PathVariable(name = "userLogin") String login) {
-    model.addAttribute("userLogin", login);
+  public String getOperationPage(Model model) {
     model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
     return OPERATION_PAGE;
@@ -57,7 +56,7 @@ public class OperationController {
    * @param model  Model.
    * @return String
    */
-  @PostMapping(value = "/operation")
+  @PostMapping(value = "/{userLogin}/account/{accountId}/operation")
   public String paymentOperation(
       @ModelAttribute(value = "operationDto") OperationDto operationDto,
       Model model) {
