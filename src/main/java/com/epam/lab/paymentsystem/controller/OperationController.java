@@ -66,7 +66,7 @@ public class OperationController {
       Model model) {
     operationService.makePayment(operationDto);
     LOGGER.info("Payment operation is successful");
-    model.addAttribute("message", "Money transfer successful!");
+    model.addAttribute("messageException", "Money transfer successful!");
     return OPERATION_PAGE;
   }
 

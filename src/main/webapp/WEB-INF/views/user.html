@@ -37,7 +37,7 @@
             <li class="nav-item"
                 th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')
                 &&!#httpServletRequest.isUserInRole('ADMIN')}">
-                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+                <a class="nav-link" th:href="@{'/'+${userLogin}+'/cards'}"><p th:text="#{user.cards}"></p></a>
             </li>
 
             <li class="nav-item">
@@ -92,8 +92,10 @@
                 <td th:text="${account.label}"></td>
                 <td th:text="${account.amount}"></td>
                 <td th:text="${account.isActive}"></td>
-                <td th:if="${#httpServletRequest.isUserInRole('USER')}">
-                    <a th:href="@{__${#httpServletRequest.requestURI}__/account/__${account.id}__}">view</a>
+                <td>
+                    <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}"
+                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                            th:text="#{account.main}"/></a>
                 </td>
                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
@@ -111,11 +113,6 @@
                             <p th:text="#{user.unblock}"/>
                         </button>
                     </form>
-                </td>
-                <td>
-                    <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}"
-                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
-                            th:text="#{showCard.button}"/></a>
                 </td>
                 <td>
                     <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}+'/history'}"

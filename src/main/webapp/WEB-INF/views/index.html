@@ -33,11 +33,11 @@
                     <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p></a>
             </li>
             <li class="nav-item"
-                th:if="${!userOnPage.roleStatusEquals('ADMIN')}">
+                th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!userOnPage.roleStatusEquals('BLOCKED')}">
                 <a class="nav-link" th:href="@{${userLogin}+'/cards'}"><p th:text="#{user.cards}"></p></a>
             </li>
             <li class="nav-item"
-                th:if="${!userOnPage.roleStatusEquals('ADMIN')}">
+                th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!userOnPage.roleStatusEquals('BLOCKED')}">
                 <a class="nav-link" th:href="@{${userLogin}+'/history'}"><p th:text="#{history.button}"></p></a>
             </li>
             <li class="nav-item">
