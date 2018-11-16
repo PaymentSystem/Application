@@ -8,7 +8,9 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.impl.UserServiceImpl;
+import com.epam.lab.paymentsystem.utility.Reserved;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToDto;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,9 @@ class UserServiceTest {
   private UserDto userDto;
   @Mock
   private RoleRepository roleRepository;
+
+  @Mock
+  private Reserved reserved;
 
   @Mock
   private UserRepository userRepository;

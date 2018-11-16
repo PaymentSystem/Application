@@ -34,23 +34,23 @@
                             <td th:text="${card.label}"></td>
                             <td th:text="${card.isActive}"></td>
                             <td th:if="${userLogin == currentUserLogin}">
-                                <form th:action="@{${#httpServletRequest.requestURI}+
-                                '/card/'+${card.id}+'/blocking/true'}" method="post">
+                                <form th:action="@{'/'+${userLogin}+'/account/'+${card.account.id}
+                                +'/card/'+${card.id}+'/blocking/true'}" method="post">
                                     <button type="submit" class="btn btn-danger" th:disabled="${!card.isActive}">
                                         <p th:text="#{user.block}"/>
                                     </button>
                                 </form>
                             </td>
                             <td th:if="${userLogin == currentUserLogin}">
-                                <form th:action="@{${#httpServletRequest.requestURI}+
-                                '/card/'+${card.id}+'/blocking/false'}" method="post">
+                                <form th:action="@{'/'+${userLogin}+'/account/'+${card.account.id}
+                                +'/card/'+${card.id}+'/blocking/false'}" method="post">
                                     <button type="submit" class="btn btn-danger" th:disabled="${card.isActive}">
                                         <p th:text="#{user.unblock}"/>
                                     </button>
                                 </form>
                             </td>
                             <td>
-                                <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${card.id}}"
+                                <a th:href="@{${#httpServletRequest.requestURI}+'/card/'+${card.id}+'/history'}"
                                    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
                                     <p th:text="#{history.button}"/>
                                 </a>

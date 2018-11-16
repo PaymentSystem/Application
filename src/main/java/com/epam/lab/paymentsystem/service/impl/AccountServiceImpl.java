@@ -9,6 +9,7 @@ import com.epam.lab.paymentsystem.repository.AccountRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -140,5 +141,17 @@ public class AccountServiceImpl implements AccountService {
   public Page<Account> getAllAccountsOfUser(String login, Pageable pageable) {
     User user = userService.getUserByLogin(login);
     return accountRepository.getAllByUser(user, pageable);
+  }
+
+  /**
+   * Returns list of accounts by user's login.
+   *
+   * @param login user's login
+   * @return list of accounts
+   */
+  @Override
+  public List<Account> getAllAccountsOfUser(String login) {
+    User user = userService.getUserByLogin(login);
+    return accountRepository.getAllByUser(user);
   }
 }
