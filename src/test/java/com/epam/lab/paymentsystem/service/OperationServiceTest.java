@@ -1,78 +1,6 @@
 package com.epam.lab.paymentsystem.service;
-/*
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-import com.epam.lab.paymentsystem.dto.CardDto;
-import com.epam.lab.paymentsystem.entities.Account;
-import com.epam.lab.paymentsystem.entities.Card;
-import com.epam.lab.paymentsystem.entities.Operation;
-import com.epam.lab.paymentsystem.entities.User;
-import com.epam.lab.paymentsystem.entities.enums.Roles;
-import com.epam.lab.paymentsystem.repository.CardRepository;
-import com.epam.lab.paymentsystem.repository.OperationRepository;
-import com.epam.lab.paymentsystem.service.impl.CardServiceImpl;
-import com.epam.lab.paymentsystem.service.impl.OperationServiceImpl;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-@ExtendWith(MockitoExtension.class)
-public class OperationServiceTest {
-  private long accountId;
-  private long cardId;
-  private Operation operation;
-  private List<Card> cards;
-  private List<Operation> operations;
-  private String login;
-  private User user;
-
-  @Mock
-  private OperationRepository operationRepository;
-
-  @Mock
-  private UserService userService;
-
-  @Mock
-  private CardService cardService;
-
-  @InjectMocks
-  private OperationServiceImpl operationService;
-
-  @BeforeEach
-  public void startUp() {
-    MockitoAnnotations.initMocks(this);
-    accountId = 1;
-    cardId = 1;
-    operation = new Operation();
-    cards = new ArrayList<>();
-    operations = new ArrayList<>();
-    login = "test";
-    user = new User();
-    user.setLogin(login);
-  }
-
-  @Test
-  public void testGetAllOperationsReturnsOperationsList(){
-    when(userService.getCurrentUserLogin()).thenReturn(user.getLogin());
-    when(cardService.getAllCardsByLogin(user.getLogin())).thenReturn(cards);
-    when(operationRepository.getAllBySourceCardIsIn(cards)).thenReturn(operations);
-    assertEquals(operations, operationService.getAllOperations());
-  }
-}*/
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import com.epam.lab.paymentsystem.dto.OperationDto;
@@ -91,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 @ExtendWith(MockitoExtension.class)
 public class OperationServiceTest {
@@ -150,7 +77,7 @@ public class OperationServiceTest {
     accountDst = new Account(null, "accountDst", prevDstAmount, true);
     cardSrc = new Card(accountSrc, null, "cardSrc", true, numberSrcCard);
     cardSrc.setId(cardSrcId);
-    cardDst = new Card(accountDst, null, "cardDst", true, numberDstCard);
+    cardDst = new Card(accountDst, null, "cardDst", true, null);
     cardDst.setId(cardDstId);
     operation = new Operation(cardSrc, cardDst, transferAmount, null, numberSrcCard, numberDstCard);
 
@@ -167,7 +94,8 @@ public class OperationServiceTest {
     when(cardService.getAllCardsByLogin(user.getLogin())).thenReturn(cards);
     when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards))
         .thenReturn(operations);
-    assertEquals(operations, operationService.getAllOperations());
+    assertEquals(operations,
+        operationService.getAllOperations(), "Returns operations list");
   }
 
 //  @Test
@@ -199,11 +127,15 @@ public class OperationServiceTest {
     when(cardService.getAllCardsByAccountId(accountId)).thenReturn(cards);
     when(operationRepository.getAllBySourceCardIsInOrTargetCardIsIn(cards, cards))
         .thenReturn(operations);
-    assertEquals(operations, operationService.getAllOperationsByAccount(accountId));
+    assertEquals(operations,
+        operationService.getAllOperationsByAccount(accountId),
+        "Returns list of operations by account");
   }
 
   @Test
   public void testGetAllOperationsByCardReturnsOperationsList() {
-    assertEquals(operations, operationService.getAllOperationsByCard(cardId));
+    assertEquals(operations,
+        operationService.getAllOperationsByCard(cardId),
+        "Return list of operations by card");
   }
 }

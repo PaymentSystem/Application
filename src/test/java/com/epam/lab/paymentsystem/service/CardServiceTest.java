@@ -55,22 +55,26 @@ public class CardServiceTest {
     user = new User();
     user.setLogin(login);
 
+    account.setId(accountId);
     card = new Card(account, user, "test", true, cardNumber);
-    cardDto = new CardDto(0, accountId, login, "test", true, cardNumber);
+    cardDto = new CardDto(0,accountId, login, "test", true, cardNumber);
   }
 
   @Test
   public void testGetAllCardsByAccountIdReturnsCardsList() {
     when(accountService.getAccountById(accountId)).thenReturn(account);
     when(cardRepository.getAllByAccount(account)).thenReturn(cards);
-    assertEquals(cards, cardService.getAllCardsByAccountId(accountId));
+    assertEquals(cards, cardService.getAllCardsByAccountId(accountId),
+        "Returns list of cards get by account id");
   }
 
   @Test
   public void testGetAllCardsByUserLoginReturnsCardsList() {
     when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
     when(cardRepository.getAllByUser(user)).thenReturn(cards);
-    assertEquals(cards, cardService.getAllCardsByLogin(login));
+    assertEquals(cards,
+        cardService.getAllCardsByLogin(login),
+        "Returns list of cards get by user login");
   }
 
 //  @Test

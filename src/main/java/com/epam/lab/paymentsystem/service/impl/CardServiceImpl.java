@@ -10,6 +10,7 @@ import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,11 @@ public class CardServiceImpl implements CardService {
   public List<Card> getAllNonBlockedCardsOfCurrentUser() {
     String userLogin = userService.getCurrentUserLogin();
     User currentUser = userService.getUserByLogin(userLogin);
-    return cardRepository.getAllByIsActiveAndUser(true, currentUser);
+    List<Card> nonBlockedCards = cardRepository.getAllByIsActiveAndUser(true, currentUser);
+    List<Card> nonBlockedCardsAndAccounts = nonBlockedCards.stream()
+        .filter(card -> card.getAccount().getIsActive())
+        .collect(Collectors.toList());
+    return nonBlockedCardsAndAccounts;
   }
 
   /**

@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class OperationServiceImpl implements OperationService {
   private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
-  private static final LocalDateTime date = LocalDateTime.now().withNano(0);
 
   @Autowired
   private OperationRepository operationRepository;
@@ -49,13 +48,19 @@ public class OperationServiceImpl implements OperationService {
     Card srcCard = cardService.getCardByCardNumber(operationDto.getNumberSrcCard());
     Card dstCard = cardService.getCardByCardNumber(operationDto.getNumberDstCard());
 
+    if (srcCard == null) {
+      LOGGER.error("Source card do not exist");
+      throw new UnsupportedOperationException("Source card do not exist");
+    }
+    if (dstCard == null) {
+      LOGGER.error("Destination card do not exist");
+      throw new UnsupportedOperationException("Destination card do not exist");
+    }
+
     Account srcAccount = srcCard.getAccount();
     Account dstAccount = dstCard.getAccount();
 
-    if (dstAccount == null) {
-      LOGGER.error("This card not exist");
-      throw new UnsupportedOperationException("This card not exist");
-    }
+    LocalDateTime date = LocalDateTime.now().withNano(0);
     Operation operation = new Operation(srcCard, dstCard,
         operationDto.getAmount(), date,
         operationDto.getNumberSrcCard(), operationDto.getNumberDstCard());
