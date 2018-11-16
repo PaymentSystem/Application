@@ -4,6 +4,8 @@ import com.epam.lab.paymentsystem.entities.Operation;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Class for converter from LocalDateTime to String.
@@ -13,18 +15,13 @@ public class DateConverter {
   /**
    * Date converter.
    *
-   * @param operations list operations
-   * @return operation list.
+   * @param operations page operations
+   * @return operation page.
    */
-  public static List<Operation> dateConverter(List<Operation> operations) {
-    List<Operation> history = operations;
+  public static Page<Operation> dateConverter(Page<Operation> operations) {
+    Page<Operation> history = operations;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm yyyy-MM-dd");
-    List<String> dateString = history.stream()
-        .map((s) -> s.getDate().format(formatter))
-        .collect(Collectors.toList());
-    for (int i = 0; i < history.size(); i++) {
-      history.get(i).setDateString(dateString.get(i));
-    }
+    history.forEach((s) -> s.setDateString(s.getDate().format(formatter)));
     return history;
   }
 }

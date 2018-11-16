@@ -90,7 +90,7 @@ public abstract class AbstractControllerTest {
     );
     account = accountRepository.save(new Account(user, "acc", 1000, true));
     blockedAccount = accountRepository.save(new Account(user, "acc", 1000, false));
-    card = cardRepository.save(new Card(account, user, "card", true));
+    card = cardRepository.save(new Card(account, user, "card", true,"1111"));
   }
 
   public void clean() {

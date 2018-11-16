@@ -70,7 +70,7 @@ public class Card extends AbstractEntity {
 
     return card.user.equals(user)
         && card.account.equals(account)
-        && label.equals(label)
+        && card.label.equals(label)
         && card.isActive == isActive;
   }
 
@@ -112,44 +112,5 @@ public class Card extends AbstractEntity {
 
   public void setCardNumber(String cardNumber) {
     this.cardNumber = cardNumber;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Card)) {
-      return false;
-    }
-
-    Card card = (Card) o;
-
-    if (getIsActive() != card.getIsActive()) {
-      return false;
-    }
-    if (getAccount() != null ? !getAccount().equals(card.getAccount())
-        : card.getAccount() != null) {
-      return false;
-    }
-    if (getUser() != null ? !getUser().equals(card.getUser()) : card.getUser() != null) {
-      return false;
-    }
-    if (getLabel() != null ? !getLabel().equals(card.getLabel()) : card.getLabel() != null) {
-      return false;
-    }
-    return getCardNumber() != null ? getCardNumber().equals(card.getCardNumber())
-        : card.getCardNumber() == null;
-  }
-
-  @Override
-  public int hashCode() {
-    int result = getAccount() != null ? getAccount().hashCode() : 0;
-    result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-    result = 31 * result + (getLabel() != null ? getLabel().hashCode() : 0);
-    result = 31 * result + (getIsActive() ? 1 : 0);
-    result = 31 * result + (getCardNumber() != null ? getCardNumber().hashCode() : 0);
-    return result;
   }
 }

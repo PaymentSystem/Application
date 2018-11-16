@@ -100,7 +100,7 @@ public class OperationController {
           @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
           Model model) {
     Page<Operation> operations = operationService.getAllOperationsByAccount(accountId, pageable);
-    List<Operation> history = DateConverter.dateConverter(operations);
+    Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
@@ -119,7 +119,7 @@ public class OperationController {
           @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
           Model model) {
     Page<Operation> operations = operationService.getAllOperationsByCard(cardId, pageable);
-    List<Operation> history = DateConverter.dateConverter(operations);
+    Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
