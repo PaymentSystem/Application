@@ -5,37 +5,101 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/style/main.css">
+
     <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <script src="/js/scripts.js"></script>
+
     <title th:text="#{account.creation}"></title>
 </head>
 <body>
-<div class="btn-group">
-    <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
-    <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
-</div>
-<form id="registrationLayer" action="addAccount" method="post" th:object="${accountDto}">
-    <h1><p th:text="#{account.creation}"/></h1>
-    <p th:text="#{account.fillForm}"/>
-    <hr>
+<!--<div class="btn-group">-->
+<!--<a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>-->
+<!--<a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>-->
+<!--</div>-->
 
-    <table style="with: 50%">
-        <tr>
-            <td><label for="label"><b><p th:text="#{account.label}"/></b></label></td>
-            <td><input type="text" name="label" class="form-control input-lg"
-                       th:field="*{label}" id="label" required></td>
-        </tr>
-        <tr>
-            <td><label for="amount"><b><p th:text="#{account.amount}"/></b></label></td>
-            <td><input type="number" min="0" name="amount" class="form-control input-lg"
-                       th:field="*{amount}" id="amount" required>
-            </td>
-        </tr>
-    </table>
-    <hr>
-    <button type="submit" class="btn btn-success"><p th:text="#{account.create}"/></button>
-</form>
-<p th:text="${messageAccount}"></p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!--<a class="navbar-brand" href="#">Navbar</a>-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+            </li>
+            <li class="nav-item active">
+                <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+            </li>
+
+
+            <li class="nav-item">
+
+                <a class="nav-link" th:href="@{'/'+${userLogin}}">
+                    <p th:text="#{user.page}"></p></a>
+
+                <!--<a class="nav-link" onclick="history.back(-1);">-->
+                <!--<p th:text="#{user.page}"></p></a>-->
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="account-content">
+    <div class="create-account">
+        <h1 th:text="#{account.creation}"/></h1>
+        <p th:text="#{account.fillForm}"/>
+    </div>
+    <form class="create-account" action="addAccount" method="post" th:object="${accountDto}">
+        <div class="form-group">
+            <label for="label"><p th:text="#{account.label}"></p></label>
+            <input type="text" name="label" class="form-control" id="label" th:field="*{label}"
+                   th:placeholder="#{account.label}">
+        </div>
+        <div class="form-group">
+            <label for="amount"><p th:text="#{account.amount}"></p></label>
+            <input type="number" class="form-control" id="amount"
+                   th:field="*{amount}" th:placeholder="#{account.amount}">
+        </div>
+        <button type="submit" class="btn btn-outline-primary"><p th:text="#{account.create}"/></button>
+    </form>
+</div>
+
+<!--<form id="registrationLayer" action="addAccount" method="post" th:object="${accountDto}">-->
+<!--<h1><p th:text="#{account.creation}"/></h1>-->
+<!--<p th:text="#{account.fillForm}"/>-->
+<!--<hr>-->
+
+<!--<table style="with: 50%">-->
+<!--<tr>-->
+<!--<td><label for="label"><b><p th:text="#{account.label}"/></b></label></td>-->
+<!--<td><input type="text" name="label" class="form-control input-lg"-->
+<!--th:field="*{label}" id="label" required></td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td><label for="amount"><b><p th:text="#{account.amount}"/></b></label></td>-->
+<!--<td><input type="number" min="0" name="amount" class="form-control input-lg"-->
+<!--th:field="*{amount}" id="amount" required>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--<hr>-->
+<!--<button type="submit" class="btn btn-success"><p th:text="#{account.create}"/></button>-->
+<!--</form>-->
+<div class="exception-message">
+    <p th:text="${messageAccount}"></p>
+</div>
 </body>
 </html>

@@ -112,21 +112,30 @@
     width: 500px; /* Ширина элемента в пикселах */
     padding: 10px; /* Поля вокруг текста */
     margin: auto; /* Выравниваем по центру */
-    font-size: 50px;
+    font-size: 40px;
     color: red;
+}
+
+.status-message {
+    margin-left: 40%;
+    margin-right: 40%;
+}
+
+#logout {
+    margin-right: 1%;
 }
 
 /*##################end login page##################*/
 
 /*##################admin-user-profile##################*/
-.admin-user-data {
+.data {
     margin: 2% auto;
-    width: 100%;
+    /*width: 100%;*/
     max-width: 1920px;
 }
 
 .table {
- border: 1px solid #ddd;
+    border: 1px solid #ddd;
     width: 50%;
     margin: 0 auto;
     text-align: center;
@@ -173,4 +182,28 @@ color(цвет текста) в фокусе*/
     margin: auto; /* Выравниваем по центру */
     font-size: 30px;
     color: #000000;
+}
+
+.button-account {
+    margin: 1% 25% 0 60%;
+
+}
+
+.account-content {
+    margin: 3%;
+}
+
+.create-account {
+    margin-right: 30%;
+    margin-left: 30%;
+}
+
+.create-button {
+    margin-top: 3px;
+    margin-left: 66%;
+}
+
+.group-buttons {
+    margin-top: 3px;
+    margin-left: 58%;
 }
