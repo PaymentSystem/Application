@@ -6,6 +6,7 @@ import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,10 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that account.
    *
-   * @param login user's login
-   * @param id    id of account
+   * @param login    user's login
+   * @param id       id of account
    * @param pageable pageable
-   * @param model model
+   * @param model    model
    * @return account page view
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}")
@@ -72,16 +73,16 @@ public class CardController {
   /**
    * Returns account page with list of all cards linked to that user.
    *
-   * @param login user's login
+   * @param login    user's login
    * @param pageable pageable
-   * @param model model
+   * @param model    model
    * @return account page view
    */
   @GetMapping(value = "/{userLogin}/cards")
   public String getAccountPageUserCards(
-          @PathVariable(name = "userLogin") String login,
-          @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
-          Model model) {
+      @PathVariable(name = "userLogin") String login,
+      @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
+      Model model) {
 
     LOGGER.info("Access to account page");
     Page<Card> cards = cardService.getAllCardsByLogin(login, pageable);
@@ -130,8 +131,10 @@ public class CardController {
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/blocking/{isBlock}")
   public String blockCard(@PathVariable(name = "cardId") long id,
-                          @PathVariable(name = "isBlock") boolean isBlock) {
+                          @PathVariable(name = "isBlock") boolean isBlock,
+                          HttpServletRequest servletRequest) {
     cardService.setCardActive(id, !isBlock);
-    return REDIRECT_TO + "/{userLogin}/account/{accountId}";
+    String referer = servletRequest.getHeader("Referer");
+    return REDIRECT_TO + referer;
   }
 }

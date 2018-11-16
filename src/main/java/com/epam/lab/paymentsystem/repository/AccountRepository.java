@@ -2,6 +2,7 @@ package com.epam.lab.paymentsystem.repository;
 
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
    * @return list of account entities
    */
   Page<Account> getAllByUser(User user, Pageable pageable);
+
+  List<Account> getAllByUser(User user);
 
   /**
    * Returns account form database by passed id.

@@ -4,8 +4,8 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
-import com.epam.lab.paymentsystem.utility.DateConverter;
 import java.util.List;
+import com.epam.lab.paymentsystem.utility.DateConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +94,7 @@ public class OperationController {
    * @param model     Model
    * @return string
    */
-  @GetMapping(value = "/{userLogin}/history/{accountId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/history")
   public String getAccountHistory(
           @PathVariable(name = "accountId") long accountId,
           @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
@@ -113,7 +113,7 @@ public class OperationController {
    * @param model  Model
    * @return String
    */
-  @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
+  @GetMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/history")
   public String getCardHistory(
           @PathVariable(name = "cardId") long cardId,
           @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,

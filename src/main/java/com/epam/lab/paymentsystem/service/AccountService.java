@@ -2,6 +2,7 @@ package com.epam.lab.paymentsystem.service;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.entities.Account;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,6 +19,8 @@ public interface AccountService {
    * @return list of accounts
    */
   Page<Account> getAllAccountsOfUser(String login, Pageable pageable);
+
+  List<Account> getAllAccountsOfUser(String login);
 
   /**
    * Saves in the database account entity converted from accountDto.
