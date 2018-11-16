@@ -48,6 +48,7 @@ public class CardController {
       Model model) {
     LOGGER.info("Access to account page");
     List<Card> cards = cardService.getAllCardsByAccountId(id);
+    model.addAttribute("userLogin", login);
     model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
     model.addAttribute("cardList", cards);
     return ACCOUNT_PAGE;
