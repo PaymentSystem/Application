@@ -2,7 +2,8 @@ package com.epam.lab.paymentsystem.repository;
 
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -15,13 +16,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 0.0.1
  */
 public interface AccountRepository extends JpaRepository<Account, Long> {
+
   /**
    * Returns list of accounts from database which are linked to passed user.
    *
    * @param user user entity
+   * @param pageable pageable
    * @return list of account entities
    */
-  List<Account> getAllByUser(User user);
+  Page<Account> getAllByUser(User user, Pageable pageable);
 
   /**
    * Returns account form database by passed id.

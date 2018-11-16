@@ -16,7 +16,7 @@
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
 <h2 th:text="#{account.amount.view} + ${amountCard}"></h2>
-<div class="container" th:if="${!cardList.isEmpty()}">
+<div class="container" th:if="${!cardPage.isEmpty()}">
     <div class="card">
         <div class="card-block">
             <div class="table table-hover">
@@ -25,34 +25,63 @@
                     <tr>
                         <th><p th:text="#{card.numberCard}"></p></th>
                         <th><p th:text="#{account.label}"></p></th>
+                        <th><p th:text="#{card.isActive}"></p></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <th:block th:each="card : ${cardList}">
+                    <th:block th:each="card : ${cardPage.content}">
                         <tr>
                             <td th:text="${card.cardNumber}"></td>
                             <td th:text="${card.label}"></td>
+                            <td th:text="${card.isActive}"></td>
+                            <td th:if="${userLogin == currentUserLogin}">
+                                <form th:action="@{${#httpServletRequest.requestURI}+
+                                '/card/'+${card.id}+'/blocking/true'}" method="post">
+                                    <button type="submit" class="btn btn-danger" th:disabled="${!card.isActive}">
+                                        <p th:text="#{user.block}"/>
+                                    </button>
+                                </form>
+                            </td>
+                            <td th:if="${userLogin == currentUserLogin}">
+                                <form th:action="@{${#httpServletRequest.requestURI}+
+                                '/card/'+${card.id}+'/blocking/false'}" method="post">
+                                    <button type="submit" class="btn btn-danger" th:disabled="${card.isActive}">
+                                        <p th:text="#{user.unblock}"/>
+                                    </button>
+                                </form>
+                            </td>
                             <td>
                                 <a th:href="@{${#httpServletRequest.requestURI}+'/history/'+${card.id}}"
-                                   class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
-                                        th:text="#{history.button}"/></a>
+                                   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+                                    <p th:text="#{history.button}"/>
+                                </a>
                             </td>
                         </tr>
                     </th:block>
                     </tbody>
                 </table>
+                <nav aria-label="..." th:if="${cardPage.totalPages > 0}">
+                    <ul class="pagination">
+                        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, cardPage.totalPages)}">
+                            <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                               th:text=${pageNumber}
+                               th:class="${pageNumber==cardPage.number + 1} ? active">
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
-<div th:unless="${!cardList.isEmpty()}">
+<div th:unless="${!cardPage.isEmpty()}">
     <p th:text="#{card.empty}"></p>
 </div>
 <a th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{card.create}"></p>
 </a>
-<a th:href="@{'/operation'}"
+<a th:href="@{'/'+${userLogin}+'/operation'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{operation.button}"></p>
 </a>

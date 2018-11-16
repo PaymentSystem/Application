@@ -47,7 +47,7 @@
             </th>
         </tr>
     </table>
-    <div class="container" th:if="${accountList.isEmpty()==false}">
+    <div class="container" th:if="${accountPage.isEmpty()==false}">
         <div class="card">
             <div class="card-block">
                 <div class="table table-hover">
@@ -60,7 +60,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="account : ${accountList}">
+                        <th:block th:each="account : ${accountPage.content}">
                             <tr>
                                 <td th:text="${account.label}"></td>
                                 <td th:text="${account.amount}"></td>
@@ -70,7 +70,7 @@
                                 </td>-->
                                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
-                                    <form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"
+                                    <form th:action="@{${userLogin} + '/account/' + ${account.id} + '/block'}"
                                           method="post">
                                         <button type="submit" class="btn btn-danger" th:disabled="${!account.isActive}">
                                             <p th:text="#{user.block}"/>
@@ -99,11 +99,21 @@
                         </th:block>
                         </tbody>
                     </table>
+                    <nav aria-label="..." th:if="${accountPage.totalPages > 0}">
+                        <ul class="pagination">
+                            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
+                                <a th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
+                                   th:text=${pageNumber}
+                                   th:class="${pageNumber==accountPage.number + 1} ? active">
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
-    <div th:unless="${!accountList.isEmpty()}">
+    <div th:unless="${!accountPage.isEmpty()}">
         <h3 th:text="#{account.notFound}"></h3>
     </div>
     <a th:if="${currentUser.login==userLogin}"
@@ -129,25 +139,38 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <th:block th:each="user : ${users}">
+                        <th:block th:each="user : ${usersPage.content}">
                             <tr>
                                 <td th:text="${user.login}"></td>
                                 <td th:text="${user.name}"></td>
                                 <td th:text="${user.role.roleStatus}"></td>
-                                <!--<td>
-                                    <a th:href="@{${user.login}}">view</a>
-                                </td>-->
+                                <td>
+                                    <a th:href="@{${user.login}}" class="btn btn-primary btn-lg active"
+                                       role="button" aria-pressed="true"><p th:text="#{showCard.button}"/>
+                                    </a>
+                                </td>
                             </tr>
                         </th:block>
                         </tbody>
                     </table>
+                    <nav aria-label="..." th:if="${usersPage.totalPages > 0}">
+                        <ul class="pagination">
+                            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
+                                <a th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
+                                   th:text=${pageNumber}
+                                   th:class="${pageNumber==usersPage.number + 1} ? active">
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<a th:href="@{'/operation'}"
+<a th:href="@{${userLogin}+'/operation'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{operation.button}"></p>
+</a>
 </body>
 </html>

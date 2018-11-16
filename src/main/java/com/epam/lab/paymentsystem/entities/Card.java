@@ -46,6 +46,34 @@ public class Card extends AbstractEntity {
     this.cardNumber = cardNumber;
   }
 
+  @Override
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + user.hashCode();
+    result = 31 * result + account.hashCode();
+    result = 31 * result + label.hashCode();
+    result = 31 * result + Boolean.valueOf(isActive).hashCode();
+
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof Card)) {
+      return false;
+    }
+
+    Card card = (Card) obj;
+
+    return card.user.equals(user)
+        && card.account.equals(account)
+        && label.equals(label)
+        && card.isActive == isActive;
+  }
+
   public Account getAccount() {
     return account;
   }

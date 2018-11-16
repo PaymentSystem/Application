@@ -4,6 +4,7 @@ import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.exception.CardArgumentException;
 import com.epam.lab.paymentsystem.repository.CardRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,19 +31,23 @@ public class CardServiceImpl implements CardService {
 
   @Autowired
   private CardRepository cardRepository;
+
   @Autowired
   private UserService userService;
+
   @Autowired
   private AccountService accountService;
 
   /**
-   * Returns list of all cards.
+   * Returns page of cards by given account id.
    *
-   * @return list of cards
+   * @param id account id
+   * @param pageable pageable
+   * @return page of cards
    */
-  @Override
-  public List<Card> getAllCards() {
-    return cardRepository.findAll();
+  public Page<Card> getAllCardsByAccountId(long id, Pageable pageable) {
+    Account account = accountService.getAccountById(id);
+    return cardRepository.getAllByAccount(account, pageable);
   }
 
   /**
@@ -65,6 +72,19 @@ public class CardServiceImpl implements CardService {
   public List<Card> getAllCardsByLogin(String login) {
     User user = userService.getUserByLogin(login);
     return cardRepository.getAllByUser(user);
+  }
+
+  /**
+   * Returns list of cards by given login.
+   *
+   * @param login user's login
+   * @param pageable pageable
+   * @return page of cards
+   */
+  @Override
+  public Page<Card> getAllCardsByLogin(String login, Pageable pageable) {
+    User user = userService.getUserByLogin(login);
+    return cardRepository.getAllByUser(user, pageable);
   }
 
   /**
@@ -93,16 +113,16 @@ public class CardServiceImpl implements CardService {
    *
    * @param card card dto passed by controller
    * @return card entity
-   * @throws UnsupportedOperationException if such user doesn't exists
+   * @throws CardArgumentException if such user doesn't exists
    */
   @Override
-  public Card createCard(CardDto card) throws UnsupportedOperationException {
+  public Card createCard(CardDto card) throws CardArgumentException {
     LOGGER.info("Creating new card");
     Account account = accountService.getAccountById(card.getAccountId());
     User user = userService.getUserByLogin(card.getUserLogin());
     if (user == null) {
       LOGGER.error("Such user doesn't exists: " + card.getUserLogin());
-      throw new UnsupportedOperationException("No such user");
+      throw new CardArgumentException("No such user");
     }
     String cardNumber = generateCardNumber();
     Card cardToCreate = new Card(account, user, card.getLabel(), true, cardNumber);
@@ -151,4 +171,17 @@ public class CardServiceImpl implements CardService {
     return number;
   }
 
+  /**
+   * Setting card active or inactive by id.
+   *
+   * @param id card
+   * @param isActive boolean
+   * @return card entity
+   */
+  @Override
+  public Card setCardActive(long id, boolean isActive) {
+    Card card = getCardById(id);
+    card.setIsActive(isActive);
+    return cardRepository.save(card);
+  }
 }

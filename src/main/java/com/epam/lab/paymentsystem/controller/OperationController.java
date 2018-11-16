@@ -9,6 +9,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +47,7 @@ public class OperationController {
    * @param model model
    * @return String
    */
-  @GetMapping(value = "/operation")
+  @GetMapping(value = "/{userLogin}/operation")
   public String getOperationPage(Model model) {
     model.addAttribute("srcNumberCardList", cardService.getAllNonBlockedCardsOfCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
@@ -57,18 +61,11 @@ public class OperationController {
    * @param model        Model.
    * @return String
    */
-  @PostMapping(value = "/operation")
+  @PostMapping(value = "/{userLogin}/operation")
   public String paymentOperation(
       @ModelAttribute(value = "operationDto") OperationDto operationDto,
       Model model) {
-
-    try {
-      operationService.makePayment(operationDto);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("message", e.getMessage());
-      LOGGER.error("Exception payment operation", e);
-      return OPERATION_PAGE;
-    }
+    operationService.makePayment(operationDto);
     LOGGER.info("Payment operation is successful");
     model.addAttribute("message", "Money transfer successful!");
     return OPERATION_PAGE;
@@ -80,11 +77,12 @@ public class OperationController {
    * @param model Model
    * @return String
    */
-  @GetMapping(value = "/history")
-  public String getUserHistory(Model model) {
-    List<Operation> operations = operationService.getAllOperations();
-    List<Operation> history = DateConverter.dateConverter(operations);
-    model.addAttribute("historyOperation", history);
+  @GetMapping(value = "/{userLogin}/history")
+  public String getUserHistory(
+          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+          Model model) {
+    Page<Operation> history = operationService.getAllOperations(pageable);
+    model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
@@ -97,10 +95,13 @@ public class OperationController {
    * @return string
    */
   @GetMapping(value = "/{userLogin}/history/{accountId}")
-  public String getAccountHistory(@PathVariable(name = "accountId") long accountId, Model model) {
-    List<Operation> operations = operationService.getAllOperationsByAccount(accountId);
+  public String getAccountHistory(
+          @PathVariable(name = "accountId") long accountId,
+          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+          Model model) {
+    Page<Operation> operations = operationService.getAllOperationsByAccount(accountId, pageable);
     List<Operation> history = DateConverter.dateConverter(operations);
-    model.addAttribute("historyOperation", history);
+    model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
@@ -113,10 +114,13 @@ public class OperationController {
    * @return String
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
-  public String getCardHistory(@PathVariable(name = "cardId") long cardId, Model model) {
-    List<Operation> operations = operationService.getAllOperationsByCard(cardId);
+  public String getCardHistory(
+          @PathVariable(name = "cardId") long cardId,
+          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+          Model model) {
+    Page<Operation> operations = operationService.getAllOperationsByCard(cardId, pageable);
     List<Operation> history = DateConverter.dateConverter(operations);
-    model.addAttribute("historyOperation", history);
+    model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
