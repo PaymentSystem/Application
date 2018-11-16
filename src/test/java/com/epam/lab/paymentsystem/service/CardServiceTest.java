@@ -1,5 +1,9 @@
 package com.epam.lab.paymentsystem.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
 import com.epam.lab.paymentsystem.dto.CardDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
@@ -21,10 +25,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class CardServiceTest {
   private long accountId;
@@ -36,6 +36,7 @@ public class CardServiceTest {
   private User user;
   private Card card;
   private CardDto cardDto;
+  private String cardNumber;
 
   @Mock
   private CardRepository cardRepository;
@@ -59,12 +60,14 @@ public class CardServiceTest {
     login = "test";
     account = new Account();
     cards = new ArrayList<>();
+    cardNumber = "1234";
 
     user = new User();
     user.setLogin(login);
 
-    card = new Card(account, user, "test", true);
-    cardDto = new CardDto(0, accountId, login, "test", true);
+    account.setId(accountId);
+    card = new Card(account, user, "test", true, cardNumber);
+    cardDto = new CardDto(0,accountId, login, "test", true, cardNumber);
   }
 
   @Test
@@ -81,7 +84,10 @@ public class CardServiceTest {
   public void testGetAllCardsByUserLoginReturnsCardsList() {
     when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
     when(cardRepository.getAllByUser(user)).thenReturn(cards);
-    assertEquals(cards, cardService.getAllCardsByLogin(login));
+    assertEquals(
+        cards,
+        cardService.getAllCardsByLogin(login),
+        "Returns list of cards get by user login");
   }
 
   @Test
@@ -89,7 +95,10 @@ public class CardServiceTest {
     when(accountService.getAccountById(accountId)).thenReturn(account);
     when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
     when(cardRepository.save(card)).thenReturn(card);
-    assertEquals(card, cardService.createCard(cardDto));
+    assertEquals(
+        card,
+        cardService.createCard(cardDto),
+        "Returns card that should be equal to created card");
   }
 
   @Test

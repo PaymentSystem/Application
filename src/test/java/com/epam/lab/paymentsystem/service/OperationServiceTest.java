@@ -3,6 +3,7 @@ package com.epam.lab.paymentsystem.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +16,6 @@ import com.epam.lab.paymentsystem.repository.OperationRepository;
 import com.epam.lab.paymentsystem.service.impl.OperationServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +48,8 @@ public class OperationServiceTest {
   private long prevSrcAmount;
   private long prevDstAmount;
   private long transferAmount;
+  private String numberSrcCard;
+  private String numberDstCard;
   private Pageable pageable;
 
   @Mock
@@ -76,6 +78,8 @@ public class OperationServiceTest {
     cardSrcId = 1;
     cardDstId = 2;
     cards = new ArrayList<>();
+    numberDstCard = "2222";
+    numberSrcCard = "1111";
 
     prevSrcAmount = 500;
     prevDstAmount = 100;
@@ -83,13 +87,13 @@ public class OperationServiceTest {
 
     accountSrc = new Account(null, "accountSrc", prevSrcAmount, true);
     accountDst = new Account(null, "accountDst", prevDstAmount, true);
-    cardSrc = new Card(accountSrc, null, "cardSrc", true);
+    cardSrc = new Card(accountSrc, null, "cardSrc", true, numberSrcCard);
     cardSrc.setId(cardSrcId);
-    cardDst = new Card(accountDst, null, "cardDst", true);
+    cardDst = new Card(accountDst, null, "cardDst", true, numberDstCard);
     cardDst.setId(cardDstId);
-    operation = new Operation(cardSrc, cardDst, transferAmount, null);
+    operation = new Operation(cardSrc, cardDst, transferAmount, null, numberSrcCard, numberDstCard);
 
-    operationDto = new OperationDto(cardSrcId, cardDstId, transferAmount);
+    operationDto = new OperationDto(cardSrcId, cardDstId, transferAmount, numberSrcCard, numberDstCard);
 
     login = "test";
     user = new User();
@@ -112,10 +116,10 @@ public class OperationServiceTest {
   public void testMakePayment() {
     Answer<Card> cardAnswer =
         invocationOnMock -> {
-          Long idCard = (Long) invocationOnMock.getArgument(0);
-          return idCard.equals(cardSrcId) ? cardSrc : cardDst;
+          String cardNumber = (String) invocationOnMock.getArgument(0);
+          return cardNumber.equals(numberSrcCard) ? cardSrc : cardDst;
         };
-    when(cardService.getCardById(anyLong())).thenAnswer(cardAnswer);
+    when(cardService.getCardByCardNumber(anyString())).thenAnswer(cardAnswer);
 
     Answer<Void> makeTransactionAnswer =
         invocation -> {

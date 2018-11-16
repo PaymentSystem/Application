@@ -4,7 +4,7 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
-import java.util.List;
+import com.epam.lab.paymentsystem.utility.DateConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/operation")
   public String getOperationPage(Model model) {
-    model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
+    model.addAttribute("srcNumberCardList", cardService.getAllNonBlockedCardsOfCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
     return OPERATION_PAGE;
   }
@@ -66,7 +66,7 @@ public class OperationController {
       Model model) {
     operationService.makePayment(operationDto);
     LOGGER.info("Payment operation is successful");
-    model.addAttribute("message", "Money transfer made successful!");
+    model.addAttribute("message", "Money transfer successful!");
     return OPERATION_PAGE;
   }
 
@@ -78,8 +78,8 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/history")
   public String getUserHistory(
-          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
-          Model model) {
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
     Page<Operation> history = operationService.getAllOperations(pageable);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
@@ -87,7 +87,7 @@ public class OperationController {
   }
 
   /**
-   * Get accaunt history.
+   * Get account history.
    *
    * @param accountId long
    * @param model     Model
@@ -95,10 +95,11 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/history")
   public String getAccountHistory(
-          @PathVariable(name = "accountId") long accountId,
-          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
-          Model model) {
-    Page<Operation> history = operationService.getAllOperationsByAccount(accountId, pageable);
+      @PathVariable(name = "accountId") long accountId,
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
+    Page<Operation> operations = operationService.getAllOperationsByAccount(accountId, pageable);
+    Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
@@ -113,10 +114,11 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/history")
   public String getCardHistory(
-          @PathVariable(name = "cardId") long cardId,
-          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
-          Model model) {
-    Page<Operation> history = operationService.getAllOperationsByCard(cardId, pageable);
+      @PathVariable(name = "cardId") long cardId,
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
+    Page<Operation> operations = operationService.getAllOperationsByCard(cardId, pageable);
+    Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;

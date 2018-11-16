@@ -8,6 +8,7 @@ import com.epam.lab.paymentsystem.exception.AccountArgumentException;
 import com.epam.lab.paymentsystem.exception.CardArgumentException;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.exception.MoneyTransferException;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,8 +64,13 @@ public class GlobalControllerAdvice {
    * @return model and view
    */
   @ExceptionHandler(AccountArgumentException.class)
-  public ModelAndView accountArgumentExceptionHandle(Exception exception) {
-    ModelAndView mav = prepareModel("addAccount", exception);
+  public ModelAndView accountArgumentExceptionHandle(Exception exception, HttpServletRequest req) {
+    ModelAndView mav = null;
+    if (req.getRequestURI().endsWith("/addAmount")) {
+      mav = prepareModel("addAmount", exception);
+    } else {
+      mav = prepareModel("addAccount", exception);
+    }
     mav.addObject("accountDto", new AccountDto());
     return mav;
   }

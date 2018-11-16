@@ -1,7 +1,9 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
+import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * Controller for Card, processes the specified URL and redirects the request to the specified page.
+ * Controller for Card,
+ * processes the specified URL and redirects
+ * the request to the specified page.
  *
  * @author unascribed
  * @since 0.0.1
@@ -36,6 +40,9 @@ public class CardController {
 
   @Autowired
   private CardService cardService;
+
+  @Autowired
+  private AccountService accountService;
 
   /**
    * Returns account page with list of all cards linked to that account.
@@ -57,6 +64,9 @@ public class CardController {
     Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);
     model.addAttribute("cardPage", cards);
     model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
+    Account account = accountService.getAccountById(id);
+    long amountCard = account.getAmount();
+    model.addAttribute("amountCard", amountCard);
     return ACCOUNT_PAGE;
   }
 
@@ -115,8 +125,9 @@ public class CardController {
   /**
    * Blocking or activating card.
    *
-   * @param id      card id
-   * @param isBlock boolean
+   * @param id             card id
+   * @param isBlock        boolean
+   * @param servletRequest servlet request
    * @return redirect to card's account page
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/blocking/{isBlock}")

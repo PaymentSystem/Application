@@ -15,6 +15,7 @@
     <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
     <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
 </div>
+<h2 th:if="${#httpServletRequest.requestURI.contains('account')}" th:text="#{account.amount.view} + ${amountCard}"></h2>
 <div class="container" th:if="${!cardPage.isEmpty()}">
     <div class="card">
         <div class="card-block">
@@ -22,7 +23,7 @@
                 <table>
                     <thead>
                     <tr>
-                        <th><p th:text="#{id}"></p></th>
+                        <th><p th:text="#{card.numberCard}"></p></th>
                         <th><p th:text="#{account.label}"></p></th>
                         <th><p th:text="#{card.isActive}"></p></th>
                     </tr>
@@ -30,7 +31,7 @@
                     <tbody>
                     <th:block th:each="card : ${cardPage.content}">
                         <tr>
-                            <td th:text="${card.id}"></td>
+                            <td th:text="${card.cardNumber}"></td>
                             <td th:text="${card.label}"></td>
                             <td th:text="${card.isActive}"></td>
                             <td th:if="${userLogin == currentUserLogin}">
@@ -50,7 +51,7 @@
                                 </form>
                             </td>
                             <td>
-                                <a th:href="@{${#httpServletRequest.requestURI}+'/card/'+${card.id}+'/history'}"
+                                <a th:href="@{'/'+${userLogin}+'/account/'+${card.account.id}+'/card/'+${card.id}+'/history'}"
                                    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
                                     <p th:text="#{history.button}"/>
                                 </a>
@@ -76,13 +77,17 @@
 <div th:unless="${!cardPage.isEmpty()}">
     <p th:text="#{card.empty}"></p>
 </div>
-<a th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"
+<a th:if="${#httpServletRequest.requestURI.contains('account')}" th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{card.create}"></p>
 </a>
 <a th:href="@{'/'+${userLogin}+'/operation'}"
    class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
     <p th:text="#{operation.button}"></p>
+</a>
+<a th:if="${#httpServletRequest.requestURI.contains('account')}" th:href="@{${#httpServletRequest.requestURI}+'/addAmount'}"
+   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+    <p th:text="#{account.addAmount}"></p>
 </a>
 </body>
 </html>

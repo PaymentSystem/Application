@@ -111,11 +111,23 @@ public class AccountServiceImpl implements AccountService {
     accountRepository.save(target);
   }
 
+  /**
+   * Returns account by given id.
+   *
+   * @param id id
+   * @return account entity
+   */
   @Override
   public Account getAccountById(long id) {
     return accountRepository.getAccountById(id);
   }
 
+  /**
+   * Block account by given id.
+   *
+   * @param id long
+   * @return account entity
+   */
   @Override
   public Account blockAccountById(long id) {
     Account account = accountRepository.getAccountById(id);
@@ -123,10 +135,38 @@ public class AccountServiceImpl implements AccountService {
     return accountRepository.save(account);
   }
 
+  /**
+   * Unblock account by given id.
+   *
+   * @param id long
+   * @return account entity
+   */
   @Override
   public Account unblockAccountById(long id) {
     Account account = accountRepository.getAccountById(id);
     account.setIsActive(true);
+    return accountRepository.save(account);
+  }
+
+  /**
+   * Add amount in account.
+   *
+   * @param accountId long
+   * @param amount    long
+   * @return account entity
+   */
+  @Override
+  public Account addAmount(long accountId, long amount)
+      throws AccountArgumentException {
+
+    Account account = accountRepository.getAccountById(accountId);
+    if (amount <= 0) {
+      LOGGER.error("Amount should be positive");
+      throw new AccountArgumentException("Amount should be positive");
+    }
+    account.setAmount(account.getAmount() + amount);
+
+    LOGGER.info("Account's amount has been updated");
     return accountRepository.save(account);
   }
 

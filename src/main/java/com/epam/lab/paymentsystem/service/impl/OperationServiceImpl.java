@@ -48,13 +48,25 @@ public class OperationServiceImpl implements OperationService {
   @Override
   @Transactional(rollbackOn = {Exception.class})
   public void makePayment(OperationDto operationDto) {
-    Card srcCard = cardService.getCardById(operationDto.getCardSrcId());
-    Card dstCard = cardService.getCardById(operationDto.getCardDstId());
+    Card srcCard = cardService.getCardByCardNumber(operationDto.getNumberSrcCard());
+    Card dstCard = cardService.getCardByCardNumber(operationDto.getNumberDstCard());
+
+    if (srcCard == null) {
+      LOGGER.error("Source card do not exist");
+      throw new UnsupportedOperationException("Source card do not exist");
+    }
+    if (dstCard == null) {
+      LOGGER.error("Destination card do not exist");
+      throw new UnsupportedOperationException("Destination card do not exist");
+    }
+
     Account srcAccount = srcCard.getAccount();
     Account dstAccount = dstCard.getAccount();
 
+    LocalDateTime date = LocalDateTime.now().withNano(0);
     Operation operation = new Operation(srcCard, dstCard,
-            operationDto.getAmount(), LocalDateTime.now().withNano(0));
+        operationDto.getAmount(), date,
+        operationDto.getNumberSrcCard(), operationDto.getNumberDstCard());
 
     accountService.makeTransaction(srcAccount, dstAccount, operation.getAmount());
     LOGGER.info("Payment operation is successful");

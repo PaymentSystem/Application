@@ -5,6 +5,7 @@ import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,18 +55,18 @@ public class UserController {
   /**
    * Returns user page with list of all accounts linked to that user.
    *
-   * @param login user's login
-   * @param pageableUser pageable
+   * @param login         user's login
+   * @param pageableUser  pageable
    * @param pageableAdmin pageable
-   * @param model model
+   * @param model         model
    * @return user page view
    */
   @GetMapping(value = "/{userLogin}")
   public String getUserPage(
-          @PathVariable(name = "userLogin") String login,
-          @Qualifier("user")  @PageableDefault(size = 5, sort = {"label"}) Pageable pageableUser,
-          @Qualifier("admin") @PageableDefault(size = 5, sort = {"login"}) Pageable pageableAdmin,
-          Model model) {
+      @PathVariable(name = "userLogin") String login,
+      @Qualifier("user") @PageableDefault(size = 5, sort = {"label"}) Pageable pageableUser,
+      @Qualifier("admin") @PageableDefault(size = 5, sort = {"login"}) Pageable pageableAdmin,
+      Model model) {
 
     String currentUserLogin = userService.getCurrentUserLogin();
     User currentUser = userService.getUserByLogin(currentUserLogin);
@@ -98,26 +99,32 @@ public class UserController {
   /**
    * Changes user's role status to 'BLOCKED'.
    *
-   * @param userLogin user's login
+   * @param userLogin      user's login
+   * @param servletRequest servlet request
    * @return redirect to user page
    */
   @PostMapping(value = "/{userLogin}/block")
-  public String blockUser(@PathVariable(name = "userLogin") String userLogin) {
+  public String blockUser(@PathVariable(name = "userLogin") String userLogin,
+                          HttpServletRequest servletRequest) {
     userService.blockUser(userService.getUserByLogin(userLogin));
     LOGGER.info("User " + userLogin + " has been blocked");
-    return REDIRECT_TO + "/{userLogin}";
+    String referer = servletRequest.getHeader("Referer");
+    return REDIRECT_TO + referer;
   }
 
   /**
    * Changes user's role status to 'USER'.
    *
-   * @param userLogin user's login
+   * @param userLogin      user's login
+   * @param servletRequest servlet request
    * @return redirect to user page
    */
   @PostMapping(value = "/{userLogin}/unblock")
-  public String unblockUser(@PathVariable(name = "userLogin") String userLogin) {
+  public String unblockUser(@PathVariable(name = "userLogin") String userLogin,
+                            HttpServletRequest servletRequest) {
     userService.unblockUser(userService.getUserByLogin(userLogin));
     LOGGER.info("User " + userLogin + " has been unblocked");
-    return REDIRECT_TO + "/{userLogin}";
+    String referer = servletRequest.getHeader("Referer");
+    return REDIRECT_TO + referer;
   }
 }

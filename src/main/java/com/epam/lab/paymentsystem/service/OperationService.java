@@ -44,5 +44,6 @@ public interface OperationService {
    * @param operationDto operation dto.
    */
   void makePayment(OperationDto operationDto);
+
 }
 
