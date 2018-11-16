@@ -4,7 +4,6 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
-import java.util.List;
 import com.epam.lab.paymentsystem.utility.DateConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,8 +78,8 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/history")
   public String getUserHistory(
-          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
-          Model model) {
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
     Page<Operation> history = operationService.getAllOperations(pageable);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
@@ -96,9 +95,9 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/history")
   public String getAccountHistory(
-          @PathVariable(name = "accountId") long accountId,
-          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
-          Model model) {
+      @PathVariable(name = "accountId") long accountId,
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
     Page<Operation> operations = operationService.getAllOperationsByAccount(accountId, pageable);
     Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);
@@ -115,9 +114,9 @@ public class OperationController {
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/history")
   public String getCardHistory(
-          @PathVariable(name = "cardId") long cardId,
-          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
-          Model model) {
+      @PathVariable(name = "cardId") long cardId,
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
     Page<Operation> operations = operationService.getAllOperationsByCard(cardId, pageable);
     Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);

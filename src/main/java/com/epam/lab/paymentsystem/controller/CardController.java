@@ -125,8 +125,9 @@ public class CardController {
   /**
    * Blocking or activating card.
    *
-   * @param id      card id
-   * @param isBlock boolean
+   * @param id             card id
+   * @param isBlock        boolean
+   * @param servletRequest servlet request
    * @return redirect to card's account page
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/blocking/{isBlock}")

@@ -3,6 +3,7 @@ package com.epam.lab.paymentsystem.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
@@ -88,7 +89,7 @@ public class OperationServiceTest {
     accountDst = new Account(null, "accountDst", prevDstAmount, true);
     cardSrc = new Card(accountSrc, null, "cardSrc", true, numberSrcCard);
     cardSrc.setId(cardSrcId);
-    cardDst = new Card(accountDst, null, "cardDst", true, null);
+    cardDst = new Card(accountDst, null, "cardDst", true, numberDstCard);
     cardDst.setId(cardDstId);
     operation = new Operation(cardSrc, cardDst, transferAmount, null, numberSrcCard, numberDstCard);
 
@@ -115,10 +116,10 @@ public class OperationServiceTest {
   public void testMakePayment() {
     Answer<Card> cardAnswer =
         invocationOnMock -> {
-          Long idCard = (Long) invocationOnMock.getArgument(0);
-          return idCard.equals(cardSrcId) ? cardSrc : cardDst;
+          String cardNumber = (String) invocationOnMock.getArgument(0);
+          return cardNumber.equals(numberSrcCard) ? cardSrc : cardDst;
         };
-    when(cardService.getCardById(anyLong())).thenAnswer(cardAnswer);
+    when(cardService.getCardByCardNumber(anyString())).thenAnswer(cardAnswer);
 
     Answer<Void> makeTransactionAnswer =
         invocation -> {

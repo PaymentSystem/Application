@@ -2,6 +2,7 @@ package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.AccountDto;
 import com.epam.lab.paymentsystem.service.AccountService;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,34 @@ public class AccountController {
   @Autowired
   private AccountService accountService;
 
+  /**
+   * Blocks current logged user's account by ID.
+   *
+   * @param id             account id
+   * @param servletRequest servlet request
+   * @return redirect to previous page
+   */
   @PostMapping(value = "/{userLogin}/account/{accountId}/block")
-  public String blockAccount(@PathVariable(name = "accountId") long id) {
+  public String blockAccount(@PathVariable(name = "accountId") long id,
+                             HttpServletRequest servletRequest) {
     accountService.blockAccountById(id);
-    return REDIRECT_TO + "/{userLogin}";
+    String referer = servletRequest.getHeader("Referer");
+    return REDIRECT_TO + referer;
   }
 
+  /**
+   * Unblocks current logged user's account by ID.
+   *
+   * @param id             account id
+   * @param servletRequest servlet request
+   * @return redirect to previous page
+   */
   @PostMapping(value = "/{userLogin}/account/{accountId}/unblock")
-  public String unblockAccount(@PathVariable(name = "accountId") long id) {
+  public String unblockAccount(@PathVariable(name = "accountId") long id,
+                               HttpServletRequest servletRequest) {
     accountService.unblockAccountById(id);
-    return REDIRECT_TO + "/{userLogin}";
+    String referer = servletRequest.getHeader("Referer");
+    return REDIRECT_TO + referer;
   }
 
   /**
