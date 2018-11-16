@@ -53,7 +53,10 @@ public interface CardService {
    */
   List<Card> getAllCardsByCurrentUser();
 
-
+  /**
+   * Returns list all non blocked cards of current user.
+   * @return list of cards
+   */
   List<Card> getAllNonBlockedCardsOfCurrentUser();
 
   /**

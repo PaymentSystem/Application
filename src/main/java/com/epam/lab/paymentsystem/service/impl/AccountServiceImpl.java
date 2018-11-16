@@ -157,12 +157,12 @@ public class AccountServiceImpl implements AccountService {
    */
   @Override
   public Account addAmount(long accountId, long amount)
-      throws UnsupportedOperationException {
+      throws AccountArgumentException {
 
     Account account = accountRepository.getAccountById(accountId);
     if (amount <= 0) {
       LOGGER.error("Amount should be positive");
-      throw new UnsupportedOperationException("Amount should be positive");
+      throw new AccountArgumentException("Amount should be positive");
     }
     account.setAmount(account.getAmount() + amount);
 

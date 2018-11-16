@@ -106,20 +106,12 @@ public class AccountController {
    *
    * @param accountId long
    * @param amount    long
-   * @param model     Model
    * @return String
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/addAmount")
   public String addAmount(@PathVariable(name = "accountId") long accountId,
-                          @RequestParam(name = "amount") long amount,
-                          Model model) {
-    try {
-      LOGGER.info("Add money success");
-      accountService.addAmount(accountId, amount);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("message", e.getMessage());
-      return ADD_AMOUNT_PAGE;
-    }
+                          @RequestParam(name = "amount") long amount) {
+    accountService.addAmount(accountId, amount);
     return REDIRECT_TO + "/{userLogin}/account/{accountId}";
   }
 }

@@ -25,10 +25,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
 public class CardServiceTest {
   private long accountId;
@@ -88,7 +84,8 @@ public class CardServiceTest {
   public void testGetAllCardsByUserLoginReturnsCardsList() {
     when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
     when(cardRepository.getAllByUser(user)).thenReturn(cards);
-    assertEquals(cards,
+    assertEquals(
+        cards,
         cardService.getAllCardsByLogin(login),
         "Returns list of cards get by user login");
   }
@@ -98,7 +95,10 @@ public class CardServiceTest {
     when(accountService.getAccountById(accountId)).thenReturn(account);
     when(userService.getUserByLogin(user.getLogin())).thenReturn(user);
     when(cardRepository.save(card)).thenReturn(card);
-    assertEquals(card, cardService.createCard(cardDto));
+    assertEquals(
+        card,
+        cardService.createCard(cardDto),
+        "Returns card that should be equal to created card");
   }
 
   @Test

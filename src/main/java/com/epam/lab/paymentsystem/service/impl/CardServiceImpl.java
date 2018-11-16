@@ -97,6 +97,10 @@ public class CardServiceImpl implements CardService {
     return getAllCardsByLogin(userService.getCurrentUserLogin());
   }
 
+  /**
+   * Returns all non blocked cards of current user.
+   * @return list of cards
+   */
   @Override
   public List<Card> getAllNonBlockedCardsOfCurrentUser() {
     String userLogin = userService.getCurrentUserLogin();
