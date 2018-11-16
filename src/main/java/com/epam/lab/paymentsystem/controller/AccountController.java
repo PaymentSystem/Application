@@ -53,8 +53,9 @@ public class AccountController {
    * @return HTML view
    */
   @GetMapping(value = "/{userLogin}/addAccount")
-  public String getAddAccountPage(Model model) {
+  public String getAddAccountPage(Model model, @PathVariable(name = "userLogin") String login) {
     LOGGER.info("Access to account creation page");
+    model.addAttribute("userLogin", login);
     model.addAttribute("accountDto", new AccountDto());
     return ADD_ACCOUNT_PAGE;
   }

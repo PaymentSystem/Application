@@ -34,6 +34,13 @@
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:href="@{'/'+${userLogin}}">
+                    <p th:text="#{user.page}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>
         </ul>
@@ -44,7 +51,6 @@
 <div class="create-account">
     <h1><p th:text="#{card.creation}"/></h1>
     <p th:text="#{card.fillForm}"/>
-    <hr>
 </div>
 <form class="create-account" action="addCard" method="post" th:object="${cardDto}">
     <div class="form-group">

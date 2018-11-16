@@ -34,6 +34,8 @@ public class IndexController {
   public String getIndexPage(Model model) {
     LOGGER.info("Return index page");
     String login = userService.getCurrentUserLogin();
+    User currentUser = userService.getUserByLogin(login);
+    model.addAttribute("currentUser", currentUser);
     model.addAttribute("userLogin", login);
     User userOnPage = userService.getUserByLogin(login);
     model.addAttribute("userOnPage", userOnPage);

@@ -46,7 +46,7 @@ public class UserController {
   @GetMapping(value = "/registration")
   public String getRegistrationPage(Model model) {
     model.addAttribute("userDto", new UserDto());
-    return REGISTRATION_PAGE;
+    return LOGIN_PAGE;
   }
 
   /**

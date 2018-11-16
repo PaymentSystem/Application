@@ -34,6 +34,21 @@
             <li class="nav-item active">
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
+
+
+            <li class="nav-item">
+
+                <a class="nav-link" th:href="@{'/'+${userLogin}}">
+                    <p th:text="#{user.page}"></p></a>
+
+                <!--<a class="nav-link" onclick="history.back(-1);">-->
+                <!--<p th:text="#{user.page}"></p></a>-->
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>

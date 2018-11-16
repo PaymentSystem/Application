@@ -42,8 +42,9 @@ public class OperationController {
    * @param model model
    * @return String
    */
-  @GetMapping(value = "/operation")
-  public String getOperationPage(Model model) {
+  @GetMapping(value = "/{userLogin}/account/{accountId}/operation")
+  public String getOperationPage(Model model, @PathVariable(name = "userLogin") String login) {
+    model.addAttribute("userLogin", login);
     model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
     return OPERATION_PAGE;
