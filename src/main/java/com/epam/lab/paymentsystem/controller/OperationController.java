@@ -4,10 +4,14 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
-import java.util.List;
+import com.epam.lab.paymentsystem.utility.DateConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +46,9 @@ public class OperationController {
    * @param model model
    * @return String
    */
-  @GetMapping(value = "/{userLogin}/account/{accountId}/operation")
+  @GetMapping(value = "/{userLogin}/operation")
   public String getOperationPage(Model model) {
-    model.addAttribute("srcCardList", cardService.getAllCardsByCurrentUser());
+    model.addAttribute("srcNumberCardList", cardService.getAllNonBlockedCardsOfCurrentUser());
     model.addAttribute("operationDto", new OperationDto());
     return OPERATION_PAGE;
   }
@@ -53,23 +57,16 @@ public class OperationController {
    * Payment operation .
    *
    * @param operationDto operation dto
-   * @param model  Model.
+   * @param model        Model.
    * @return String
    */
-  @PostMapping(value = "/{userLogin}/account/{accountId}/operation")
+  @PostMapping(value = "/{userLogin}/operation")
   public String paymentOperation(
       @ModelAttribute(value = "operationDto") OperationDto operationDto,
       Model model) {
-
-    try {
-      operationService.makePayment(operationDto);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("message", e.getMessage());
-      LOGGER.error("Exception payment operation", e);
-      return OPERATION_PAGE;
-    }
+    operationService.makePayment(operationDto);
     LOGGER.info("Payment operation is successful");
-    model.addAttribute("message", "Money transfer made successful!");
+    model.addAttribute("message", "Money transfer successful!");
     return OPERATION_PAGE;
   }
 
@@ -79,25 +76,31 @@ public class OperationController {
    * @param model Model
    * @return String
    */
-  @GetMapping(value = "/history")
-  public String getUserHistory(Model model) {
-    List<Operation> history = operationService.getAllOperations();
-    model.addAttribute("historyOperation", history);
+  @GetMapping(value = "/{userLogin}/history")
+  public String getUserHistory(
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
+    Page<Operation> history = operationService.getAllOperations(pageable);
+    model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
 
   /**
-   * Get accaunt history.
+   * Get account history.
    *
    * @param accountId long
    * @param model     Model
    * @return string
    */
-  @GetMapping(value = "/{userLogin}/history/{accountId}")
-  public String getAccountHistory(@PathVariable(name = "accountId") long accountId, Model model) {
-    List<Operation> history = operationService.getAllOperationsByAccount(accountId);
-    model.addAttribute("historyOperation", history);
+  @GetMapping(value = "/{userLogin}/account/{accountId}/history")
+  public String getAccountHistory(
+      @PathVariable(name = "accountId") long accountId,
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
+    Page<Operation> operations = operationService.getAllOperationsByAccount(accountId, pageable);
+    Page<Operation> history = DateConverter.dateConverter(operations);
+    model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }
@@ -109,10 +112,14 @@ public class OperationController {
    * @param model  Model
    * @return String
    */
-  @GetMapping(value = "/{userLogin}/account/{accountId}/history/{cardId}")
-  public String getCardHistory(@PathVariable(name = "cardId") long cardId, Model model) {
-    List<Operation> history = operationService.getAllOperationsByCard(cardId);
-    model.addAttribute("historyOperation", history);
+  @GetMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/history")
+  public String getCardHistory(
+      @PathVariable(name = "cardId") long cardId,
+      @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
+      Model model) {
+    Page<Operation> operations = operationService.getAllOperationsByCard(cardId, pageable);
+    Page<Operation> history = DateConverter.dateConverter(operations);
+    model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
   }

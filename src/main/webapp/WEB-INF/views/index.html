@@ -12,13 +12,6 @@
     <script src="/js/scripts.js"></script>
 
     <title th:text="#{homepage}"></title>
-    <!--<style type="text/css">-->
-    <!--#centerLayer {-->
-    <!--margin: 0 25% 0 25%;-->
-    <!--width: 50%; /* Ширина слоя */-->
-    <!--padding: 10px; /* Поля вокруг текста */-->
-    <!--}-->
-    <!--</style>-->
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -40,18 +33,16 @@
                     <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p></a>
             </li>
             <li class="nav-item"
-                th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')}">
-                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+                th:if="${!userOnPage.roleStatusEquals('ADMIN')}">
+                <a class="nav-link" th:href="@{${userLogin}+'/cards'}"><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!userOnPage.roleStatusEquals('ADMIN')}">
+                <a class="nav-link" th:href="@{${userLogin}+'/history'}"><p th:text="#{history.button}"></p></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link" href="#">Pricing</a>-->
-            <!--</li>-->
-            <!--<li class="nav-item">-->
-            <!--<a class="nav-link disabled" href="#">Disabled</a>-->
-            <!--</li>-->
         </ul>
     </div>
 </nav>
@@ -60,23 +51,5 @@
     <a class="nav-link"><p th:text="#{user.login}+' : '+${userOnPage.login}"></p></a>
     <a class="nav-link"><p th:text="#{user.status}+' : '+${userOnPage.role.roleStatus}"></p></a>
 </div>
-
-
-<!--<div class="btn-group">-->
-<!--<a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>-->
-<!--<a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>-->
-<!--</div>-->
-<!--<div id="centerLayer">-->
-<!--<h1><p th:text="#{user.welcome}"/></h1>-->
-<!--<a href="registration" class="btn btn-primary btn-light active" role="button" aria-pressed="true">-->
-<!--<p th:text="#{user.join}"></p>-->
-<!--</a>-->
-<!--<a href="logout" class="btn btn-/primary btn-light active" role="button" aria-pressed="true">-->
-<!--<p th:text="#{user.logout}"></p>-->
-<!--</a>-->
-<!--<a th:href="@{${userLogin}}" class="btn btn-primary btn-light active" role="button" aria-pressed="true">-->
-<!--<p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p>-->
-<!--</a>-->
-<!--</div>-->
 </body>
 </html>

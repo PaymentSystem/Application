@@ -15,10 +15,6 @@
     <title th:text="#{card.creation}"></title>
 </head>
 <body>
-<!--<div class="btn-group">-->
-<!--<a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>-->
-<!--<a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>-->
-<!--</div>-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <!--<a class="navbar-brand" href="#">Navbar</a>-->
     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -75,43 +71,8 @@
             th:text="#{history.button}"/></a>
 </form>
 </div>
-
-
-<!--<form id="registrationLayer" action="addCard" method="post" th:object="${cardDto}">-->
-<!--<h1><p th:text="#{card.creation}"/></h1>-->
-<!--<p th:text="#{card.fillForm}"/>-->
-<!--<hr>-->
-
-<!--<table style="with: 50%">-->
-<!--<tr>-->
-<!--<td><label for="label"><b><p th:text="#{account.label}"/></b></label></td>-->
-<!--<td><input type="text" name="label" class="form-control input-lg"-->
-<!--th:field="*{label}" th:placeholder="#{user.placeholder.login}"-->
-<!--id="label" required>-->
-<!--</td>-->
-<!--</tr>-->
-<!--&lt;!&ndash; DataList of all user logins &ndash;&gt;-->
-<!--<tr>-->
-<!--<td><label for="login"><b><p th:text="#{user.login}"/></b></label></td>-->
-<!--<td><input list="logins" name="login" class="form-control input-lg"-->
-<!--th:field="*{userLogin}" th:placeholder="#{user.placeholder.name}"-->
-<!--id="login" required>-->
-<!--<datalist id="logins">-->
-<!--<th:block th:each="user : ${userList}">-->
-<!--<option th:value="${user.login}">-->
-<!--</th:block>-->
-<!--</datalist>-->
-<!--</td>-->
-<!--</tr>-->
-<!--</table>-->
-<!--<hr>-->
-<!--<button type="submit" class="btn btn-success"><p th:text="#{card.create}"/></button>-->
-<!--<a href="history/card" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p-->
-<!--th:text="#{history.button}"/></a>-->
-<!--</form>-->
-
 <div class="exception-message">
-    <p th:text="${messageCard}"></p>
+    <p th:text="${messageException}"></p>
 </div>
 </body>
 </html>

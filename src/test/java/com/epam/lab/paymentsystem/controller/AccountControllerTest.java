@@ -26,7 +26,7 @@ public class AccountControllerTest extends AbstractControllerTest {
         .andExpect(status().is(302))
         .andExpect(view().name("redirect:/{userLogin}"))
         .andExpect(redirectedUrl("/" + user.getLogin()));
-    long actualId = account2.getId() + 1;
+    long actualId = blockedAccount.getId() + 1;
     assertEquals(
         expectedLabel,
         accountRepository.getAccountById(actualId).getLabel(),
@@ -44,7 +44,7 @@ public class AccountControllerTest extends AbstractControllerTest {
         .andExpect(view().name(ACCOUNT_VIEW_NAME))
         .andExpect(
             model().attribute(
-                "messageAccount",
+                "messageException",
                 "Amount should be positive"
             )
         );
@@ -81,12 +81,12 @@ public class AccountControllerTest extends AbstractControllerTest {
         post(
             "/{userLogin}/account/{accountId}/unblock",
             user.getLogin(),
-            account2.getId()
+            blockedAccount.getId()
         )
     )
         .andExpect(status().is(302));
     assertTrue(
-        accountRepository.getAccountById(account2.getId()).getIsActive(),
+        accountRepository.getAccountById(blockedAccount.getId()).getIsActive(),
         "Account should be unblocked!"
     );
   }

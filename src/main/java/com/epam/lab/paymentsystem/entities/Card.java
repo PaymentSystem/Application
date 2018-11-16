@@ -24,21 +24,26 @@ public class Card extends AbstractEntity {
   @Column(name = "is_active")
   private boolean isActive;
 
-  public Card() {}
+  @Column(name = "card_number")
+  private String cardNumber;
+
+  public Card() {
+  }
 
   /**
    * Constructor for card.
    *
-   * @param account id of account
-   * @param user userId of card
-   * @param label label
+   * @param account  id of account
+   * @param user     userId of card
+   * @param label    label
    * @param isActive boolean flag
    */
-  public Card(Account account, User user, String label, boolean isActive) {
+  public Card(Account account, User user, String label, boolean isActive, String cardNumber) {
     this.account = account;
     this.user = user;
     this.label = label;
     this.isActive = isActive;
+    this.cardNumber = cardNumber;
   }
 
   @Override
@@ -65,7 +70,7 @@ public class Card extends AbstractEntity {
 
     return card.user.equals(user)
         && card.account.equals(account)
-        && label.equals(label)
+        && card.label.equals(label)
         && card.isActive == isActive;
   }
 
@@ -99,5 +104,13 @@ public class Card extends AbstractEntity {
 
   public void setIsActive(boolean active) {
     isActive = active;
+  }
+
+  public String getCardNumber() {
+    return cardNumber;
+  }
+
+  public void setCardNumber(String cardNumber) {
+    this.cardNumber = cardNumber;
   }
 }

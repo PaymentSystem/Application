@@ -4,6 +4,8 @@ import com.epam.lab.paymentsystem.dto.UserDto;
 import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,6 +37,14 @@ public interface UserService {
    * @return list
    */
   List<User> getAllUsers();
+
+  /**
+   * Returns list of all users.
+   *
+   * @param pageable pageable
+   * @return list
+   */
+  Page<User> getAllUsers(Pageable pageable);
 
   /**
    * Returns current logged user's login.

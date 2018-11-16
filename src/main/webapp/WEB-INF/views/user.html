@@ -31,7 +31,7 @@
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link"  href="/my">
+                <a class="nav-link" href="/my">
                     <p th:text="#{user.page}"></p></a>
             </li>
             <li class="nav-item"
@@ -39,35 +39,7 @@
                 &&!#httpServletRequest.isUserInRole('ADMIN')}">
                 <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
             </li>
-            <!--<li class="nav-item active">-->
-            <!--<a class="nav-link"><p th:text="#{user.login}+' : '+${userOnPage.login}"></p></a>-->
-            <!--</li>-->
-            <!--<li class="nav-item active">-->
-            <!--<a class="nav-link"><p th:text="#{user.status}+' : '+${userOnPage.role.roleStatus}"></p></a>-->
-            <!--</li>-->
 
-
-            <!--<li th:if="${#httpServletRequest.isUserInRole('ADMIN')}">-->
-            <!--<form th:action="@{${userLogin}+'/block'}" method="post">-->
-            <!--<button type="submit" class="btn btn-link" id="focus2"-->
-            <!--th:disabled="${userOnPage.role.roleStatus-->
-            <!--!=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">-->
-            <!--<p th:text="#{user.block}"/></button>-->
-            <!--</form>-->
-            <!--</li>-->
-            <!--<li th:if="${#httpServletRequest.isUserInRole('ADMIN')}">-->
-            <!--<form th:action="@{${userLogin}+'/unblock'}" method="post">-->
-            <!--<button type="submit" class="btn btn-link" id="focus1"-->
-            <!--th:disabled="${userOnPage.role.roleStatus-->
-            <!--==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">-->
-            <!--<p th:text="#{user.unblock}"/></button>-->
-            <!--</form>-->
-            <!--</li>-->
-            <!--<li class="nav-item" >-->
-            <!--<a class="nav-link" th:each="account : ${accountList}" th:if="${!userOnPage.roleStatusEquals('ADMIN')&&-->
-            <!--!currentUser.roleStatusEquals('BLOCKED')&&accountList.isEmpty()==false}"-->
-            <!--th:href="@{__${#httpServletRequest.requestURI}__/account/__${account.id}__}">view1</a>-->
-            <!--</li>-->
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>
@@ -75,23 +47,32 @@
     </div>
 </nav>
 
-
-<!--<div class="btn-group">-->
-<!--<a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>-->
-<!--<a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--<p th:text="#{user.login}+' : '+${userOnPage.login}"></p>-->
-<!--<p th:text="#{user.status}+' : '+${userOnPage.role.roleStatus}"></p>-->
-<!--</div>-->
-<!--<div>-->
-<!--<a href="logout" class="btn btn-/primary btn-light active" role="button" aria-pressed="true">-->
-<!--<p th:text="#{user.logout}"></p>-->
-<!--</a>-->
-<!--</div>-->
 <div class="data" th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')}">
 
-    <table class="table" th:if="${accountList.isEmpty()==false}">
+    <table th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+        <tr>
+            <th>
+                <form th:action="@{${userLogin}+'/block'}" method="post">
+                    <button type="submit" class="btn btn-danger"
+                            th:disabled="${userOnPage.role.roleStatus
+                            !=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
+                        <p th:text="#{user.block}"/>
+                    </button>
+                </form>
+            </th>
+            <th>
+                <form th:action="@{${userLogin}+'/unblock'}" method="post">
+                    <button type="submit" class="btn btn-danger"
+                            th:disabled="${userOnPage.role.roleStatus
+                            ==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
+                        <p th:text="#{user.unblock}"/>
+                    </button>
+                </form>
+            </th>
+        </tr>
+    </table>
+
+    <table class="table" th:if="${accountPage.isEmpty()==false}">
 
         <thead>
         <tr>
@@ -106,7 +87,7 @@
         </thead>
 
         <tbody>
-        <th:block th:each="account : ${accountList}">
+        <th:block th:each="account : ${accountPage.content}">
             <tr>
                 <td th:text="${account.label}"></td>
                 <td th:text="${account.amount}"></td>
@@ -131,94 +112,43 @@
                         </button>
                     </form>
                 </td>
+                <td>
+                    <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}"
+                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                            th:text="#{showCard.button}"/></a>
+                </td>
+                <td>
+                    <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}+'/history'}"
+                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                            th:text="#{history.button}"/></a>
+                </td>
             </tr>
         </th:block>
         </tbody>
     </table>
+    <nav aria-label="..." th:if="${accountPage.totalPages > 0}">
+        <ul class="pagination">
+            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
+                <a th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==accountPage.number + 1} ? active">
+                </a>
+            </li>
+        </ul>
+    </nav>
     <div class="create-button"
          th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')}">
         <a th:if="${currentUser.login==userLogin}" th:href="@{${userLogin}+'/addAccount'}"
            class="btn btn-outline-success" role="button" aria-pressed="true">
             <p th:text="#{account.create}"></p></a>
     </div>
-
-    <!--<table class="table" th:if="${#httpServletRequest.isUserInRole('ADMIN')}">-->
-    <!--<tr>-->
-    <!--<th>-->
-    <!--<form th:action="@{${userLogin}+'/block'}" method="post">-->
-    <!--<button type="submit" class="btn btn-danger"-->
-    <!--th:disabled="${userOnPage.role.roleStatus-->
-    <!--!=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">-->
-    <!--<p th:text="#{user.block}"/>-->
-    <!--</button>-->
-    <!--</form>-->
-    <!--</th>-->
-    <!--<th>-->
-    <!--<form th:action="@{${userLogin}+'/unblock'}" method="post">-->
-    <!--<button type="submit" class="btn btn-danger"-->
-    <!--th:disabled="${userOnPage.role.roleStatus-->
-    <!--==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">-->
-    <!--<p th:text="#{user.unblock}"/>-->
-    <!--</button>-->
-    <!--</form>-->
-    <!--</th>-->
-    <!--</tr>-->
-    <!--</table>-->
-
-    <!--<div class="container" th:if="${accountList.isEmpty()==false}">-->
-    <!--<div class="card">-->
-    <!--<div class="card-block">-->
-    <!--<div class="table table-hover">-->
-    <!--<table id="user" style="with: 50%">-->
-    <!--<thead>-->
-    <!--<tr>-->
-    <!--<th><p th:text="#{account.label}"></p></th>-->
-    <!--<th><p th:text="#{account.amount}"></p></th>-->
-    <!--<th><p th:text="#{account.isActive}"></p></th>-->
-    <!--</tr>-->
-    <!--</thead>-->
-    <!--<tbody>-->
-    <!--<th:block th:each="account : ${accountList}">-->
-    <!--<tr>-->
-    <!--<td th:text="${account.label}"></td>-->
-    <!--<td th:text="${account.amount}"></td>-->
-    <!--<td th:text="${account.isActive}"></td>-->
-    <!--<td th:if="${#httpServletRequest.isUserInRole('USER')}">-->
-    <!--<a th:href="@{__${#httpServletRequest.requestURI}__/account/__${account.id}__}">view</a>-->
-    <!--</td>-->
-    <!--<td th:if="${#httpServletRequest.isUserInRole('ADMIN')-->
-    <!--||userLogin==currentUser.login}">-->
-    <!--<form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"-->
-    <!--method="post">-->
-    <!--<button type="submit" class="btn btn-danger" th:disabled="${!account.isActive}">-->
-    <!--<p th:text="#{user.block}"/>-->
-    <!--</button>-->
-    <!--</form>-->
-    <!--</td>-->
-    <!--<td th:if="${#httpServletRequest.isUserInRole('ADMIN')}">-->
-    <!--<form th:action="@{${userLogin}+'/account/'+${account.id}+'/unblock'}"-->
-    <!--method="post">-->
-    <!--<button type="submit" class="btn btn-danger" th:disabled="${account.isActive}">-->
-    <!--<p th:text="#{user.unblock}"/>-->
-    <!--</button>-->
-    <!--</form>-->
-    <!--</td>-->
-    <!--</tr>-->
-    <!--</th:block>-->
-    <!--</tbody>-->
-    <!--</table>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div class="notifying-message" th:unless="${!accountList.isEmpty()}">
-        <h3 th:text="#{account.notFound}"></h3>
-    </div>
-    <!--<a th:if="${currentUser.login==userLogin}"-->
-    <!--th:href="@{${userLogin}+'/addAccount'}"-->
-    <!--class="btn btn-primary btn-lg active" role="button" aria-pressed="true">-->
-    <!--<p th:text="#{account.create}"></p>-->
-    <!--</a>-->
+</div>
+</div>
+</div>
+</div>
+<div class="notifying-message" th:unless="${!accountPage.isEmpty()}">
+    <h3 th:text="#{account.notFound}"></h3>
+</div>
 </div>
 
 <div th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
@@ -236,18 +166,34 @@
         </tr>
         </thead>
         <tbody>
-        <th:block th:each="user : ${users}">
+        <th:block th:each="user : ${usersPage.content}">
             <tr>
                 <td th:text="${user.login}"></td>
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.role.roleStatus}"></td>
                 <td>
-                    <a th:href="@{${user.login}}">view</a>
+                    <a th:href="@{${user.login}}" class="btn btn-primary btn-lg active"
+                       role="button" aria-pressed="true"><p th:text="#{showCard.button}"/>
+                    </a>
                 </td>
             </tr>
         </th:block>
         </tbody>
     </table>
+    <nav aria-label="..." th:if="${usersPage.totalPages > 0}">
+        <ul class="pagination">
+            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
+                <a th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==usersPage.number + 1} ? active">
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
+<a th:href="@{${userLogin}+'/operation'}"
+   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+    <p th:text="#{operation.button}"></p>
+</a>
 </body>
 </html>

@@ -1,13 +1,18 @@
 package com.epam.lab.paymentsystem.controller;
 
 import com.epam.lab.paymentsystem.dto.CardDto;
+import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
+import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.UserService;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
- * Controller for Card, processes the specified URL and redirects the request to the specified page.
+ * Controller for Card,
+ * processes the specified URL and redirects
+ * the request to the specified page.
  *
  * @author unascribed
  * @since 0.0.1
@@ -34,23 +41,53 @@ public class CardController {
   @Autowired
   private CardService cardService;
 
+  @Autowired
+  private AccountService accountService;
+
   /**
    * Returns account page with list of all cards linked to that account.
    *
-   * @param id id of account
-   * @param model model
+   * @param login    user's login
+   * @param id       id of account
+   * @param pageable pageable
+   * @param model    model
    * @return account page view
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}")
   public String getAccountPage(
       @PathVariable(name = "userLogin") String login,
       @PathVariable(name = "accountId") long id,
+      @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
       Model model) {
+
     LOGGER.info("Access to account page");
-    List<Card> cards = cardService.getAllCardsByAccountId(id);
-    model.addAttribute("userLogin", login);
+    Page<Card> cards = cardService.getAllCardsByAccountId(id, pageable);
+    model.addAttribute("cardPage", cards);
     model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
-    model.addAttribute("cardList", cards);
+    Account account = accountService.getAccountById(id);
+    long amountCard = account.getAmount();
+    model.addAttribute("amountCard", amountCard);
+    return ACCOUNT_PAGE;
+  }
+
+  /**
+   * Returns account page with list of all cards linked to that user.
+   *
+   * @param login    user's login
+   * @param pageable pageable
+   * @param model    model
+   * @return account page view
+   */
+  @GetMapping(value = "/{userLogin}/cards")
+  public String getAccountPageUserCards(
+      @PathVariable(name = "userLogin") String login,
+      @PageableDefault(size = 5, sort = {"label"}) Pageable pageable,
+      Model model) {
+
+    LOGGER.info("Access to account page");
+    Page<Card> cards = cardService.getAllCardsByLogin(login, pageable);
+    model.addAttribute("cardPage", cards);
+    model.addAttribute("currentUserLogin", userService.getCurrentUserLogin());
     return ACCOUNT_PAGE;
   }
 
@@ -72,38 +109,33 @@ public class CardController {
    * Add card form and send it to service layer.
    *
    * @param accountId account
-   * @param cardDto card dto from form
-   * @param model model
+   * @param cardDto   card dto from form
    * @return JSP view
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/addCard")
   public String addCard(
       @PathVariable(name = "accountId") long accountId,
-      @ModelAttribute(value = "cardDto") CardDto cardDto,
-      Model model) {
+      @ModelAttribute(value = "cardDto") CardDto cardDto) {
 
     cardDto.setAccountId(accountId);
-    try {
-      LOGGER.info("Creating new card from web form");
-      cardService.createCard(cardDto);
-    } catch (UnsupportedOperationException e) {
-      model.addAttribute("messageCard", e.getMessage());
-      LOGGER.error("Failed to create new card", e);
-      return ADD_CARD_PAGE;
-    }
-
+    cardService.createCard(cardDto);
     return REDIRECT_TO + "/{userLogin}/account/{accountId}";
   }
 
-  /** Blocking or activating card.
-   * @param id card id
-   * @param isBlock boolean
+  /**
+   * Blocking or activating card.
+   *
+   * @param id             card id
+   * @param isBlock        boolean
+   * @param servletRequest servlet request
    * @return redirect to card's account page
    */
   @PostMapping(value = "/{userLogin}/account/{accountId}/card/{cardId}/blocking/{isBlock}")
   public String blockCard(@PathVariable(name = "cardId") long id,
-                          @PathVariable(name = "isBlock") boolean isBlock) {
+                          @PathVariable(name = "isBlock") boolean isBlock,
+                          HttpServletRequest servletRequest) {
     cardService.setCardActive(id, !isBlock);
-    return REDIRECT_TO + "/{userLogin}/account/{accountId}";
+    String referer = servletRequest.getHeader("Referer");
+    return REDIRECT_TO + referer;
   }
 }

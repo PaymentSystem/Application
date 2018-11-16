@@ -14,14 +14,6 @@
     <script src="/js/scripts.js"></script>
 
     <title>Operation</title>
-    <!--<style type="text/css">-->
-    <!--#OperationLayer {-->
-    <!--margin: 0 25% 0 25%;-->
-    <!--width: 50%; /* Ширина слоя */-->
-    <!--background: #c3c3c3; /* Цвет фона */-->
-    <!--padding: 10px; /* Поля вокруг текста */-->
-    <!--}-->
-    <!--</style>-->
 </head>
 <body>
 
@@ -65,18 +57,18 @@
 <form class="create-account" action="operation" method="post" th:object="${operationDto}">
     <div class="form-group">
         <label for="src"><b><p th:text="#{operation.source}"/></b></label>
-        <input list="srcCards" name="src" class="form-control input-lg"
-               th:field="*{cardSrcId}" th:placeholder="#{operation.placeholder.source}" id="src" required>
-        <datalist id="srcCards">
-            <th:block th:each="srcCard : ${srcCardList}">
-                <option th:value="${srcCard.id}">
+        <input list="srcNumberCardList" name="src" class="form-control input-lg"
+               th:field="*{numberSrcCard}" th:placeholder="#{operation.placeholder.source}" id="src" required>
+        <datalist id="srcNumberCardList">
+            <th:block th:each="srcNumberCardList : ${srcNumberCardList}">
+                <option th:value="${srcNumberCardList.cardNumber}">
             </th:block>
         </datalist>
     </div>
     <div class="form-group">
         <label for=><b><p th:text="#{operation.destination}"/></b></label>
         <input type="text" name="dst" class="form-control input-lg"
-               th:field="*{cardDstId}" th:placeholder="#{operation.placeholder.destination}" id="dst" required>
+               th:field="*{numberDstCard}" th:placeholder="#{operation.placeholder.destination}" id="dst" required>
     </div>
     <div class="form-group">
         <label for="amount"><b><p th:text="#{operation.amount}"/></b></label>
@@ -86,42 +78,7 @@
     <button type="submit" class="btn btn-outline-success"><p th:text="#{operation.send}"/></button>
 </form>
 </div>
-
-
-<!--<form id="operationLayer" action="operation" method="post" th:object="${operationDto}">-->
-<!--<h1><p th:text="#{operation.title}"/></h1>-->
-<!--<p th:text="#{operation.fillForm}"/>-->
-<!--<hr>-->
-
-<!--<table style="with: 50%">-->
-<!--<tr>-->
-<!--<td><label for="src"><b><p th:text="#{operation.source}"/></b></label></td>-->
-<!--<td><input list="srcCards" name="src" class="form-control input-lg"-->
-<!--th:field="*{cardSrcId}" th:placeholder="#{operation.placeholder.source}" id="src" required>-->
-<!--<datalist id="srcCards">-->
-<!--<th:block th:each="srcCard : ${srcCardList}">-->
-<!--<option th:value="${srcCard.id}">-->
-<!--</th:block>-->
-<!--</datalist>-->
-<!--</td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td><label for=><b><p th:text="#{operation.destination}"/></b></label></td>-->
-<!--<td><input type="text" name="dst" class="form-control input-lg"-->
-<!--th:field="*{cardDstId}" th:placeholder="#{operation.placeholder.destination}" id="dst" required></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--<td><label for="amount"><b><p th:text="#{operation.amount}"/></b></label></td>-->
-<!--<td><input type="number" min="1" name="amount" class="form-control input-lg"-->
-<!--th:field="*{amount}" th:placeholder="#{operation.placeholder.amount}" id="amount" required>-->
-<!--</td>-->
-<!--</tr>-->
-<!--</table>-->
-<!--<hr>-->
-<!--<button type="submit" class="btn btn-success"><p th:text="#{operation.send}"/></button>-->
-<!--</form>-->
-<!--<div class="alert alert-danger" role="alert">-->
-<h1 th:text="${message}"/>
+<h1 th:text="${messageException}"/>
 </div>
 </body>
 </html>

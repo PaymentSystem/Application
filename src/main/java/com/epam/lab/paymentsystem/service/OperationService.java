@@ -3,6 +3,9 @@ package com.epam.lab.paymentsystem.service;
 import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 /**
  * OperationService is the interface that specifies the service methods.
@@ -12,25 +15,28 @@ public interface OperationService {
   /**
    * History operation.
    *
-   * @return operation list.
+   * @param pageable pageable
+   * @return operation page.
    */
-  List<Operation> getAllOperations();
+  Page<Operation> getAllOperations(Pageable pageable);
 
   /**
    * History operation by account.
-   * * @param accountId long.
    *
-   * @return operation list
+   * @param accountId long.
+   * @param pageable pageable
+   * @return operation page
    */
-  List<Operation> getAllOperationsByAccount(long accountId);
+  Page<Operation> getAllOperationsByAccount(long accountId, Pageable pageable);
 
   /**
    * History operation by card.
    *
    * @param cardId long.
-   * @return operation list.
+   * @param pageable pageable
+   * @return operation page.
    */
-  List<Operation> getAllOperationsByCard(long cardId);
+  Page<Operation> getAllOperationsByCard(long cardId, Pageable pageable);
 
   /**
    * Make payment operation.
@@ -38,5 +44,6 @@ public interface OperationService {
    * @param operationDto operation dto.
    */
   void makePayment(OperationDto operationDto);
+
 }
 

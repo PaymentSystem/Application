@@ -8,11 +8,14 @@ import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.repository.RoleRepository;
 import com.epam.lab.paymentsystem.repository.UserRepository;
 import com.epam.lab.paymentsystem.service.UserService;
+import com.epam.lab.paymentsystem.utility.Reserved;
 import com.epam.lab.paymentsystem.utility.converter.TransformerToEntity;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +35,8 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private Reserved reserved;
   /**
    * Instance of {@code RoleRepository} injects by Spring.
    */
@@ -53,7 +58,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public User addUser(UserDto userDto) throws LoginAlreadyExistsException {
     User userToAdd = userRepository.getUserByLogin(userDto.getLogin());
-    if (userToAdd != null) {
+    if ((userToAdd != null) || (reserved.getReserved().contains(userDto.getLogin()))) {
       LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
       throw new LoginAlreadyExistsException("Login already exists");
     }
@@ -124,5 +129,16 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> getAllUsers() {
     return userRepository.findAll();
+  }
+
+  /**
+   * Returns list of all users.
+   *
+   * @param pageable pageable
+   * @return list
+   */
+  @Override
+  public Page<User> getAllUsers(Pageable pageable) {
+    return userRepository.findAll(pageable);
   }
 }
