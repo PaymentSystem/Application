@@ -61,9 +61,8 @@ public class CardController {
    * @return card add page view
    */
   @GetMapping(value = "/{userLogin}/account/{accountId}/addCard")
-  public String getAddCardPage(Model model, @PathVariable(name = "userLogin") String login) {
+  public String getAddCardPage(Model model) {
     LOGGER.info("Access to card creation page");
-    model.addAttribute("userLogin", login);
     model.addAttribute("userList", userService.getAllUsers());
     model.addAttribute("cardDto", new CardDto());
     return ADD_CARD_PAGE;

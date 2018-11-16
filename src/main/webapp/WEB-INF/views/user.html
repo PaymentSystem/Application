@@ -30,6 +30,10 @@
             <li class="nav-item active">
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="/my">
+                    <p th:text="#{user.page}"></p></a>
+            </li>
             <li class="nav-item"
                 th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')
                 &&!#httpServletRequest.isUserInRole('ADMIN')}">

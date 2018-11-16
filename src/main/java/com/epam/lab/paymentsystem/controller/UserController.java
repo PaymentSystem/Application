@@ -71,6 +71,12 @@ public class UserController {
     return USER_PAGE;
   }
 
+  @GetMapping(value = "/my")
+  public String getMyPage() {
+    String currentUserLogin = userService.getCurrentUserLogin();
+    return REDIRECT_TO + "/" + currentUserLogin;
+  }
+
   /**
    * This method takes {@link ModelAttribute} from the page forms, processes them
    * and sends them to the service.
