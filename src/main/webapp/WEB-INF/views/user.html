@@ -103,7 +103,7 @@
                 </td>
                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
-                    <form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"
+                    <form th:action="@{${userLogin}+'/'+${account.id}+'/block'}"
                           method="post">
                         <button type="submit" class="btn btn-outline-danger" th:disabled="${!account.isActive}">
                             <p th:text="#{user.block}"/>
@@ -111,7 +111,7 @@
                     </form>
                 </td>
                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
-                    <form th:action="@{${userLogin}+'/account/'+${account.id}+'/unblock'}"
+                    <form th:action="@{${userLogin}+'/'+${account.id}+'/unblock'}"
                           method="post">
                         <button type="submit" class="btn btn-outline-success" th:disabled="${account.isActive}">
                             <p th:text="#{user.unblock}"/>
@@ -154,8 +154,6 @@
     <h3 th:text="#{account.notFound}"></h3>
 </div>
 
-<div th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
-&&#httpServletRequest.isUserInRole('ADMIN')==false}"><h1>Poshel von otsudava</h1></div>
 <div class="admin-user-data" th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
 &&#httpServletRequest.isUserInRole('ADMIN')}">
 
