@@ -3,7 +3,6 @@ package com.epam.lab.paymentsystem.configuration;
 import com.epam.lab.paymentsystem.entities.AbstractEntity;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
-import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.service.impl.UserDetailsServiceImpl;
 import com.epam.lab.paymentsystem.utility.Reserved;
 import java.util.List;

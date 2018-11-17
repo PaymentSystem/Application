@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
   private static final Logger LOGGER = LogManager.getLogger(UserController.class);
-  private static final String REGISTRATION_PAGE = "registration";
   private static final String LOGIN_PAGE = "login";
   private static final String REDIRECT_TO = "redirect:";
   private static final String USER_PAGE = "user";
@@ -96,7 +95,7 @@ public class UserController {
    * @param userDto userDto
    * @return HTML view
    */
-  @PostMapping(value = "/addUser")
+  @PostMapping(value = "/registration")
   public String addUser(@ModelAttribute(name = "userDto") UserDto userDto) {
     userService.addUser(userDto);
     return REDIRECT_TO + LOGIN_PAGE;
