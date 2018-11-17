@@ -49,7 +49,7 @@ public class UserController {
   @GetMapping(value = "/registration")
   public String getRegistrationPage(Model model) {
     model.addAttribute("userDto", new UserDto());
-    return REGISTRATION_PAGE;
+    return LOGIN_PAGE;
   }
 
   /**
@@ -81,6 +81,12 @@ public class UserController {
     model.addAttribute("usersPage", users);
 
     return USER_PAGE;
+  }
+
+  @GetMapping(value = "/my")
+  public String getMyPage() {
+    String currentUserLogin = userService.getCurrentUserLogin();
+    return REDIRECT_TO + "/" + currentUserLogin;
   }
 
   /**

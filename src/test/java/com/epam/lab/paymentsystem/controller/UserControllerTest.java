@@ -46,7 +46,7 @@ public class UserControllerTest extends AbstractControllerTest {
         get("/registration")
     )
         .andExpect(status().isOk())
-        .andExpect(view().name("registration"))
+        .andExpect(view().name("login"))
         .andExpect(content().contentType("text/html;charset=UTF-8"));
   }
 

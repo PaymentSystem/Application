@@ -4,6 +4,7 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Account;
 import com.epam.lab.paymentsystem.entities.Card;
 import com.epam.lab.paymentsystem.entities.Operation;
+import com.epam.lab.paymentsystem.exception.MoneyTransferException;
 import com.epam.lab.paymentsystem.repository.OperationRepository;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
@@ -53,11 +54,15 @@ public class OperationServiceImpl implements OperationService {
 
     if (srcCard == null) {
       LOGGER.error("Source card do not exist");
-      throw new UnsupportedOperationException("Source card do not exist");
+      throw new MoneyTransferException("Source card do not exist");
     }
     if (dstCard == null) {
       LOGGER.error("Destination card do not exist");
-      throw new UnsupportedOperationException("Destination card do not exist");
+      throw new MoneyTransferException("Destination card do not exist");
+    }
+    if (!cardService.getAllCardsByCurrentUser().contains(srcCard)) {
+      LOGGER.error("This is not your card");
+      throw new MoneyTransferException("This is not your card");
     }
 
     Account srcAccount = srcCard.getAccount();

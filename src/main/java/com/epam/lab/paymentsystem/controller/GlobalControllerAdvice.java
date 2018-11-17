@@ -26,7 +26,7 @@ public class GlobalControllerAdvice {
    */
   @ExceptionHandler(LoginAlreadyExistsException.class)
   public ModelAndView loginAlreadyExistsExceptionHandle(Exception exception) {
-    ModelAndView mav = prepareModel("registration", exception);
+    ModelAndView mav = prepareModel("login", exception);
     mav.addObject("userDto", new UserDto());
     return mav;
   }

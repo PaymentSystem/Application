@@ -92,6 +92,7 @@ public class OperationServiceTest {
     cardDst = new Card(accountDst, null, "cardDst", true, numberDstCard);
     cardDst.setId(cardDstId);
     operation = new Operation(cardSrc, cardDst, transferAmount, null, numberSrcCard, numberDstCard);
+    cards.add(cardSrc);
 
     operationDto = new OperationDto(cardSrcId, cardDstId, transferAmount, numberSrcCard, numberDstCard);
 
@@ -134,6 +135,8 @@ public class OperationServiceTest {
     doAnswer(makeTransactionAnswer)
         .when(accountService)
         .makeTransaction(any(Account.class), any(Account.class), any(Long.class));
+
+    when(cardService.getAllCardsByCurrentUser()).thenReturn(cards);
 
     operationService.makePayment(operationDto);
     assertEquals(
