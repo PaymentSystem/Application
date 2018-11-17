@@ -39,7 +39,7 @@ public class AccountController {
    * @param servletRequest servlet request
    * @return redirect to previous page
    */
-  @PostMapping(value = "/{userLogin}/account/{accountId}/block")
+  @PostMapping(value = "/{userLogin}/{accountId}/block")
   public String blockAccount(@PathVariable(name = "accountId") long id,
                              HttpServletRequest servletRequest) {
     accountService.blockAccountById(id);
@@ -54,7 +54,7 @@ public class AccountController {
    * @param servletRequest servlet request
    * @return redirect to previous page
    */
-  @PostMapping(value = "/{userLogin}/account/{accountId}/unblock")
+  @PostMapping(value = "/{userLogin}/{accountId}/unblock")
   public String unblockAccount(@PathVariable(name = "accountId") long id,
                                HttpServletRequest servletRequest) {
     accountService.unblockAccountById(id);

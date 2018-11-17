@@ -13,7 +13,6 @@ public class Reserved {
     reserved = new ArrayList<>();
     reserved.add("login");
     reserved.add("registration");
-    reserved.add("addUser");
     reserved.add("my");
   }
 

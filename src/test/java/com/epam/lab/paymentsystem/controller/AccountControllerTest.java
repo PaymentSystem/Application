@@ -63,7 +63,7 @@ public class AccountControllerTest extends AbstractControllerTest {
   public void testBlockAccount() throws Exception {
     mockMvc.perform(
         post(
-            "/{userLogin}/account/{accountId}/block",
+            "/{userLogin}/{accountId}/block",
             user.getLogin(),
             account.getId()
         )
@@ -79,7 +79,7 @@ public class AccountControllerTest extends AbstractControllerTest {
   public void testUnblockAccount() throws Exception {
     mockMvc.perform(
         post(
-            "/{userLogin}/account/{accountId}/unblock",
+            "/{userLogin}/{accountId}/unblock",
             user.getLogin(),
             blockedAccount.getId()
         )

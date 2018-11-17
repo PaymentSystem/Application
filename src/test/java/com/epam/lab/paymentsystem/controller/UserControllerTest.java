@@ -81,7 +81,7 @@ public class UserControllerTest extends AbstractControllerTest {
   public void testAddUserCreatesNewUser() throws Exception {
     String expectedLogin = "addTest";
     mockMvc.perform(
-        post("/addUser")
+        post("/registration")
             .param("login", expectedLogin)
             .param("name", "addTest")
             .param("password", "addTest")
@@ -95,7 +95,7 @@ public class UserControllerTest extends AbstractControllerTest {
   @Test
   public void testAddUserFailsWithNotUniqueLogin() throws Exception {
     mockMvc.perform(
-        post("/addUser")
+        post("/registration")
             .param("login", "test")
             .param("name", "addTest")
             .param("password", "addTest")
