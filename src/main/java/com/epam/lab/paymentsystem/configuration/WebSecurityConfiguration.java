@@ -3,7 +3,6 @@ package com.epam.lab.paymentsystem.configuration;
 import com.epam.lab.paymentsystem.entities.AbstractEntity;
 import com.epam.lab.paymentsystem.service.AccountService;
 import com.epam.lab.paymentsystem.service.CardService;
-import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.service.impl.UserDetailsServiceImpl;
 import com.epam.lab.paymentsystem.utility.Reserved;
 import java.util.List;
@@ -56,7 +55,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/webjars/jquery/3.3.1-1/**",
             "/style/**",
             "/js/**",
-            "/registration", "/addUser")
+            "/registration", "/addUser", "/myCards", "/history")
         .permitAll()
         .antMatchers("/{userLogin}/account/{accountId}/card/{cardId}/**")
         .access("@webSecurityConfiguration.checkCard(authentication, #cardId)"

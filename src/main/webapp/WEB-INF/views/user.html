@@ -31,15 +31,18 @@
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/my">
-                    <p th:text="#{user.page}"></p></a>
+                    <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page.users}:#{user.page}"></p></a>
             </li>
             <li class="nav-item"
                 th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')
                 &&!#httpServletRequest.isUserInRole('ADMIN')}">
-                <a class="nav-link" th:href="@{'/'+${userLogin}+'/cards'}"><p th:text="#{user.cards}"></p></a>
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>
@@ -82,6 +85,7 @@
             <th><p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{account.admin.block}:#{account.view}"></p>
             </th>
             <th><p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{account.admin.unblock}:#{account.block}"></p>
+            <th th:if="!${#httpServletRequest.isUserInRole('ADMIN')}"><p th:text="#{account.history}"></p></th>
             </th>
         </tr>
         </thead>
@@ -92,16 +96,16 @@
                 <td th:text="${account.label}"></td>
                 <td th:text="${account.amount}"></td>
                 <td th:text="${account.isActive}"></td>
-                <td>
+                <td th:if="!${#httpServletRequest.isUserInRole('ADMIN')}">
                     <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}"
-                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                       class="btn btn-outline-primary" role="button" aria-pressed="true"><p
                             th:text="#{account.main}"/></a>
                 </td>
                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')
                                 ||userLogin==currentUser.login}">
                     <form th:action="@{${userLogin}+'/account/'+${account.id}+'/block'}"
                           method="post">
-                        <button type="submit" class="btn btn-danger" th:disabled="${!account.isActive}">
+                        <button type="submit" class="btn btn-outline-danger" th:disabled="${!account.isActive}">
                             <p th:text="#{user.block}"/>
                         </button>
                     </form>
@@ -109,14 +113,14 @@
                 <td th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
                     <form th:action="@{${userLogin}+'/account/'+${account.id}+'/unblock'}"
                           method="post">
-                        <button type="submit" class="btn btn-danger" th:disabled="${account.isActive}">
+                        <button type="submit" class="btn btn-outline-success" th:disabled="${account.isActive}">
                             <p th:text="#{user.unblock}"/>
                         </button>
                     </form>
                 </td>
-                <td>
+                <td th:if="!${#httpServletRequest.isUserInRole('ADMIN')}">
                     <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}+'/history'}"
-                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true"><p
+                       class="btn btn-outline-info" role="button" aria-pressed="true"><p
                             th:text="#{history.button}"/></a>
                 </td>
             </tr>
@@ -127,25 +131,27 @@
         <ul class="pagination">
             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
                 <a th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
-                   th:text=${pageNumber}
+                   th:text="${pageNumber}"
                    th:class="${pageNumber==accountPage.number + 1} ? active">
                 </a>
             </li>
         </ul>
     </nav>
-    <div class="create-button"
-         th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')}">
+    <div class="group-buttons"
+         th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')
+        &&!#httpServletRequest.isUserInRole('ADMIN')}">
         <a th:if="${currentUser.login==userLogin}" th:href="@{${userLogin}+'/addAccount'}"
            class="btn btn-outline-success" role="button" aria-pressed="true">
             <p th:text="#{account.create}"></p></a>
+        <a th:href="@{${userLogin}+'/operation'}"
+           class="btn btn-outline-info" role="button" aria-pressed="true">
+            <p th:text="#{operation.button}"></p>
+        </a>
     </div>
 </div>
-</div>
-</div>
-</div>
+
 <div class="notifying-message" th:unless="${!accountPage.isEmpty()}">
     <h3 th:text="#{account.notFound}"></h3>
-</div>
 </div>
 
 <div th:if="${userOnPage.role.roleStatus==T(com.epam.lab.paymentsystem.entities.enums.Roles).ADMIN
@@ -169,7 +175,7 @@
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.role.roleStatus}"></td>
                 <td>
-                    <a th:href="@{${user.login}}" class="btn btn-primary btn-lg active"
+                    <a th:href="@{${user.login}}" class="btn btn-outline-info"
                        role="button" aria-pressed="true"><p th:text="#{showCard.button}"/>
                     </a>
                 </td>
@@ -181,16 +187,16 @@
         <ul class="pagination">
             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
                 <a th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
-                   th:text=${pageNumber}
+                   th:text="${pageNumber}"
                    th:class="${pageNumber==usersPage.number + 1} ? active">
                 </a>
             </li>
         </ul>
     </nav>
 </div>
-<a th:href="@{${userLogin}+'/operation'}"
-   class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
-    <p th:text="#{operation.button}"></p>
-</a>
+<!--<a th:href="@{${userLogin}+'/operation'}"-->
+<!--class="btn btn-outline-success" role="button" aria-pressed="true">-->
+<!--<p th:text="#{operation.button}"></p>-->
+<!--</a>-->
 </body>
 </html>

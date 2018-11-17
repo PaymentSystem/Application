@@ -91,6 +91,13 @@ public class CardController {
     return ACCOUNT_PAGE;
   }
 
+  @GetMapping(value = "/myCards")
+  public String getMyCards() {
+    String currentUserLogin = userService.getCurrentUserLogin();
+    return REDIRECT_TO + "/" + currentUserLogin + "/cards";
+  }
+
+
   /**
    * Returns add new card page.
    *

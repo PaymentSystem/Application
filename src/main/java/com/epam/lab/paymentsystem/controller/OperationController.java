@@ -4,6 +4,7 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
+import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.DateConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +32,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class OperationController {
 
   private static final Logger LOGGER = LogManager.getLogger(OperationController.class);
+  private static final String REDIRECT_TO = "redirect:";
   private static final String HISTORY_PAGE = "history";
   private static final String OPERATION_PAGE = "operation";
+  @Autowired
+  private UserService userService;
 
   @Autowired
   private OperationService operationService;
@@ -84,6 +88,12 @@ public class OperationController {
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;
+  }
+
+  @GetMapping(value = "/history")
+  public String getUserHistory2() {
+    String login = userService.getCurrentUserLogin();
+    return REDIRECT_TO + "/" + login + "/history";
   }
 
   /**

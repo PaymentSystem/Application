@@ -30,11 +30,15 @@
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link"  href="/my">
                     <p th:text="#{user.page}"></p></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
