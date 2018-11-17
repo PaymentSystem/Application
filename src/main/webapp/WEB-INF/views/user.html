@@ -43,6 +43,10 @@
                 &&!#httpServletRequest.isUserInRole('ADMIN')}">
                 <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
             </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>

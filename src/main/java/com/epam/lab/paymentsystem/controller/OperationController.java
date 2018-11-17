@@ -92,8 +92,8 @@ public class OperationController {
 
   @GetMapping(value = "/history")
   public String getUserHistory2() {
-    String login = userService.getCurrentUserLogin();
-    return REDIRECT_TO + "/" + login + "/history";
+    String currentUserLogin = userService.getCurrentUserLogin();
+    return REDIRECT_TO + "/" + currentUserLogin + "/history";
   }
 
   /**

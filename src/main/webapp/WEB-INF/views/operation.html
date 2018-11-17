@@ -42,6 +42,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
             </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
             </li>
@@ -53,12 +57,12 @@
 <!--<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>-->
 
 
-<div class="account-content"></div>
-<div class="create-account">
+<div class="content-container"></div>
+<div class="messages-forms-content">
     <h1><p th:text="#{operation.title}"/></h1>
     <p th:text="#{operation.fillForm}"/>
 </div>
-<form class="create-account" action="operation" method="post" th:object="${operationDto}">
+<form class="messages-forms-content" action="operation" method="post" th:object="${operationDto}">
     <div class="form-group">
         <label for="src"><b><p th:text="#{operation.source}"/></b></label>
         <input list="srcNumberCardList" name="src" class="form-control input-lg"
