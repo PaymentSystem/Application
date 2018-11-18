@@ -53,16 +53,16 @@ public class OperationServiceImpl implements OperationService {
     Card dstCard = cardService.getCardByCardNumber(operationDto.getNumberDstCard());
 
     if (srcCard == null) {
-      LOGGER.error("Source card do not exist");
-      throw new MoneyTransferException("Source card do not exist");
+      LOGGER.error("Source card does not exist");
+      throw new MoneyTransferException("exception.sourceCard.notExists");
     }
     if (dstCard == null) {
-      LOGGER.error("Destination card do not exist");
-      throw new MoneyTransferException("Destination card do not exist");
+      LOGGER.error("Destination card does not exist");
+      throw new MoneyTransferException("exception.targetCard.notExists");
     }
     if (!cardService.getAllCardsByCurrentUser().contains(srcCard)) {
       LOGGER.error("This is not your card");
-      throw new MoneyTransferException("This is not your card");
+      throw new MoneyTransferException("exception.notYourCard");
     }
 
     Account srcAccount = srcCard.getAccount();

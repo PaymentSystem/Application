@@ -107,7 +107,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
    * Checks if card belongs to current logged user.
    *
    * @param authentication authentication
-   * @param cardId         accountId
+   * @param cardId         cardId
    * @return boolean
    */
   public boolean checkCard(Authentication authentication, long cardId) {
