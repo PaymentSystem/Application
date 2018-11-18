@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
@@ -29,11 +29,19 @@
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/my">
                     <p th:text="#{user.page}"></p></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{'/'+${userLogin}+'/cards'}"><p th:text="#{user.cards}"></p></a>
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
@@ -64,7 +72,7 @@
                 <td th:if="${userLogin == currentUserLogin}">
                     <form th:action="@{'/'+${userLogin}+'/account/'+${card.account.id}
                                 +'/card/'+${card.id}+'/blocking/true'}" method="post">
-                        <button type="submit" class="btn btn-danger" th:disabled="${!card.isActive}">
+                        <button type="submit" class="btn btn-outline-danger" th:disabled="${!card.isActive}">
                             <p th:text="#{user.block}"/>
                         </button>
                     </form>
@@ -72,14 +80,14 @@
                 <td th:if="${userLogin == currentUserLogin}">
                     <form th:action="@{'/'+${userLogin}+'/account/'+${card.account.id}
                                 +'/card/'+${card.id}+'/blocking/false'}" method="post">
-                        <button type="submit" class="btn btn-danger" th:disabled="${card.isActive}">
+                        <button type="submit" class="btn btn-outline-success" th:disabled="${card.isActive}">
                             <p th:text="#{user.unblock}"/>
                         </button>
                     </form>
                 </td>
                 <td>
                     <a th:href="@{'/'+${userLogin}+'/account/'+${card.account.id}+'/card/'+${card.id}+'/history'}"
-                       class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+                       class="btn btn-outline-info" role="button" aria-pressed="true">
                         <p th:text="#{history.button}"/>
                     </a>
                 </td>
@@ -88,7 +96,7 @@
         </tbody>
     </table>
     <p></p>
-    <nav aria-label="..." th:if="${cardPage.totalPages > 0}">
+    <nav aria-label="Page navigation" th:if="${cardPage.totalPages > 1}">
         <ul class="pagination justify-content-center pagination-lg">
             <li class="page-item" th:classappend="${pageNumber==cardPage.number + 1} ? active"
                 th:each="pageNumber : ${#numbers.sequence(1, cardPage.totalPages)}">
@@ -104,20 +112,21 @@
 <div class="notifying-message" th:unless="${!cardPage.isEmpty()}">
     <p th:text="#{card.empty}"></p>
 </div>
-<div class="group-buttons">
+
+<div class="group-buttons1">
     <a th:if="${#httpServletRequest.requestURI.contains('account')}"
        th:href="@{${#httpServletRequest.requestURI}+'/addCard'}"
        class="btn btn-outline-success" role="button" aria-pressed="true">
         <p th:text="#{card.create}"></p>
     </a>
-    <a th:href="@{'/'+${userLogin}+'/operation'}"
-       class="btn btn-outline-info" role="button" aria-pressed="true">
-        <p th:text="#{operation.button}"></p>
-    </a>
     <a th:if="${#httpServletRequest.requestURI.contains('account')}"
        th:href="@{${#httpServletRequest.requestURI}+'/addAmount'}"
        class="btn btn-outline-info" role="button" aria-pressed="true">
         <p th:text="#{account.addAmount}"></p>
+    </a>
+    <a th:href="@{'/'+${userLogin}+'/operation'}"
+       class="btn btn-outline-info" role="button" aria-pressed="true">
+        <p th:text="#{operation.button}"></p>
     </a>
 </div>
 </body>

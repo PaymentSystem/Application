@@ -189,11 +189,11 @@ color(цвет текста) в фокусе*/
 
 }
 
-.account-content {
+.content-container {
     margin: 3%;
 }
 
-.create-account {
+.messages-forms-content {
     margin-right: 30%;
     margin-left: 30%;
 }
@@ -206,4 +206,10 @@ color(цвет текста) в фокусе*/
 .group-buttons {
     margin-top: 3px;
     margin-left: 58%;
+}
+
+.group-buttons1 {
+    width: 32%;
+    margin-top: 3px;
+    float: right;
 }

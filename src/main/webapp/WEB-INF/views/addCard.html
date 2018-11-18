@@ -30,11 +30,19 @@
                 <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link"  href="/my">
                     <p th:text="#{user.page}"></p></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href=#><p th:text="#{user.cards}"></p></a>
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
@@ -43,12 +51,12 @@
     </div>
 </nav>
 
-<div class="account-content"></div>
-<div class="create-account">
+<div class="content-container">
+    <div class="messages-forms-content">
     <h1><p th:text="#{card.creation}"/></h1>
     <p th:text="#{card.fillForm}"/>
 </div>
-<form class="create-account" action="addCard" method="post" th:object="${cardDto}">
+    <form class="messages-forms-content" action="addCard" method="post" th:object="${cardDto}">
     <div class="form-group">
         <label for="label"><b><p th:text="#{account.label}"/></b></label>
         <input type="text" name="label" class="form-control input-lg"
