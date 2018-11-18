@@ -79,7 +79,7 @@ public class CardControllerTest extends AbstractControllerTest {
         .andExpect(status().isOk())
         .andExpect(model().attribute(
             "messageException",
-            "No such user")
+            "No such user!")
         );
   }
 }

@@ -45,7 +45,7 @@ public class AccountControllerTest extends AbstractControllerTest {
         .andExpect(
             model().attribute(
                 "messageException",
-                "Amount should be positive"
+                "Amount should be positive!"
             )
         );
   }

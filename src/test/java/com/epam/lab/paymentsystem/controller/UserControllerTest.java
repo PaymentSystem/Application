@@ -103,7 +103,7 @@ public class UserControllerTest extends AbstractControllerTest {
         .andExpect(status().isOk())
         .andExpect(model().attribute(
             "messageException",
-            "Login already exists")
+            "Login already exists!")
         );
   }
 }
