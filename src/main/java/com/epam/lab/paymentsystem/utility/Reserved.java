@@ -14,6 +14,8 @@ public class Reserved {
     reserved.add("login");
     reserved.add("registration");
     reserved.add("my");
+    reserved.add("myCards");
+    reserved.add("history");
   }
 
   public List<String> getReserved() {

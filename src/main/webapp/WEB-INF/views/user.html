@@ -192,7 +192,7 @@
                 th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
                 <a class="page-link"
                    th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
-                   th:text=${pageNumber}>
+                   th:text="${pageNumber}">
                 </a>
             </li>
         </ul>

@@ -213,3 +213,172 @@ color(цвет текста) в фокусе*/
     margin-top: 3px;
     float: right;
 }
+
+/*Owl Carousel properties*/
+
+.full-width-container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1920px;
+}
+
+.bank-advertising {
+    position: relative;
+}
+
+.bank-advertising-picture {
+    clip-path: polygon(0% 86%, 100% 100%, 100% 15%, 0% 28%);
+    /*6.3% 79.5%,*/
+}
+
+.trapezoid {
+    float: left;
+    position: absolute;
+    top: 28ex;
+    left: 37px;
+    /*bottom: 100px;*/
+    perspective: 200px;
+    display: inline-block;
+    width: 400px;
+    height: 400px;
+    opacity: 0.88;
+}
+
+.trapezoid:before {
+    transform: rotateY(12deg);
+    transform-origin: 50% 100%;
+    border-radius: 0px 50px 50px 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    content: '';
+    background: red;
+}
+
+.trapezoid-text {
+    position: relative;
+    text-align: left;
+    padding-left: 5px;
+    top: 100px;
+    z-index: 9999;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 45px;
+
+}
+
+@media (max-width: 1220px) {
+    .trapezoid {
+        float: left;
+        position: absolute;
+        top: 13ex;
+        left: 14px;
+        /*bottom: 100px;*/
+        perspective: 200px;
+        display: inline-block;
+        width: 300px;
+        height: 300px;
+        opacity: 0.8;
+    }
+
+    .trapezoid:before {
+        transform: rotateY(12deg);
+        transform-origin: 50% 100%;
+        border-radius: 0px 50px 50px 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        content: '';
+        background: red;
+    }
+
+    .trapezoid-text {
+        position: relative;
+        text-align: left;
+        padding-left: 10px;
+        top: 50px;
+        z-index: 9999;
+        color: #ffffff;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 34px;
+
+    }
+}
+
+@media (max-width: 720px) {
+    .trapezoid {
+        float: left;
+        position: absolute;
+        top: 10ex;
+        left: 0px;
+        /*bottom: 100px;*/
+        perspective: 200px;
+        display: inline-block;
+        width: 200px;
+        height: 200px;
+        opacity: 0.8;
+    }
+
+    .trapezoid:before {
+        transform: rotateY(12deg);
+        transform-origin: 50% 100%;
+        border-radius: 0px 25px 25px 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        content: '';
+        background: red;
+    }
+
+    .trapezoid-text {
+        position: relative;
+        text-align: left;
+        padding-left: 10px;
+        top: 40px;
+        z-index: 9999;
+        color: #ffffff;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 22px;
+
+    }
+
+}
+
+@media (max-width: 420px) {
+    .trapezoid {
+        float: left;
+        position: absolute;
+        top: 5ex;
+        left: 0px;
+        /*bottom: 100px;*/
+        perspective: 200px;
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        opacity: 0.8;
+    }
+
+    .trapezoid:before {
+        transform: rotateY(12deg);
+        transform-origin: 50% 100%;
+        border-radius: 0px 19px 19px 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        content: '';
+        background: red;
+    }
+
+    .trapezoid-text {
+        position: relative;
+        text-align: left;
+        padding-left: 10px;
+        top: 23px;
+        z-index: 9999;
+        color: #ffffff;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 17px;
+
+    }
+
+}
