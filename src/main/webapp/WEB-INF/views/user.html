@@ -17,7 +17,6 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!--<a class="navbar-brand" href="#">Navbar</a>-->
     <button class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -131,29 +130,18 @@
         </th:block>
         </tbody>
     </table>
-
-    <nav aria-label="Page navigation example" th:if="${accountPage.totalPages > 0}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
+    <p></p>
+    <nav aria-label="Page navigation" th:if="${accountPage.totalPages > 1}">
+        <ul class="pagination justify-content-center pagination-lg">
+            <li class="page-item" th:classappend="${pageNumber==accountPage.number + 1} ? active"
+                th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
                 <a class="page-link"
                    th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
-                   th:text="${pageNumber}">
+                   th:text=${pageNumber}>
                 </a>
             </li>
         </ul>
     </nav>
-
-    <!---->
-    <!--<nav aria-label="Page navigation example" th:if="${accountPage.totalPages > 0}">-->
-    <!--<ul class="pagination justify-content-center">-->
-    <!--<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">-->
-    <!--<a class="page-link" th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"-->
-    <!--th:text="${pageNumber}"-->
-    <!--th:class="${pageNumber==accountPage.number + 1} ? active">-->
-    <!--</a>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--</nav>-->
     <div class="group-buttons"
          th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')
         &&!#httpServletRequest.isUserInRole('ADMIN')}">
@@ -198,21 +186,18 @@
         </th:block>
         </tbody>
     </table>
-
-    <nav class="pagination justify-content-center" th:if="${usersPage.totalPages > 0}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
+    <p></p>
+    <nav aria-label="Page navigation" th:if="${usersPage.totalPages > 1}">
+        <ul class="pagination justify-content-center pagination-lg">
+            <li class="page-item" th:classappend="${pageNumber==usersPage.number + 1} ? active"
+                th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
                 <a class="page-link"
                    th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
-                   th:text="${pageNumber}">
+                   th:text=${pageNumber}>
                 </a>
             </li>
         </ul>
     </nav>
 </div>
-<!--<a th:href="@{${userLogin}+'/operation'}"-->
-<!--class="btn btn-outline-success" role="button" aria-pressed="true">-->
-<!--<p th:text="#{operation.button}"></p>-->
-<!--</a>-->
 </body>
 </html>

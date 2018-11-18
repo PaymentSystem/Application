@@ -1,21 +1,5 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
-<!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-
-<!--&lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
-<!--<link rel="stylesheet"-->
-<!--href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
-<!--integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
-
-<!--<title>History page</title>-->
-
-<!--</head>-->
-
-
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -73,12 +57,12 @@
     <table class="table">
         <thead>
         <tr>
-            <th><p th:text="#{history.srcCard}"></p></th>
-            <th><p th:text="#{history.srcCardNumber}"></p></th>
-            <th><p th:text="#{history.dstCard}"></p></th>
-            <th><p th:text="#{history.dstCardNumber}"></p></th>
-            <th><p th:text="#{history.amount}"></p></th>
-            <th><p th:text="#{history.date}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.srcCard}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.srcCardNumber}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.dstCard}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.dstCardNumber}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.amount}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.date}"></p></th>
         </tr>
         </thead>
         <tbody>
@@ -89,17 +73,20 @@
                 <td th:text="${history.targetCard.label}"></td>
                 <td th:text="${history.targetCard.cardNumber}"></td>
                 <td th:text="${history.amount}"></td>
-                <td th:nowrap="nowrap" th:text="${history.dateString }"></td>
+                <td nowrap="nowrap" th:text="${history.dateString}"></td>
             </tr>
         </th:block>
         </tbody>
     </table>
-    <nav aria-label="Page navigation example" th:if="${historyOperationPage.totalPages > 0}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, historyOperationPage.totalPages)}"><a
-                    class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
-                    th:text="${pageNumber}">
-            </a>
+    <p></p>
+    <nav aria-label="Page navigation" th:if="${historyOperationPage.totalPages > 1}">
+        <ul class="pagination justify-content-center pagination-lg">
+            <li class="page-item" th:classappend="${pageNumber==historyOperationPage.number + 1} ? active"
+                th:each="pageNumber : ${#numbers.sequence(1, historyOperationPage.totalPages)}">
+                <a class="page-link"
+                   th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                   th:text=${pageNumber}>
+                </a>
             </li>
         </ul>
     </nav>
@@ -109,15 +96,3 @@
 </div>
 </body>
 </html>
-
-
-<!--<nav aria-label="Page navigation example" th:if="${cardPage.totalPages > 0}">-->
-    <!--<ul class="pagination justify-content-center">-->
-        <!--<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, cardPage.totalPages)}">-->
-            <!--<a class="page-link"-->
-               <!--th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"-->
-               <!--th:text="${pageNumber}">-->
-            <!--</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-<!--</nav>-->
