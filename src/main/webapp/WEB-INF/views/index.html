@@ -34,7 +34,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/my">
-                    <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page}:#{user.page}"></p></a>
+                    <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page.users}:#{user.page}"></p></a>
             </li>
             <li class="nav-item"
                 th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!userOnPage.roleStatusEquals('BLOCKED')}">

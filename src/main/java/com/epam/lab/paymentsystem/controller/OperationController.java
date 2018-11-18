@@ -4,11 +4,12 @@ import com.epam.lab.paymentsystem.dto.OperationDto;
 import com.epam.lab.paymentsystem.entities.Operation;
 import com.epam.lab.paymentsystem.service.CardService;
 import com.epam.lab.paymentsystem.service.OperationService;
-import com.epam.lab.paymentsystem.service.UserService;
 import com.epam.lab.paymentsystem.utility.DateConverter;
+import java.util.Locale;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,17 +33,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class OperationController {
 
   private static final Logger LOGGER = LogManager.getLogger(OperationController.class);
-  private static final String REDIRECT_TO = "redirect:";
   private static final String HISTORY_PAGE = "history";
   private static final String OPERATION_PAGE = "operation";
-  @Autowired
-  private UserService userService;
 
   @Autowired
   private OperationService operationService;
 
   @Autowired
   private CardService cardService;
+
+  @Autowired
+  private MessageSource messageSource;
 
   /**
    * Get method for operation page.
@@ -61,16 +62,18 @@ public class OperationController {
    * Payment operation .
    *
    * @param operationDto operation dto
-   * @param model        Model.
+   * @param model        Model
+   * @param locale       Locale
    * @return String
    */
   @PostMapping(value = "/{userLogin}/operation")
-  public String paymentOperation(
-      @ModelAttribute(value = "operationDto") OperationDto operationDto,
-      Model model) {
+  public String paymentOperation(@ModelAttribute(value = "operationDto") OperationDto operationDto,
+                                 Model model,
+                                 Locale locale) {
     operationService.makePayment(operationDto);
     LOGGER.info("Payment operation is successful");
-    model.addAttribute("messageException", "Money transfer successful!");
+    String message = messageSource.getMessage("money.transfer", null, locale);
+    model.addAttribute("messageException", message);
     return OPERATION_PAGE;
   }
 

@@ -126,7 +126,7 @@ public class CardServiceImpl implements CardService {
     User user = userService.getUserByLogin(card.getUserLogin());
     if (user == null) {
       LOGGER.error("Such user doesn't exists: " + card.getUserLogin());
-      throw new CardArgumentException("No such user");
+      throw new CardArgumentException("exception.noSuchUser");
     }
     String cardNumber = generateCardNumber();
     Card cardToCreate = new Card(account, user, card.getLabel(), true, cardNumber);

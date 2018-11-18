@@ -44,14 +44,14 @@ public class AccountServiceImpl implements AccountService {
     LOGGER.info("Creating new account");
     if (accountDto.getAmount() < 0) {
       LOGGER.error("Passed negative amount of account");
-      throw new AccountArgumentException("Amount should be positive");
+      throw new AccountArgumentException("exception.amount");
     }
     Account accountToCreate = TransformerToEntity.convertAccount(accountDto);
 
     String login = userService.getCurrentUserLogin();
     User user = userService.getUserByLogin(login);
     if (!user.roleStatusEquals("USER")) {
-      throw new AccountArgumentException("User is blocked");
+      throw new AccountArgumentException("exception.user.blocked");
     }
     accountToCreate.setUser(user);
     accountToCreate.setIsActive(true);
@@ -74,23 +74,23 @@ public class AccountServiceImpl implements AccountService {
       throws MoneyTransferException {
     if (source.getId() == target.getId()) {
       LOGGER.error("Passed same accounts");
-      throw new MoneyTransferException("Accounts should be different");
+      throw new MoneyTransferException("exception.account.different");
     }
     if ((source.getAmount() - amount) < 0) {
       LOGGER.error("Not enough money on source account");
-      throw new MoneyTransferException("Not enough money");
+      throw new MoneyTransferException("exception.account.money");
     }
     if ((amount <= 0)) {
       LOGGER.error("Not correct amount");
-      throw new MoneyTransferException("Not correct amount");
+      throw new MoneyTransferException("exception.amount");
     }
     if (!source.getIsActive()) {
       LOGGER.error("Source account is blocked");
-      throw new MoneyTransferException("Source account is blocked");
+      throw new MoneyTransferException("exception.account.source");
     }
     if (!target.getIsActive()) {
       LOGGER.error("Target account is blocked");
-      throw new MoneyTransferException("Target account is blocked");
+      throw new MoneyTransferException("exception.account.target");
     }
     LOGGER.info("Creating transaction");
     moneyTransfer(source, target, amount);
@@ -162,7 +162,7 @@ public class AccountServiceImpl implements AccountService {
     Account account = accountRepository.getAccountById(accountId);
     if (amount <= 0) {
       LOGGER.error("Amount should be positive");
-      throw new AccountArgumentException("Amount should be positive");
+      throw new AccountArgumentException("exception.amount");
     }
     account.setAmount(account.getAmount() + amount);
 

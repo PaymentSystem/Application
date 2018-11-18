@@ -8,7 +8,10 @@ import com.epam.lab.paymentsystem.exception.AccountArgumentException;
 import com.epam.lab.paymentsystem.exception.CardArgumentException;
 import com.epam.lab.paymentsystem.exception.LoginAlreadyExistsException;
 import com.epam.lab.paymentsystem.exception.MoneyTransferException;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +21,9 @@ public class GlobalControllerAdvice {
 
   private static final String MESSAGE_EXCEPTION = "messageException";
 
+  @Autowired
+  private MessageSource messageSource;
+
   /**
    * Handles LoginAlreadyExistException in all controllers.
    *
@@ -25,8 +31,8 @@ public class GlobalControllerAdvice {
    * @return model and view
    */
   @ExceptionHandler(LoginAlreadyExistsException.class)
-  public ModelAndView loginAlreadyExistsExceptionHandle(Exception exception) {
-    ModelAndView mav = prepareModel("login", exception);
+  public ModelAndView loginAlreadyExistsExceptionHandle(Exception exception, Locale locale) {
+    ModelAndView mav = prepareModel("login", exception, locale);
     mav.addObject("userDto", new UserDto());
     return mav;
   }
@@ -38,8 +44,8 @@ public class GlobalControllerAdvice {
    * @return model and view
    */
   @ExceptionHandler(MoneyTransferException.class)
-  public ModelAndView moneyTransferExceptionHandle(Exception exception) {
-    ModelAndView mav = prepareModel("operation", exception);
+  public ModelAndView moneyTransferExceptionHandle(Exception exception, Locale locale) {
+    ModelAndView mav = prepareModel("operation", exception, locale);
     mav.addObject("operationDto", new OperationDto());
     return mav;
   }
@@ -51,8 +57,8 @@ public class GlobalControllerAdvice {
    * @return model and view
    */
   @ExceptionHandler(CardArgumentException.class)
-  public ModelAndView cardArgumentExceptionHandle(Exception exception) {
-    ModelAndView mav = prepareModel("addCard", exception);
+  public ModelAndView cardArgumentExceptionHandle(Exception exception, Locale locale) {
+    ModelAndView mav = prepareModel("addCard", exception, locale);
     mav.addObject("cardDto", new CardDto());
     return mav;
   }
@@ -64,12 +70,14 @@ public class GlobalControllerAdvice {
    * @return model and view
    */
   @ExceptionHandler(AccountArgumentException.class)
-  public ModelAndView accountArgumentExceptionHandle(Exception exception, HttpServletRequest req) {
+  public ModelAndView accountArgumentExceptionHandle(Exception exception,
+                                                     HttpServletRequest req,
+                                                     Locale locale) {
     ModelAndView mav = null;
     if (req.getRequestURI().endsWith("/addAmount")) {
-      mav = prepareModel("addAmount", exception);
+      mav = prepareModel("addAmount", exception, locale);
     } else {
-      mav = prepareModel("addAccount", exception);
+      mav = prepareModel("addAccount", exception, locale);
     }
     mav.addObject("accountDto", new AccountDto());
     return mav;
@@ -82,9 +90,10 @@ public class GlobalControllerAdvice {
    * @param e        handled exception
    * @return model and view
    */
-  private ModelAndView prepareModel(String viewName, Exception e) {
+  private ModelAndView prepareModel(String viewName, Exception e, Locale locale) {
     ModelAndView mav = new ModelAndView();
-    mav.addObject(MESSAGE_EXCEPTION, e.getMessage());
+    String ex = messageSource.getMessage(e.getMessage(), new Object[]{}, locale);
+    mav.addObject(MESSAGE_EXCEPTION, ex);
     mav.setViewName(viewName);
     return mav;
   }

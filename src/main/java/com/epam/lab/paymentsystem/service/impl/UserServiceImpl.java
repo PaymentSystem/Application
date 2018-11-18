@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     User userToAdd = userRepository.getUserByLogin(userDto.getLogin());
     if ((userToAdd != null) || (reserved.getReserved().contains(userDto.getLogin()))) {
       LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
-      throw new LoginAlreadyExistsException("Login already exists");
+      throw new LoginAlreadyExistsException("exception.login.exists");
     }
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     userToAdd = TransformerToEntity.convertUser(userDto);
