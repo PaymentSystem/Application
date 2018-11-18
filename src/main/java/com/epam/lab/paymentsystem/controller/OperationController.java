@@ -90,12 +90,6 @@ public class OperationController {
     return HISTORY_PAGE;
   }
 
-  @GetMapping(value = "/history")
-  public String getUserHistory2() {
-    String currentUserLogin = userService.getCurrentUserLogin();
-    return REDIRECT_TO + "/" + currentUserLogin + "/history";
-  }
-
   /**
    * Get account history.
    *
