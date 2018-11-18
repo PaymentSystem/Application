@@ -55,7 +55,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/webjars/jquery/3.3.1-1/**",
             "/style/**",
             "/js/**",
-            "/registration", "/addUser", "/myCards", "/history")
+            "/OwlCarousel2-2.3.4/**",
+            "/pictures/**",
+            "/registration")
         .permitAll()
         .antMatchers("/{userLogin}/account/{accountId}/card/{cardId}/**")
         .access("@webSecurityConfiguration.checkCard(authentication, #cardId)"
