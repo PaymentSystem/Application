@@ -131,16 +131,29 @@
         </th:block>
         </tbody>
     </table>
-    <nav aria-label="..." th:if="${accountPage.totalPages > 0}">
-        <ul class="pagination">
+
+    <nav aria-label="Page navigation example" th:if="${accountPage.totalPages > 0}">
+        <ul class="pagination justify-content-center">
             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">
-                <a th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
-                   th:text="${pageNumber}"
-                   th:class="${pageNumber==accountPage.number + 1} ? active">
+                <a class="page-link"
+                   th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"
+                   th:text="${pageNumber}">
                 </a>
             </li>
         </ul>
     </nav>
+
+    <!---->
+    <!--<nav aria-label="Page navigation example" th:if="${accountPage.totalPages > 0}">-->
+    <!--<ul class="pagination justify-content-center">-->
+    <!--<li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, accountPage.totalPages)}">-->
+    <!--<a class="page-link" th:href="@{${#httpServletRequest.requestURI}(user_page=${pageNumber-1})}"-->
+    <!--th:text="${pageNumber}"-->
+    <!--th:class="${pageNumber==accountPage.number + 1} ? active">-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</nav>-->
     <div class="group-buttons"
          th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!currentUser.roleStatusEquals('BLOCKED')
         &&!#httpServletRequest.isUserInRole('ADMIN')}">
@@ -185,12 +198,13 @@
         </th:block>
         </tbody>
     </table>
-    <nav aria-label="..." th:if="${usersPage.totalPages > 0}">
+
+    <nav class="pagination justify-content-center" th:if="${usersPage.totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
-                <a th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
-                   th:text="${pageNumber}"
-                   th:class="${pageNumber==usersPage.number + 1} ? active">
+                <a class="page-link"
+                   th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
+                   th:text="${pageNumber}">
                 </a>
             </li>
         </ul>

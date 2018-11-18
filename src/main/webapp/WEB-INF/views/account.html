@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Required meta tags -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
@@ -97,16 +97,39 @@
         </th:block>
         </tbody>
     </table>
-    <nav aria-label="..." th:if="${cardPage.totalPages > 0}">
+
+    <nav aria-label="Page navigation example" th:if="${cardPage.totalPages > 0}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, cardPage.totalPages)}">
-                <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
-                   th:text=${pageNumber}
-                   th:class="${pageNumber==cardPage.number + 1} ? active">
+                <a class="page-link"
+                   th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                   th:text="${pageNumber}">
                 </a>
             </li>
         </ul>
     </nav>
+
+    <!--<nav aria-label="Page navigation example" th:if="${cardPage.totalPages > 0}">-->
+    <!--<ul class="pagination justify-content-center"-->
+    <!--th:each="pageNumber : ${#numbers.sequence(1, cardPage.totalPages)}">-->
+    <!--<li class="page-item">-->
+    <!--&lt;!&ndash;<li class="page-item disabled">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}" tabindex="-1">Previous</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+    <!--<li class="page-item"><a class="page-link"-->
+    <!--th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}">-->
+    <!--<p th:class="${pageNumber==cardPage.number + 1} ? active" th:text="${pageNumber}"></p></a></li>-->
+    <!--<li class="page-item"><a class="page-link"-->
+    <!--th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-2})}">-->
+    <!--<p th:class="${pageNumber==cardPage.number + 2} ? active" th:text="${pageNumber+1}"></p></a></li>-->
+
+    <!--&lt;!&ndash;<a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"&ndash;&gt;-->
+    <!--&lt;!&ndash;th:text="${pageNumber}"&ndash;&gt;-->
+    <!--&lt;!&ndash;th:class="${pageNumber==cardPage.number + 1} ? active">&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</nav>-->
 </div>
 
 <div class="notifying-message" th:unless="${!cardPage.isEmpty()}">
