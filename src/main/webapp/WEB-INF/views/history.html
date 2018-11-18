@@ -42,13 +42,14 @@
                     </th:block>
                     </tbody>
                 </table>
-                <nav aria-label="..." th:if="${historyOperationPage.totalPages > 0}">
-                    <ul class="pagination">
-                        <li class="page-item"
+                <p></p>
+                <nav aria-label="Page navigation" th:if="${historyOperationPage.totalPages > 1}">
+                    <ul class="pagination justify-content-center pagination-lg">
+                        <li class="page-item" th:classappend="${pageNumber==historyOperationPage.number + 1} ? active"
                             th:each="pageNumber : ${#numbers.sequence(1, historyOperationPage.totalPages)}">
-                            <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
-                               th:text=${pageNumber}
-                               th:class="${pageNumber==historyOperationPage.number + 1} ? active">
+                            <a class="page-link"
+                               th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                               th:text=${pageNumber}>
                             </a>
                         </li>
                     </ul>
