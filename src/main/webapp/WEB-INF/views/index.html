@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/OwlCarousel2-2.3.4/dist/assets/owl.carousel.css"/>
+    <link rel="stylesheet" type="text/css" href="/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.css">
     <link rel="stylesheet" href="/style/main.css">
 
     <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/OwlCarousel2-2.3.4/dist/owl.carousel.js"></script>
     <script src="/js/scripts.js"></script>
 
     <title th:text="#{homepage}"></title>
@@ -51,9 +54,73 @@
     </div>
 </nav>
 
+
 <div class="status-message">
     <a class="nav-link"><p th:text="#{user.login}+' : '+${userOnPage.login}"></p></a>
     <a class="nav-link"><p th:text="#{user.status}+' : '+${userOnPage.role.roleStatus}"></p></a>
+</div>
+
+
+<div class="full-width-container">
+    <div id="owl-example" class="owl-carousel owl-theme">
+        <div class="bank-advertising">
+            <a href="/">
+                <img class="bank-advertising-picture" src="/pictures/carouselPictureOne.jpg"
+                     alt="New department in New York">
+
+                <div class="trapezoid">
+                    <div class="trapezoid-text">
+
+                        <p>New department</p>
+
+                        <p>opened</p>
+
+                        <p>in New York</p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <div class="bank-advertising">
+            <a href="/">
+                <img class="bank-advertising-picture" src="/pictures/carouselPictureTwo.jpg"
+                     alt="Big data shakes up ESG investing">
+
+                <div class="trapezoid">
+                    <div class="trapezoid-text">
+
+                        <p>Big data</p>
+
+                        <p>shakes up</p>
+
+                        <p>ESG investing</p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="bank-advertising">
+            <a href="/">
+                <img class="bank-advertising-picture" src="/pictures/carouselPictureThree.jpg"
+                     alt="First class train">
+
+                <div class="trapezoid">
+                    <div class="trapezoid-text">
+
+                        <p>Helping IG credit</p>
+
+                        <p>give more access</p>
+
+                        <p>to a better life</p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
