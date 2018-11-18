@@ -34,7 +34,13 @@
         });
 //End Login page
 
-// Owl-carousel script
+// Owl-carousel scripts
+
+$('.nav-toggle').on('click', function () {
+    $('#menu').toggleClass('active');
+});
+
+
 jQuery(document).ready(function ($) {
     $("#owl-example").owlCarousel({
         animateOut: 'fadeOut',
