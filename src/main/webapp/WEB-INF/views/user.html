@@ -186,7 +186,7 @@
         </tbody>
     </table>
     <nav aria-label="..." th:if="${usersPage.totalPages > 0}">
-        <ul class="pagination">
+        <ul class="pagination justify-content-center">
             <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, usersPage.totalPages)}">
                 <a th:href="@{${#httpServletRequest.requestURI}(admin_page=${pageNumber-1})}"
                    th:text="${pageNumber}"

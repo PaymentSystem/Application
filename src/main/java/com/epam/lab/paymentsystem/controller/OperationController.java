@@ -84,7 +84,8 @@ public class OperationController {
   public String getUserHistory(
       @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC) Pageable pageable,
       Model model) {
-    Page<Operation> history = operationService.getAllOperations(pageable);
+    Page<Operation> operations = operationService.getAllOperations(pageable);
+    Page<Operation> history = DateConverter.dateConverter(operations);
     model.addAttribute("historyOperationPage", history);
     LOGGER.info("Access to history creation page");
     return HISTORY_PAGE;

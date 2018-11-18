@@ -1,66 +1,112 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+<!--&lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--<link rel="stylesheet"-->
+<!--href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
+<!--integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+
+<!--<title>History page</title>-->
+
+<!--</head>-->
+
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!-- Required meta tags -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/style/main.css">
 
-    <title>History page</title>
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
 
+    <title th:text="#{history.main}"></title>
 </head>
 <body>
-<a href="?lang=en">EN</a> | <a href="?lang=ru">RU</a>
-<div class="container" th:if="${!historyOperationPage.isEmpty()}">
-    <div class="card">
-        <div class="card-block">
-            <div class="table table-hover">
-                <table id="user" style="with: 50%">
-                    <thead>
-                    <tr>
-                        <th><p th:text="#{history.srcCard}"></p></th>
-                        <th><p th:text="#{history.srcCardNumber}"></p></th>
-                        <th><p th:text="#{history.dstCard}"></p></th>
-                        <th><p th:text="#{history.dstCardNumber}"></p></th>
-                        <th><p th:text="#{history.amount}"></p></th>
-                        <th><p th:text="#{history.date}"></p></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <th:block th:each="history : ${historyOperationPage.content}">
-                        <tr>
-                            <td th:text="${history.sourceCard.label}"></td>
-                            <td th:text="${history.sourceCard.cardNumber}"></td>
-                            <td th:text="${history.targetCard.label}"></td>
-                            <td th:text="${history.targetCard.cardNumber}"></td>
-                            <td th:text="${history.amount}"></td>
-                            <td th:text="${history.dateString}"></td>
-                        </tr>
-                    </th:block>
-                    </tbody>
-                </table>
-                <nav aria-label="..." th:if="${historyOperationPage.totalPages > 0}">
-                    <ul class="pagination">
-                        <li class="page-item"
-                            th:each="pageNumber : ${#numbers.sequence(1, historyOperationPage.totalPages)}">
-                            <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
-                               th:text=${pageNumber}
-                               th:class="${pageNumber==historyOperationPage.number + 1} ? active">
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!--<a class="navbar-brand" href="#">Navbar</a>-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+            </li>
+            <li class="nav-item active">
+                <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/my">
+                    <p th:text="#{user.page}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
+            </li>
+        </ul>
     </div>
+</nav>
+
+
+<div class="container" th:if="${!historyOperationPage.isEmpty()}">
+    <table class="table">
+        <thead>
+        <tr>
+            <th><p th:text="#{history.srcCard}"></p></th>
+            <th><p th:text="#{history.srcCardNumber}"></p></th>
+            <th><p th:text="#{history.dstCard}"></p></th>
+            <th><p th:text="#{history.dstCardNumber}"></p></th>
+            <th><p th:text="#{history.amount}"></p></th>
+            <th><p th:text="#{history.date}"></p></th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="history : ${historyOperationPage.content}">
+            <tr>
+                <td th:text="${history.sourceCard.label}"></td>
+                <td th:text="${history.sourceCard.cardNumber}"></td>
+                <td th:text="${history.targetCard.label}"></td>
+                <td th:text="${history.targetCard.cardNumber}"></td>
+                <td th:text="${history.amount}"></td>
+                <td th:nowrap="nowrap" th:text="${history.dateString }"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <nav aria-label="..." th:if="${historyOperationPage.totalPages > 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, historyOperationPage.totalPages)}"><a
+                    class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${pageNumber-1})}"
+                    th:text=${pageNumber}
+                    th:class="${pageNumber==historyOperationPage.number + 1} ? active">
+            </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 <div th:unless="${!historyOperationPage.isEmpty()}">
     <h1 th:text="#{history.empty}"></h1>
 </div>
-
-
 </body>
 </html>
