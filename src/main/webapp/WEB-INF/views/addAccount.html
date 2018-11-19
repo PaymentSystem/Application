@@ -62,7 +62,7 @@
         <div class="form-group">
             <label for="label"><p th:text="#{account.label}"></p></label>
             <input type="text" name="label" class="form-control" id="label" th:field="*{label}"
-                   th:placeholder="#{account.label}">
+                   th:placeholder="#{account.label}" required>
         </div>
         <div class="form-group">
             <label for="amount"><p th:text="#{account.amount}"></p></label>

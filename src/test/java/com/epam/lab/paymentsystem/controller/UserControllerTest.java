@@ -83,7 +83,7 @@ public class UserControllerTest extends AbstractControllerTest {
     mockMvc.perform(
         post("/registration")
             .param("login", expectedLogin)
-            .param("name", "addTest")
+            .param("name", "Addtest")
             .param("password", "addTest")
     )
         .andExpect(status().is(302));

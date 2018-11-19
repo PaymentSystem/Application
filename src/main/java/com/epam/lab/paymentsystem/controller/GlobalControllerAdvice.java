@@ -73,7 +73,7 @@ public class GlobalControllerAdvice {
   public ModelAndView accountArgumentExceptionHandle(Exception exception,
                                                      HttpServletRequest req,
                                                      Locale locale) {
-    ModelAndView mav = null;
+    ModelAndView mav;
     if (req.getRequestURI().endsWith("/addAmount")) {
       mav = prepareModel("addAmount", exception, locale);
     } else {

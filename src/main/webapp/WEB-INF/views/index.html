@@ -35,7 +35,7 @@
                 <a class="nav-link" href="/">
                     <p th:text="#{main.page}"></p></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:if="${!#httpServletRequest.isUserInRole('BLOCKED')}">
                 <a class="nav-link" href="/my">
                     <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page.users}:#{user.page}"></p></a>
             </li>
@@ -54,12 +54,10 @@
     </div>
 </nav>
 
-
 <div class="status-message">
     <a class="nav-link"><p th:text="#{user.login}+' : '+${userOnPage.login}"></p></a>
-    <a class="nav-link"><p th:text="#{user.status}+' : '+${userOnPage.role.roleStatus}"></p></a>
+    <a class="nav-link"><p th:text="#{user.status}+' : '+#{${userOnPage.role.roleStatus}}"></p></a>
 </div>
-
 
 <div class="full-width-container">
     <div id="owl-example" class="owl-carousel owl-theme">

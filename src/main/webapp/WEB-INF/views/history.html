@@ -57,10 +57,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th nowrap="nowrap"><p th:text="#{history.srcCard}"></p></th>
             <th nowrap="nowrap"><p th:text="#{history.srcCardNumber}"></p></th>
-            <th nowrap="nowrap"><p th:text="#{history.dstCard}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.srcCardOwner}"></p></th>
             <th nowrap="nowrap"><p th:text="#{history.dstCardNumber}"></p></th>
+            <th nowrap="nowrap"><p th:text="#{history.dstCardOwner}"></p></th>
             <th nowrap="nowrap"><p th:text="#{history.amount}"></p></th>
             <th nowrap="nowrap"><p th:text="#{history.date}"></p></th>
         </tr>
@@ -68,10 +68,10 @@
         <tbody>
         <th:block th:each="history : ${historyOperationPage.content}">
             <tr>
-                <td th:text="${history.sourceCard.label}"></td>
                 <td th:text="${history.sourceCard.cardNumber}"></td>
-                <td th:text="${history.targetCard.label}"></td>
+                <td th:text="${history.sourceCard.user.login}"></td>
                 <td th:text="${history.targetCard.cardNumber}"></td>
+                <td th:text="${history.targetCard.user.login}"></td>
                 <td th:text="${history.amount}"></td>
                 <td nowrap="nowrap" th:text="${history.dateString}"></td>
             </tr>
