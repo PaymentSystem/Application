@@ -1,78 +1,116 @@
 package com.epam.lab.paymentsystem.entities;
 
-public class Card {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-    private long id;
-    private long account_id;
-    private long user_id;
-    private boolean isActive;
+@Entity
+@Table(name = "cards")
+public class Card extends AbstractEntity {
+  @ManyToOne(cascade = CascadeType.REFRESH)
+  @JoinColumn(name = "id_account")
+  private Account account;
 
-    public Card() {
+  @ManyToOne(cascade = CascadeType.REFRESH)
+  @JoinColumn(name = "id_user")
+  private User user;
 
+  @Column(name = "label")
+  private String label;
+
+  @Column(name = "is_active")
+  private boolean isActive;
+
+  @Column(name = "card_number")
+  private String cardNumber;
+
+  public Card() {
+  }
+
+  /**
+   * Constructor for card.
+   *
+   * @param account  id of account
+   * @param user     userId of card
+   * @param label    label
+   * @param isActive boolean flag
+   */
+  public Card(Account account, User user, String label, boolean isActive, String cardNumber) {
+    this.account = account;
+    this.user = user;
+    this.label = label;
+    this.isActive = isActive;
+    this.cardNumber = cardNumber;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 17;
+    result = 31 * result + user.hashCode();
+    result = 31 * result + account.hashCode();
+    result = 31 * result + label.hashCode();
+    result = 31 * result + Boolean.valueOf(isActive).hashCode();
+
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof Card)) {
+      return false;
     }
 
-    public Card(long id, long account_id, long user_id, boolean isActive) {
-        this.id = id;
-        this.account_id = account_id;
-        this.user_id = user_id;
-        this.isActive = isActive;
-    }
+    Card card = (Card) obj;
 
-    public long getId() {
-        return id;
-    }
+    return card.user.equals(user)
+        && card.account.equals(account)
+        && card.label.equals(label)
+        && card.isActive == isActive;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public Account getAccount() {
+    return account;
+  }
 
-    public long getAccount_id() {
-        return account_id;
-    }
+  public void setAccount(Account account) {
+    this.account = account;
+  }
 
-    public void setAccount_id(long account_id) {
-        this.account_id = account_id;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public long getUser_id() {
-        return user_id;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
-    }
+  public String getLabel() {
+    return label;
+  }
 
-    public boolean isActive() {
-        return isActive;
-    }
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-    public void setActive(boolean active) {
-        isActive = active;
-    }
+  public boolean getIsActive() {
+    return isActive;
+  }
 
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + Long.valueOf(user_id).hashCode();
-        result = 31 * result + Long.valueOf(account_id).hashCode();
-        result = 31 * result + Boolean.valueOf(isActive).hashCode();
+  public void setIsActive(boolean active) {
+    isActive = active;
+  }
 
-        return result;
-    }
+  public String getCardNumber() {
+    return cardNumber;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof Card)) {
-            return false;
-        }
-
-        Card card = (Card) obj;
-
-        return card.user_id == user_id &&
-                card.account_id == account_id &&
-                card.isActive == isActive;
-    }
+  public void setCardNumber(String cardNumber) {
+    this.cardNumber = cardNumber;
+  }
 }

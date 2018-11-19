@@ -1,19 +1,56 @@
 package com.epam.lab.paymentsystem.controller;
 
+import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
+/**
+ * Controller for the main page, processes the specified URL and redirects
+ * the request to the specified page.
+ *
+ * @author unascribed
+ * @since 0.0.1
+ */
+@Controller
+public class IndexController {
+  private static final String INDEX_PAGE = "index";
+  private static final Logger LOGGER = LogManager.getLogger(IndexController.class);
+  private static final String LOGIN_PAGE = "login";
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+  @Autowired
+  private UserService userService;
 
-public class IndexController extends AbstractController {
+  @GetMapping(value = "/error/403")
+  public String getErrorPage() {
+    return "403";
+  }
 
-    private static final String INDEX_PAGE = "index";
+  /**
+   * Returns application main page.
+   *
+   * @return main page
+   */
+  @GetMapping(value = "/")
+  public String getIndexPage(Model model) {
+    LOGGER.info("Return index page");
+    String login = userService.getCurrentUserLogin();
+    User currentUser = userService.getUserByLogin(login);
+    model.addAttribute("currentUser", currentUser);
+    model.addAttribute("userLogin", login);
+    User userOnPage = userService.getUserByLogin(login);
+    model.addAttribute("userOnPage", userOnPage);
+    return INDEX_PAGE;
+  }
 
-    @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        ModelAndView modelAndView = new ModelAndView(INDEX_PAGE);
-        return modelAndView;
-    }
+  @GetMapping(value = "/login")
+  public String getLoginPage() {
+    LOGGER.info("Return login page");
+    return LOGIN_PAGE;
+  }
 }
+

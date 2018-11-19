@@ -1,26 +1,26 @@
 package com.epam.lab.paymentsystem.service.impl;
 
-import com.epam.lab.paymentsystem.dao.UserDAO;
-import com.epam.lab.paymentsystem.entities.User;
 import com.epam.lab.paymentsystem.entities.MyUserDetails;
+import com.epam.lab.paymentsystem.entities.User;
+import com.epam.lab.paymentsystem.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserDAO userDAO;
+  @Autowired
+  private UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
+  @Override
+  public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    User user = userRepository.getUserByLogin(login);
+    if (user == null) {
+      throw new UsernameNotFoundException(login);
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userDAO.getUserByLogin(login);
-        if(user == null) {
-            throw new UsernameNotFoundException(login);
-        }
-        return new MyUserDetails(user);
-    }
+    return new MyUserDetails(user);
+  }
 }

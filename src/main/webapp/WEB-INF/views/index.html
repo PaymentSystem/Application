@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/OwlCarousel2/2.2.1/dist/assets/owl.carousel.css"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/OwlCarousel2/2.2.1/dist/assets/owl.theme.default.css">
+    <link rel="stylesheet" href="/style/main.css">
+
+    <script src="/webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/webjars/OwlCarousel2/2.2.1/dist/owl.carousel.js"></script>
+    <script src="/js/scripts.js"></script>
+
+    <title th:text="#{homepage}"></title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!--<a class="navbar-brand" href="#">Navbar</a>-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+            </li>
+            <li class="nav-item active">
+                <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item" th:if="${!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/my">
+                    <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page.users}:#{user.page}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!userOnPage.roleStatusEquals('ADMIN')&&!userOnPage.roleStatusEquals('BLOCKED')}">
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="status-message">
+    <a class="nav-link"><p th:text="#{user.login}+' : '+${userOnPage.login}"></p></a>
+    <a class="nav-link"><p th:text="#{user.status}+' : '+#{${userOnPage.role.roleStatus}}"></p></a>
+</div>
+
+<div class="full-width-container">
+    <div id="owl-example" class="owl-carousel owl-theme">
+        <div class="bank-advertising">
+            <a href="/">
+                <img class="bank-advertising-picture" src="/pictures/carouselPictureOne.jpg"
+                     alt="New department in New York">
+
+                <div class="trapezoid">
+                    <div class="trapezoid-text">
+
+                        <p>New department</p>
+
+                        <p>opened</p>
+
+                        <p>in New York</p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <div class="bank-advertising">
+            <a href="/">
+                <img class="bank-advertising-picture" src="/pictures/carouselPictureTwo.jpg"
+                     alt="Big data shakes up ESG investing">
+
+                <div class="trapezoid">
+                    <div class="trapezoid-text">
+
+                        <p>Big data</p>
+
+                        <p>shakes up</p>
+
+                        <p>ESG investing</p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="bank-advertising">
+            <a href="/">
+                <img class="bank-advertising-picture" src="/pictures/carouselPictureThree.jpg"
+                     alt="First class train">
+
+                <div class="trapezoid">
+                    <div class="trapezoid-text">
+
+                        <p>Helping IG credit</p>
+
+                        <p>give more access</p>
+
+                        <p>to a better life</p>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

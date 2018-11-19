@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/main.css">
+
+    <script src="/js/scripts.js"></script>
+
+    <title>Operation</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!--<a class="navbar-brand" href="#">Navbar</a>-->
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a href="?lang=en" class="btn btn-link active" role="button" aria-pressed="true">EN</a>
+            </li>
+            <li class="nav-item active">
+                <a href="?lang=ru" class="btn btn-link active" role="button" aria-pressed="true">RU</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <p th:text="#{main.page}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/my">
+                    <p th:text="#{user.page}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/myCards"><p th:text="#{user.cards}"></p></a>
+            </li>
+            <li class="nav-item"
+                th:if="${!#httpServletRequest.isUserInRole('ADMIN')&&!#httpServletRequest.isUserInRole('BLOCKED')}">
+                <a class="nav-link" href="/history"><p th:text="#{history.button}"></p></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout"><p th:text="#{user.logout}"></p></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="content-container"></div>
+<div class="messages-forms-content">
+    <h1><p th:text="#{operation.title}"/></h1>
+    <p th:text="#{operation.fillForm}"/>
+</div>
+<form class="messages-forms-content" action="operation" method="post" th:object="${operationDto}">
+    <div class="form-group">
+        <label for="src"><b><p th:text="#{operation.source}"/></b></label>
+        <input list="srcNumberCardList" name="src" class="form-control input-lg"
+               th:field="*{numberSrcCard}" th:placeholder="#{operation.placeholder.source}" id="src" required>
+        <datalist id="srcNumberCardList">
+            <th:block th:each="srcNumberCardList : ${srcNumberCardList}">
+                <option th:value="${srcNumberCardList.cardNumber}">
+            </th:block>
+        </datalist>
+    </div>
+    <div class="form-group">
+        <label for=><b><p th:text="#{operation.destination}"/></b></label>
+        <input type="text" name="dst" class="form-control input-lg"
+               th:field="*{numberDstCard}" th:placeholder="#{operation.placeholder.destination}" id="dst" required>
+    </div>
+    <div class="form-group">
+        <label for="amount"><b><p th:text="#{operation.amount}"/></b></label>
+        <input type="number" min="1" name="amount" class="form-control input-lg"
+               th:field="*{amount}" th:placeholder="#{operation.placeholder.amount}" id="amount" required>
+    </div>
+    <button type="submit" class="btn btn-outline-success"><p th:text="#{operation.send}"/></button>
+</form>
+<div class="exception-message">
+    <h1 th:text="${messageException}"/>
+</div>
+</body>
+</html>
