@@ -33,7 +33,7 @@
                 <a class="nav-link" href="/">
                     <p th:text="#{main.page}"></p></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" th:if="${!#httpServletRequest.isUserInRole('BLOCKED')}">
                 <a class="nav-link" href="/my">
                     <p th:text="${#httpServletRequest.isUserInRole('ADMIN')}?#{admin.page.users}:#{user.page}"></p></a>
             </li>
@@ -62,7 +62,7 @@
                     <button type="submit" class="btn btn-danger"
                             th:disabled="${userOnPage.role.roleStatus
                             !=T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
-                        <p th:text="#{user.block}"/>
+                        <p th:text="#{user.block.button}"/>
                     </button>
                 </form>
             </th>
@@ -71,7 +71,7 @@
                     <button type="submit" class="btn btn-danger"
                             th:disabled="${userOnPage.role.roleStatus
                             ==T(com.epam.lab.paymentsystem.entities.enums.Roles).USER}">
-                        <p th:text="#{user.unblock}"/>
+                        <p th:text="#{user.unblock.button}"/>
                     </button>
                 </form>
             </th>
@@ -98,7 +98,7 @@
             <tr>
                 <td th:text="${account.label}"></td>
                 <td th:text="${account.amount}"></td>
-                <td th:text="${account.isActive}"></td>
+                <td th:text="#{${account.isActive}}"></td>
                 <td th:if="!${#httpServletRequest.isUserInRole('ADMIN')}">
                     <a th:href="@{${#httpServletRequest.requestURI}+'/account/'+${account.id}}"
                        class="btn btn-outline-primary" role="button" aria-pressed="true"><p
@@ -155,7 +155,8 @@
     </div>
 </div>
 
-<div class="notifying-message" th:unless="${!accountPage.isEmpty()}">
+<div class="notifying-message" th:unless="${!accountPage.isEmpty()}"
+     th:if="${!#httpServletRequest.isUserInRole('ADMIN')}">
     <h3 th:text="#{account.notFound}"></h3>
 </div>
 
@@ -176,7 +177,7 @@
             <tr>
                 <td th:text="${user.login}"></td>
                 <td th:text="${user.name}"></td>
-                <td th:text="${user.role.roleStatus}"></td>
+                <td th:text="#{${user.role.roleStatus}}"></td>
                 <td>
                     <a th:href="@{${user.login}}" class="btn btn-outline-info"
                        role="button" aria-pressed="true"><p th:text="#{account.main}"/>

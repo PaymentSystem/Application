@@ -59,6 +59,7 @@
         <tr>
             <th><p th:text="#{card.numberCard}"></p></th>
             <th><p th:text="#{account.label}"></p></th>
+            <th><p th:text="#{card.owner}"></p></th>
             <th><p th:text="#{card.isActive}"></p></th>
             <th><p th:text="#{card.block}"></p></th>
             <th><p th:text="#{card.unblock}"></p></th>
@@ -70,7 +71,8 @@
             <tr>
                 <td th:text="${card.cardNumber}"></td>
                 <td th:text="${card.label}"></td>
-                <td th:text="${card.isActive}"></td>
+                <td th:text="${card.user.login}"></td>
+                <td th:text="#{${card.isActive}}"></td>
                 <td th:if="${userLogin == currentUserLogin}">
                     <form th:action="@{'/'+${userLogin}+'/account/'+${card.account.id}
                                 +'/card/'+${card.id}+'/blocking/true'}" method="post">

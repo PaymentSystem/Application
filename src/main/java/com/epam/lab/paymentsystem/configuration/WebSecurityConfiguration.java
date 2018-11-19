@@ -53,9 +53,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/webjars/bootstrap/4.1.3/css/**",
             "/webjars/bootstrap/4.1.3/js/**",
             "/webjars/jquery/3.3.1-1/**",
+            "/webjars/OwlCarousel2/**",
             "/style/**",
             "/js/**",
-            "/OwlCarousel2-2.3.4/**",
             "/pictures/**",
             "/registration")
         .permitAll()
@@ -95,10 +95,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
    * @param accountId      accountId
    * @return boolean
    */
-  public boolean checkAccount(Authentication authentication, long accountId) {
+  public boolean checkAccount(Authentication authentication, String accountId) {
     String login = authentication.getName();
-    List<Long> list = accountService.getAllAccountsOfUser(login)
+    List<String> list = accountService.getAllAccountsOfUser(login)
         .stream().map(AbstractEntity::getId)
+        .map(Object::toString)
         .collect(Collectors.toList());
     return list.contains(accountId);
   }
@@ -110,10 +111,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
    * @param cardId         cardId
    * @return boolean
    */
-  public boolean checkCard(Authentication authentication, long cardId) {
+  public boolean checkCard(Authentication authentication, String cardId) {
     String login = authentication.getName();
-    List<Long> list = cardService.getAllCardsByLogin(login)
+    List<String> list = cardService.getAllCardsByLogin(login)
         .stream().map(AbstractEntity::getId)
+        .map(Object::toString)
         .collect(Collectors.toList());
     return list.contains(cardId);
   }

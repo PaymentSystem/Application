@@ -62,6 +62,10 @@ public class UserServiceImpl implements UserService {
       LOGGER.error("LoginAlreadyExistsException in UserServiceImpl in addUser method");
       throw new LoginAlreadyExistsException("exception.login.exists");
     }
+    if (!userDto.getName().matches("(^[A-Z][a-z]+$)|(^[А-Я][а-я]+$)")) {
+      LOGGER.error("Name contains wrong characters");
+      throw  new LoginAlreadyExistsException("exception.login.name");
+    }
     Role role = roleRepository.getRoleByRoleStatus(Roles.USER);
     userToAdd = TransformerToEntity.convertUser(userDto);
     userToAdd.setRole(role);

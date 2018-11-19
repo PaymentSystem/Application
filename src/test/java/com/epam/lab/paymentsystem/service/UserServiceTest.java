@@ -43,6 +43,7 @@ class UserServiceTest {
   public void testSetUp() {
     user = new User();
     user.setLogin("test");
+    user.setName("Test");
     user.setPassword("testPassword");
     userDto = TransformerToDto.convertUser(user);
   }
