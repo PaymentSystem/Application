@@ -163,6 +163,9 @@ public class AccountServiceImpl implements AccountService {
     if (amount <= 0) {
       LOGGER.error("Amount should be positive");
       throw new AccountArgumentException("exception.amount");
+    } else if (!accountRepository.getAccountById(accountId).getIsActive()) {
+      LOGGER.error("Account should be unblocked");
+      throw new AccountArgumentException("account.blocked");
     }
     account.setAmount(account.getAmount() + amount);
 
@@ -173,7 +176,7 @@ public class AccountServiceImpl implements AccountService {
   /**
    * Returns list of accounts by user's login.
    *
-   * @param login user's login
+   * @param login    user's login
    * @param pageable number of page
    * @return list of accounts
    */
